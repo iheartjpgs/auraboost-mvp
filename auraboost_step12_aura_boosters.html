@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraBoost - Aura Boosters & Sex Appeal Scoring</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #0F172A;
+            color: #F1F5F9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background-color: #1E293B;
+            border-bottom: 1px solid #F59E0B;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-small {
+            width: 32px;
+            height: 32px;
+        }
+
+        .header-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #F59E0B;
+        }
+
+        .back-btn {
+            background-color: #F59E0B;
+            color: #0F172A;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .main-content {
+            padding: 24px 20px;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .page-subtitle {
+            color: #CBD5E1;
+            margin-bottom: 24px;
+            font-size: 14px;
+        }
+
+        /* BOOSTER TABS */
+        .booster-tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            overflow-x: auto;
+            padding-bottom: 16px;
+        }
+
+        .booster-tab {
+            padding: 12px 20px;
+            border: 2px solid rgba(245, 158, 11, 0.3);
+            background-color: #1E293B;
+            color: #CBD5E1;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .booster-tab:hover {
+            border-color: #F59E0B;
+            color: #F59E0B;
+        }
+
+        .booster-tab.active {
+            background-color: #F59E0B;
+            color: #0F172A;
+            border-color: #F59E0B;
+        }
+
+        /* UPLOAD SECTION */
+        .upload-section {
+            background-color: #1E293B;
+            border: 2px dashed #F59E0B;
+            border-radius: 12px;
+            padding: 40px 24px;
+            text-align: center;
+            margin-bottom: 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .upload-section:hover {
+            background-color: rgba(245, 158, 11, 0.05);
+            border-color: #FCD34D;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .upload-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #F1F5F9;
+            margin-bottom: 8px;
+        }
+
+        .upload-text {
+            color: #CBD5E1;
+            font-size: 13px;
+            margin-bottom: 16px;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .upload-btn {
+            background-color: #F59E0B;
+            color: #0F172A;
+            padding: 12px 28px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .upload-btn:hover {
+            opacity: 0.9;
+            transform: scale(1.05);
+        }
+
+        /* PREVIEW & ANALYSIS */
+        .analysis-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .preview-card {
+            background-color: #1E293B;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+            overflow: hidden;
+        }
+
+        .preview-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+
+        .analysis-card {
+            background: linear-gradient(135deg, #F59E0B 0%, #FCD34D 100%);
+            border-radius: 12px;
+            padding: 24px;
+            color: #0F172A;
+        }
+
+        .analysis-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 16px;
+        }
+
+        .analysis-item {
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(15, 23, 42, 0.2);
+        }
+
+        .analysis-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .analysis-label {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+            opacity: 0.8;
+        }
+
+        .analysis-value {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .analysis-bar {
+            background-color: rgba(15, 23, 42, 0.2);
+            border-radius: 4px;
+            height: 6px;
+            overflow: hidden;
+        }
+
+        .analysis-fill {
+            background-color: #0F172A;
+            height: 100%;
+            border-radius: 4px;
+        }
+
+        /* AURA BOOST RESULT */
+        .aura-result {
+            background: linear-gradient(135deg, #EC4899 0%, #8B5CF6 100%);
+            border-radius: 12px;
+            padding: 32px 24px;
+            text-align: center;
+            margin-bottom: 24px;
+            color: #F1F5F9;
+        }
+
+        .aura-emoji {
+            font-size: 56px;
+            margin-bottom: 12px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .aura-gained {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .aura-label {
+            font-size: 13px;
+            opacity: 0.95;
+        }
+
+        /* AFFILIATE BADGE SECTION */
+        .affiliate-badge-section {
+            background-color: #1E293B;
+            border: 2px solid #F59E0B;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 16px;
+            color: #F1F5F9;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .badge-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .badge-card {
+            background-color: #0F172A;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .badge-icon {
+            font-size: 40px;
+            margin-bottom: 12px;
+        }
+
+        .badge-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #F1F5F9;
+            margin-bottom: 8px;
+        }
+
+        .badge-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #F59E0B;
+        }
+
+        .benefits-list {
+            background-color: rgba(245, 158, 11, 0.1);
+            border-left: 3px solid #F59E0B;
+            border-radius: 6px;
+            padding: 16px;
+        }
+
+        .benefit-item {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+            font-size: 13px;
+            color: #CBD5E1;
+        }
+
+        .benefit-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .benefit-icon {
+            flex-shrink: 0;
+            font-size: 16px;
+        }
+
+        /* RECENT UPLOADS */
+        .recent-section {
+            background-color: #1E293B;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .uploads-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 12px;
+        }
+
+        .upload-card {
+            background-color: #0F172A;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .upload-card:hover {
+            border-color: #F59E0B;
+            transform: translateY(-4px);
+        }
+
+        .upload-thumbnail {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+        }
+
+        .upload-info {
+            padding: 8px;
+            text-align: center;
+            font-size: 11px;
+        }
+
+        .upload-type {
+            color: #F59E0B;
+            font-weight: 600;
+        }
+
+        .upload-aura {
+            color: #10B981;
+            font-weight: 600;
+        }
+
+        /* INFO BOX */
+        .info-box {
+            background-color: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+            font-size: 12px;
+            line-height: 1.6;
+            color: #CBD5E1;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: #1E293B;
+            border-radius: 12px;
+            padding: 24px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-close {
+            float: right;
+            font-size: 24px;
+            cursor: pointer;
+            color: #CBD5E1;
+        }
+
+        @media (max-width: 768px) {
+            .analysis-container {
+                grid-template-columns: 1fr;
+            }
+
+            .badge-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-left">
+            <svg class="logo-small" viewBox="0 0 400 400" fill="none">
+                <circle cx="200" cy="200" r="160" stroke="#F59E0B" stroke-width="28" />
+                <circle cx="200" cy="200" r="110" stroke="#FCD34D" stroke-width="24" />
+                <circle cx="200" cy="200" r="60" stroke="#F59E0B" stroke-width="20" />
+                <circle cx="200" cy="200" r="25" fill="#F59E0B" />
+            </svg>
+            <h1 class="header-title">AuraBoost</h1>
+        </div>
+        <button class="back-btn" onclick="window.history.back()">← Back</button>
+    </div>
+
+    <div class="container">
+        <div class="main-content">
+            <div class="page-title">✨ Aura Boosters</div>
+            <p class="page-subtitle">Upload lifestyle content to boost your aura and get closer to the AuraBoost X Affiliate Badge</p>
+
+            <div class="info-box">
+                💡 <strong>How Aura Works:</strong> Your aura is built by being hot and going hard! Upload gym pics, food gains, flex your car, or drop sexy OnlyFans content. Each boost increases your aura points and airdrop eligibility. Get 6+ boosters to unlock the Affiliate Badge!
+            </div>
+
+            <!-- BOOSTER TYPE TABS -->
+            <div class="booster-tabs">
+                <button class="booster-tab active" onclick="switchBooster(this, 'gym')">💪 Gym</button>
+                <button class="booster-tab" onclick="switchBooster(this, 'food')">🍗 Food</button>
+                <button class="booster-tab" onclick="switchBooster(this, 'car')">🏎️ Car</button>
+                <button class="booster-tab" onclick="switchBooster(this, 'gaming')">🎮 Gaming</button>
+                <button class="booster-tab" onclick="switchBooster(this, 'outdoors')">🏕️ Outdoors</button>
+                <button class="booster-tab" onclick="switchBooster(this, 'sexy')">🔥 Sexy Content</button>
+            </div>
+
+            <!-- UPLOAD SECTION -->
+            <div class="upload-section" id="uploadSection" onclick="document.getElementById('fileInput').click()">
+                <div class="upload-icon" id="boosterIcon">💪</div>
+                <div class="upload-title" id="boosterTitle">Upload Gym Photo</div>
+                <div class="upload-text" id="boosterDescription">Show off your workout! Flex at the gym, mid-set, or post-workout glow.</div>
+                <button class="upload-btn">Choose Photo or Video</button>
+            </div>
+
+            <input type="file" id="fileInput" class="file-input" onchange="handleUpload(event)">
+
+            <!-- PREVIEW & AI ANALYSIS -->
+            <div id="analysisContainer" style="display: none;">
+                <div class="analysis-container">
+                    <!-- PREVIEW -->
+                    <div class="preview-card">
+                        <img id="preview" class="preview-image" src="">
+                    </div>
+
+                    <!-- AI ANALYSIS RESULTS -->
+                    <div class="analysis-card">
+                        <div class="analysis-title">🤖 AI Analysis</div>
+                        
+                        <div class="analysis-item">
+                            <div class="analysis-label">Hotness Factor</div>
+                            <div class="analysis-value" id="hotnessFactor">8.7</div>
+                            <div class="analysis-bar">
+                                <div class="analysis-fill" id="hotnessBar" style="width: 87%;"></div>
+                            </div>
+                        </div>
+
+                        <div class="analysis-item">
+                            <div class="analysis-label">Content Quality</div>
+                            <div class="analysis-value" id="contentQuality">92%</div>
+                            <div class="analysis-bar">
+                                <div class="analysis-fill" id="qualityBar" style="width: 92%;"></div>
+                            </div>
+                        </div>
+
+                        <div class="analysis-item">
+                            <div class="analysis-label">Engagement Score</div>
+                            <div class="analysis-value" id="engagementScore">8.4</div>
+                            <div class="analysis-bar">
+                                <div class="analysis-fill" id="engagementBar" style="width: 84%;"></div>
+                            </div>
+                        </div>
+
+                        <div class="analysis-item">
+                            <div class="analysis-label" style="margin-top: 12px;">Analysis Details</div>
+                            <div style="font-size: 11px; line-height: 1.5; color: rgba(15, 23, 42, 0.8);">
+                                <div id="analysisDetails"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AURA BOOST RESULT -->
+                <div class="aura-result">
+                    <div class="aura-emoji">✨</div>
+                    <div class="aura-gained" id="auraGained">+450 Aura Points!</div>
+                    <div class="aura-label">Your new total: <span id="newTotal">1,450</span> aura</div>
+                    <button class="upload-btn" style="margin-top: 16px; width: auto; display: inline-block;" onclick="shareBoost()">📱 Share This Boost</button>
+                </div>
+            </div>
+
+            <!-- AFFILIATE BADGE SECTION -->
+            <div class="affiliate-badge-section">
+                <div class="section-title">
+                    <span>💎 AuraBoost X Affiliate Badge</span>
+                </div>
+
+                <div class="badge-grid">
+                    <div class="badge-card">
+                        <div class="badge-icon">📈</div>
+                        <div class="badge-title">Reach Multiplier</div>
+                        <div class="badge-value">5X</div>
+                    </div>
+                    <div class="badge-card">
+                        <div class="badge-icon">💰</div>
+                        <div class="badge-title">Earnings</div>
+                        <div class="badge-value">3X</div>
+                    </div>
+                    <div class="badge-card">
+                        <div class="badge-icon">👥</div>
+                        <div class="badge-title">Followers</div>
+                        <div class="badge-value">+2K</div>
+                    </div>
+                    <div class="badge-card">
+                        <div class="badge-icon">🎯</div>
+                        <div class="badge-title">Engagement</div>
+                        <div class="badge-value">+68%</div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <h4 style="margin-bottom: 12px; font-size: 13px; font-weight: 600;">Badge Progress: 3/6 Boosters</h4>
+                    <div style="background-color: #0F172A; border-radius: 8px; height: 12px; overflow: hidden;">
+                        <div style="background: linear-gradient(90deg, #F59E0B, #EC4899); height: 100%; width: 50%;"></div>
+                    </div>
+                </div>
+
+                <div class="benefits-list">
+                    <div class="section-title" style="font-size: 13px; margin-bottom: 12px; color: #F1F5F9;">✨ Badge Benefits:</div>
+                    
+                    <div class="benefit-item">
+                        <div class="benefit-icon">🔥</div>
+                        <div><strong>5X Reach Multiplier:</strong> Your posts get shown to 5X more users on the leaderboard and feed</div>
+                    </div>
+
+                    <div class="benefit-item">
+                        <div class="benefit-icon">💵</div>
+                        <div><strong>3X Earnings:</strong> Every referral and creator payout is tripled. $10 becomes $30!</div>
+                    </div>
+
+                    <div class="benefit-item">
+                        <div class="benefit-icon">⭐</div>
+                        <div><strong>Verified Badge:</strong> Get the 💎 Affiliate badge next to your name everywhere</div>
+                    </div>
+
+                    <div class="benefit-item">
+                        <div class="benefit-icon">🎁</div>
+                        <div><strong>10X Airdrop:</strong> Your $AURA airdrop amount is multiplied by 10X</div>
+                    </div>
+
+                    <div class="benefit-item">
+                        <div class="benefit-icon">🏆</div>
+                        <div><strong>VIP Leaderboard:</strong> Your own creator hall-of-fame section on the leaderboard</div>
+                    </div>
+
+                    <div class="benefit-item">
+                        <div class="benefit-icon">🎯</div>
+                        <div><strong>Exclusive Creator Tools:</strong> Early access to new features and AI tools</div>
+                    </div>
+
+                    <div class="benefit-item">
+                        <div class="benefit-icon">📊</div>
+                        <div><strong>Advanced Analytics:</strong> Deep insights into your audience demographics and best content types</div>
+                    </div>
+
+                    <div class="benefit-item">
+                        <div class="benefit-icon">🚀</div>
+                        <div><strong>Growth Coaching:</strong> Access to AuraBoost team for monetization strategy</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RECENT UPLOADS -->
+            <div class="recent-section">
+                <div class="section-title">📸 Your Recent Boosts</div>
+                <div class="uploads-grid">
+                    <div class="upload-card">
+                        <div style="width: 100%; height: 120px; background: linear-gradient(135deg, #F59E0B, #EC4899); display: flex; align-items: center; justify-content: center; font-size: 32px;">💪</div>
+                        <div class="upload-info">
+                            <div class="upload-type">Gym</div>
+                            <div class="upload-aura">+450</div>
+                        </div>
+                    </div>
+
+                    <div class="upload-card">
+                        <div style="width: 100%; height: 120px; background: linear-gradient(135deg, #10B981, #14F195); display: flex; align-items: center; justify-content: center; font-size: 32px;">🍗</div>
+                        <div class="upload-info">
+                            <div class="upload-type">Food</div>
+                            <div class="upload-aura">+380</div>
+                        </div>
+                    </div>
+
+                    <div class="upload-card">
+                        <div style="width: 100%; height: 120px; background: linear-gradient(135deg, #3B82F6, #06B6D4); display: flex; align-items: center; justify-content: center; font-size: 32px;">🏎️</div>
+                        <div class="upload-info">
+                            <div class="upload-type">Car</div>
+                            <div class="upload-aura">+320</div>
+                        </div>
+                    </div>
+
+                    <div class="upload-card">
+                        <div style="width: 100%; height: 120px; background: linear-gradient(135deg, #8B5CF6, #A78BFA); display: flex; align-items: center; justify-content: center; font-size: 32px;">🎮</div>
+                        <div class="upload-info">
+                            <div class="upload-type">Gaming</div>
+                            <div class="upload-aura">+410</div>
+                        </div>
+                    </div>
+
+                    <div class="upload-card">
+                        <div style="width: 100%; height: 120px; background: linear-gradient(135deg, #10B981, #6EE7B7); display: flex; align-items: center; justify-content: center; font-size: 32px;">🏕️</div>
+                        <div class="upload-info">
+                            <div class="upload-type">Outdoors</div>
+                            <div class="upload-aura">+395</div>
+                        </div>
+                    </div>
+
+                    <div class="upload-card">
+                        <div style="width: 100%; height: 120px; background: linear-gradient(135deg, #EC4899, #F472B6); display: flex; align-items: center; justify-content: center; font-size: 32px;">🔥</div>
+                        <div class="upload-info">
+                            <div class="upload-type">Sexy</div>
+                            <div class="upload-aura">+520</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const boosterTypes = {
+            gym: {
+                icon: '💪',
+                title: 'Upload Gym Photo',
+                description: 'Show off your workout! Flex at the gym, mid-set, or post-workout glow.',
+                details: [
+                    'Gym equipment detected ✓',
+                    'Muscle definition analysis: Strong',
+                    'Lighting quality: Professional',
+                    'Authenticity score: 94%'
+                ],
+                minAura: 380,
+                maxAura: 500
+            },
+            food: {
+                icon: '🍗',
+                title: 'Upload Meal Photo',
+                description: 'Show your gains! Post your protein-packed meals and healthy eating.',
+                details: [
+                    'Protein-rich meal detected ✓',
+                    'Nutritional value: High',
+                    'Presentation quality: Great',
+                    'Appeal score: 88%'
+                ],
+                minAura: 320,
+                maxAura: 420
+            },
+            car: {
+                icon: '🏎️',
+                title: 'Upload Car Photo',
+                description: 'Flex your ride! Show off your car and lifestyle.',
+                details: [
+                    'Vehicle quality: Luxury',
+                    'Aesthetic appeal: 8.9/10',
+                    'Status indicator: High',
+                    'Engagement potential: 85%'
+                ],
+                minAura: 300,
+                maxAura: 480
+            },
+            gaming: {
+                icon: '🎮',
+                title: 'Upload Gaming Content',
+                description: 'Show your gaming skills! Post gameplay highlights, tournament wins, or setup flex.',
+                details: [
+                    'Gaming achievement detected ✓',
+                    'Skill level analysis: Advanced',
+                    'Stream/clip quality: High',
+                    'Community appeal: 89%'
+                ],
+                minAura: 350,
+                maxAura: 480
+            },
+            outdoors: {
+                icon: '🏕️',
+                title: 'Upload Outdoors Photo',
+                description: 'Show your adventurous side! Post hiking, travel, nature, or outdoor activities.',
+                details: [
+                    'Outdoor activity detected ✓',
+                    'Location aesthetic: Beautiful',
+                    'Adventure level: High',
+                    'Inspiration factor: 91%'
+                ],
+                minAura: 340,
+                maxAura: 460
+            },
+            sexy: {
+                icon: '🔥',
+                title: 'Upload Sexy Content',
+                description: 'Show your confidence! Post from OnlyFans or similar platforms.',
+                details: [
+                    'Confidence level: Maximum',
+                    'Visual appeal: 9.2/10',
+                    'Sex appeal factor: 9.1/10',
+                    'Engagement multiplier: 2.3X'
+                ],
+                minAura: 400,
+                maxAura: 600
+            }
+        };
+
+        let currentBooster = 'gym';
+        let uploadedFile = null;
+
+        function switchBooster(element, type) {
+            document.querySelectorAll('.booster-tab').forEach(tab => tab.classList.remove('active'));
+            element.classList.add('active');
+            currentBooster = type;
+
+            const booster = boosterTypes[type];
+            document.getElementById('boosterIcon').textContent = booster.icon;
+            document.getElementById('boosterTitle').textContent = booster.title;
+            document.getElementById('boosterDescription').textContent = booster.description;
+            document.getElementById('analysisContainer').style.display = 'none';
+        }
+
+        function handleUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                uploadedFile = e.target.result;
+                simulateAIAnalysis();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function simulateAIAnalysis() {
+            const booster = boosterTypes[currentBooster];
+            
+            // Random scores for realistic variation
+            const hotness = (Math.random() * 2 + 7.5).toFixed(1);
+            const quality = Math.floor(Math.random() * 15 + 82);
+            const engagement = (Math.random() * 1.5 + 7.8).toFixed(1);
+            const auraGained = Math.floor(Math.random() * (booster.maxAura - booster.minAura) + booster.minAura);
+
+            document.getElementById('preview').src = uploadedFile;
+            document.getElementById('hotnessFactor').textContent = hotness;
+            document.getElementById('hotnessBar').style.width = (hotness * 10) + '%';
+            document.getElementById('contentQuality').textContent = quality + '%';
+            document.getElementById('qualityBar').style.width = quality + '%';
+            document.getElementById('engagementScore').textContent = engagement;
+            document.getElementById('engagementBar').style.width = (engagement * 10) + '%';
+            document.getElementById('analysisDetails').innerHTML = booster.details.join('<br>');
+            document.getElementById('auraGained').textContent = '+' + auraGained + ' Aura Points!';
+            document.getElementById('newTotal').textContent = (1000 + auraGained);
+
+            document.getElementById('analysisContainer').style.display = 'block';
+            document.querySelector('html').scrollTop = document.querySelector('.upload-section').offsetHeight;
+        }
+
+        function shareBoost() {
+            alert('📱 Sharing your boost!\n\nThis would open social sharing options:\n- Share to Twitter/X\n- Share to Instagram\n- Share to TikTok\n\nWith your referral link auto-included!');
+        }
+
+        function goBack() {
+            alert('Going back to dashboard...');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraBoost - Creator Hubs Hub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #0F172A;
+            color: #F1F5F9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #F59E0B 0%, #EC4899 100%);
+            padding: 40px 20px;
+            border-radius: 16px;
+            text-align: center;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 24px rgba(245, 158, 11, 0.15);
+        }
+
+        .logo {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .header-title {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            color: #F1F5F9;
+        }
+
+        .header-subtitle {
+            font-size: 14px;
+            color: #F1F5F9;
+            opacity: 0.95;
+            margin-bottom: 24px;
+        }
+
+        .header-cta {
+            display: inline-block;
+            background-color: #F1F5F9;
+            color: #EC4899;
+            padding: 12px 32px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .header-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            color: #F1F5F9;
+        }
+
+        .page-subtitle {
+            font-size: 14px;
+            color: #CBD5E1;
+            margin-bottom: 32px;
+        }
+
+        /* HUB GRID */
+        .hubs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .hub-card {
+            background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hub-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .hub-card:hover::before {
+            left: 100%;
+        }
+
+        .hub-card:hover {
+            border-color: rgba(245, 158, 11, 0.5);
+            background: linear-gradient(135deg, #1E293B 0%, rgba(245, 158, 11, 0.05) 100%);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(245, 158, 11, 0.1);
+        }
+
+        .hub-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .hub-name {
+            font-size: 16px;
+            font-weight: bold;
+            color: #F1F5F9;
+            margin-bottom: 8px;
+        }
+
+        .hub-description {
+            font-size: 12px;
+            color: #CBD5E1;
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+
+        .hub-tag {
+            display: inline-block;
+            background-color: rgba(245, 158, 11, 0.2);
+            color: #F59E0B;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .hub-btn {
+            width: 100%;
+            padding: 10px 16px;
+            background: linear-gradient(135deg, #F59E0B 0%, #EC4899 100%);
+            color: #F1F5F9;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .hub-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        /* SPECIAL BADGES */
+        .badge-new {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background-color: #10B981;
+            color: #0F172A;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .badge-popular {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background-color: #F59E0B;
+            color: #0F172A;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        /* FEATURED SECTION */
+        .featured-section {
+            background: linear-gradient(135deg, #F59E0B 0%, #EC4899 100%);
+            border-radius: 12px;
+            padding: 32px 24px;
+            margin-bottom: 40px;
+            color: #F1F5F9;
+            text-align: center;
+        }
+
+        .featured-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .featured-text {
+            font-size: 13px;
+            margin-bottom: 24px;
+            opacity: 0.95;
+            line-height: 1.6;
+        }
+
+        .featured-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-item {
+            background-color: rgba(0, 0, 0, 0.15);
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            opacity: 0.9;
+        }
+
+        /* FOOTER */
+        .footer {
+            background-color: #1E293B;
+            border-top: 1px solid rgba(245, 158, 11, 0.2);
+            padding: 32px 20px;
+            border-radius: 12px;
+            margin-top: 40px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 32px;
+            margin-bottom: 24px;
+        }
+
+        .footer-section-title {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            color: #F59E0B;
+        }
+
+        .footer-link {
+            font-size: 12px;
+            color: #CBD5E1;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .footer-link:hover {
+            color: #F59E0B;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(245, 158, 11, 0.1);
+            padding-top: 24px;
+            text-align: center;
+            font-size: 11px;
+            color: #6B7280;
+        }
+
+        @media (max-width: 768px) {
+            .header-title {
+                font-size: 24px;
+            }
+
+            .page-title {
+                font-size: 20px;
+            }
+
+            .hubs-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .featured-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="logo">🎯</div>
+            <div class="header-title">All Creator Hubs</div>
+            <div class="header-subtitle">
+                Choose your platform and start monetizing your content with AuraBoost
+            </div>
+            <a href="auraboost_mobile_homepage.html" class="header-cta">← Back to App</a>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="page-title">8 Ways to Earn</div>
+        <p class="page-subtitle">Select your platform and unlock platform-specific boosters and earnings strategies</p>
+
+        <!-- HUBS GRID -->
+        <div class="hubs-grid">
+            <!-- OnlyFans Hub -->
+            <div class="hub-card">
+                <div class="badge-popular">POPULAR</div>
+                <div class="hub-icon">🔞</div>
+                <div class="hub-name">OnlyFans Creators</div>
+                <div class="hub-description">
+                    Monetize your OnlyFans audience on AuraBoost. Direct referral commissions from subscribers.
+                </div>
+                <div class="hub-tag">30% per sub</div>
+                <a href="auraboost_onlyfans_creator_hub.html" class="hub-btn">View Hub</a>
+            </div>
+
+            <!-- Instagram Hub -->
+            <div class="hub-card">
+                <div class="hub-icon">📸</div>
+                <div class="hub-name">Instagram Creators</div>
+                <div class="hub-description">
+                    Repurpose Instagram posts to AuraBoost. Zero extra work, passive income from existing followers.
+                </div>
+                <div class="hub-tag">$900-$2.7K/yr</div>
+                <a href="auraboost_instagram_creator_hub.html" class="hub-btn">View Hub</a>
+            </div>
+
+            <!-- TikTok Hub -->
+            <div class="hub-card">
+                <div class="hub-icon">🎵</div>
+                <div class="hub-name">TikTok Creators</div>
+                <div class="hub-description">
+                    Post viral TikToks to AuraBoost. Fastest path to unlock Affiliate Badge and 3X earnings.
+                </div>
+                <div class="hub-tag">$2.7K-$378K/yr</div>
+                <a href="auraboost_tiktok_creator_hub.html" class="hub-btn">View Hub</a>
+            </div>
+
+            <!-- Twitter/X Hub -->
+            <div class="hub-card">
+                <div class="hub-icon">𝕏</div>
+                <div class="hub-name">Twitter/X Creators</div>
+                <div class="hub-description">
+                    Monetize viral tweets in real-time. Post to AuraBoost and earn instantly from your reach.
+                </div>
+                <div class="hub-tag">$1.8K-$324K/yr</div>
+                <a href="auraboost_twitter_creator_hub.html" class="hub-btn">View Hub</a>
+            </div>
+
+            <!-- Gaming Hub -->
+            <div class="hub-card">
+                <div class="hub-icon">🎮</div>
+                <div class="hub-name">Gaming Creators</div>
+                <div class="hub-description">
+                    Connect Xbox, PlayStation, Steam. Auto-sync gaming stats for aura boosters on every post.
+                </div>
+                <div class="hub-tag">+50-500 aura</div>
+                <a href="auraboost_gaming_creator_hub.html" class="hub-btn">View Hub</a>
+            </div>
+
+            <!-- YouTube Hub -->
+            <div class="hub-card">
+                <div class="hub-icon">📺</div>
+                <div class="hub-name">YouTube Creators</div>
+                <div class="hub-description">
+                    Post Shorts to AuraBoost. Leverage 500K+ subscribers for massive passive income.
+                </div>
+                <div class="hub-tag">$3.6K-$54K/yr</div>
+                <a href="auraboost_youtube_creator_hub.html" class="hub-btn">View Hub</a>
+            </div>
+
+            <!-- Streamer Hub -->
+            <div class="hub-card">
+                <div class="badge-new">NEW</div>
+                <div class="hub-icon">📹</div>
+                <div class="hub-name">Streamers (Twitch/Discord)</div>
+                <div class="hub-description">
+                    Connect Twitch & Discord. Auto-sync community stats. Earn from every stream clip.
+                </div>
+                <div class="hub-tag">$2.8K-$54K/yr</div>
+                <a href="auraboost_streamer_creator_hub.html" class="hub-btn">View Hub</a>
+            </div>
+
+            <!-- Gaming Aura Boosters -->
+            <div class="hub-card">
+                <div class="hub-icon">⚡</div>
+                <div class="hub-name">Gaming Aura Boosters</div>
+                <div class="hub-description">
+                    Connect your gaming accounts. Unlock automatic +50 to +500 aura per post based on rank.
+                </div>
+                <div class="hub-tag">Platform Sync</div>
+                <a href="auraboost_gaming_aura_boosters.html" class="hub-btn">Configure</a>
+            </div>
+        </div>
+
+        <!-- FEATURED SECTION -->
+        <div class="featured-section">
+            <div class="featured-title">🚀 Why Creators Choose AuraBoost</div>
+            <div class="featured-text">
+                Turn your existing content into passive income. No extra work. Connect your platforms once. Earn automatically from every post.
+            </div>
+            <div class="featured-stats">
+                <div class="stat-item">
+                    <div class="stat-value">30%</div>
+                    <div class="stat-label">Commission per subscription</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">3X</div>
+                    <div class="stat-label">Affiliate Badge multiplier</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">8</div>
+                    <div class="stat-label">Creator platforms</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">∞</div>
+                    <div class="stat-label">Passive income potential</div>
+                </div>
+            </div>
+            <a href="auraboost_mobile_homepage.html" class="header-cta">Launch App</a>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            <div class="footer-grid">
+                <div>
+                    <div class="footer-section-title">📚 Resources</div>
+                    <div class="footer-link" onclick="alert('Feature coming soon')">How It Works</div>
+                    <div class="footer-link" onclick="alert('Feature coming soon')">Creator Guide</div>
+                    <div class="footer-link" onclick="alert('Feature coming soon')">FAQ</div>
+                    <div class="footer-link" onclick="alert('Feature coming soon')">Blog</div>
+                </div>
+
+                <div>
+                    <div class="footer-section-title">👥 Community</div>
+                    <div class="footer-link" onclick="alert('Feature coming soon')">Discord Server</div>
+                    <div class="footer-link" onclick="alert('Feature coming soon')">Twitter Community</div>
+                    <div class="footer-link" onclick="alert('Feature coming soon')">Creator Showcase</div>
+                    <div class="footer-link" onclick="alert('Feature coming soon')">Testimonials</div>
+                </div>
+
+                <div>
+                    <div class="footer-section-title">⚖️ Legal</div>
+                    <div class="footer-link" onclick="window.open('auraboost_legal_terms.html')">Legal & Terms</div>
+                    <div class="footer-link" onclick="window.open('auraboost_age_verification.html')">Age Verification</div>
+                    <div class="footer-link" onclick="alert('Email: support@auraboost.io')">Contact Support</div>
+                    <div class="footer-link" onclick="alert('Email: abuse@auraboost.io')">Report Abuse</div>
+                </div>
+
+                <div>
+                    <div class="footer-section-title">💳 Payments</div>
+                    <div class="footer-link" onclick="window.open('auraboost_earnings_payouts.html')">Earnings & Payouts</div>
+                    <div class="footer-link" onclick="alert('We use Stripe for secure payments')">Stripe Integration</div>
+                    <div class="footer-link" onclick="alert('30% commission per subscription')">Commission Details</div>
+                    <div class="footer-link" onclick="alert('Weekly payouts via Stripe')">Payout Schedule</div>
+                </div>
+
+                <div>
+                    <div class="footer-section-title">🔐 Account</div>
+                    <div class="footer-link" onclick="alert('Feature coming soon')">Settings</div>
+                    <div class="footer-link" onclick="alert('Feature coming soon')">Earnings Dashboard</div>
+                    <div class="footer-link" onclick="alert('Feature coming soon')">Payment Methods</div>
+                    <div class="footer-link" onclick="alert('Feature coming soon')">Download Data</div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div>AuraBoost © 2026 | 18+ Only Platform | COPPA/GDPR/CCPA Compliant</div>
+                <div style="margin-top: 12px;">
+                    Made for creators. By creators. Earn passively from your existing audience.
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

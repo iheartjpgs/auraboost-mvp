@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraBoost - Gaming Aura Boosters</title>
+    <meta name="theme-color" content="#0F172A">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #0F172A;
+            color: #F1F5F9;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
+            padding: 24px 20px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-small {
+            width: 32px;
+            height: 32px;
+        }
+
+        .header-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #F1F5F9;
+        }
+
+        .disconnect-btn {
+            background-color: rgba(241, 245, 249, 0.2);
+            color: #F1F5F9;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-subtitle {
+            color: #CBD5E1;
+            margin-bottom: 24px;
+            font-size: 14px;
+        }
+
+        /* CONNECTION STATUS */
+        .connection-status {
+            background-color: #1E293B;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .status-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 16px;
+            color: #F1F5F9;
+        }
+
+        .connection-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+
+        .connection-card {
+            background-color: #0F172A;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .connection-card:hover {
+            border-color: rgba(102, 126, 234, 0.4);
+            background-color: rgba(102, 126, 234, 0.05);
+        }
+
+        .connection-card.connected {
+            border-color: rgba(16, 185, 129, 0.3);
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%);
+        }
+
+        .platform-icon {
+            font-size: 32px;
+        }
+
+        .connection-info {
+            flex: 1;
+        }
+
+        .connection-name {
+            font-size: 12px;
+            font-weight: bold;
+            color: #F1F5F9;
+            margin-bottom: 4px;
+        }
+
+        .connection-status-text {
+            font-size: 11px;
+            color: #CBD5E1;
+        }
+
+        .connected-badge {
+            display: inline-block;
+            background-color: #10B981;
+            color: #0F172A;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 700;
+            margin-left: 8px;
+        }
+
+        .connect-btn {
+            background-color: rgba(102, 126, 234, 0.2);
+            color: #667EEA;
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .connect-btn:hover {
+            background-color: rgba(102, 126, 234, 0.3);
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+
+        /* STATS SECTION */
+        .section {
+            background-color: #1E293B;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 16px;
+            color: #F1F5F9;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background-color: #0F172A;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #CBD5E1;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667EEA;
+            margin-bottom: 4px;
+        }
+
+        .stat-description {
+            font-size: 10px;
+            color: #CBD5E1;
+        }
+
+        /* AURA BOOSTERS */
+        .boosters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .booster-card {
+            background: linear-gradient(135deg, #0F172A 0%, rgba(102, 126, 234, 0.05) 100%);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+            transition: all 0.3s;
+        }
+
+        .booster-card.active {
+            border-color: rgba(102, 126, 234, 0.5);
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(102, 126, 234, 0.05) 100%);
+        }
+
+        .booster-card:hover {
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+
+        .booster-icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .booster-name {
+            font-size: 12px;
+            font-weight: bold;
+            color: #F1F5F9;
+            margin-bottom: 6px;
+        }
+
+        .booster-badge {
+            display: inline-block;
+            background-color: rgba(102, 126, 234, 0.2);
+            color: #667EEA;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .booster-value {
+            font-size: 14px;
+            font-weight: bold;
+            color: #667EEA;
+            margin-bottom: 4px;
+        }
+
+        .booster-description {
+            font-size: 10px;
+            color: #CBD5E1;
+            line-height: 1.5;
+        }
+
+        .booster-status {
+            font-size: 10px;
+            margin-top: 8px;
+            padding: 6px;
+            border-radius: 4px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .booster-status.unlocked {
+            background-color: rgba(16, 185, 129, 0.2);
+            color: #10B981;
+        }
+
+        .booster-status.locked {
+            background-color: rgba(139, 92, 246, 0.2);
+            color: #A78BFA;
+        }
+
+        /* TOTAL AURA BOOST */
+        .total-boost {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .total-boost-label {
+            font-size: 12px;
+            color: #CBD5E1;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .total-boost-value {
+            font-size: 48px;
+            font-weight: bold;
+            color: #667EEA;
+            margin-bottom: 8px;
+        }
+
+        .total-boost-description {
+            font-size: 12px;
+            color: #CBD5E1;
+        }
+
+        /* INFO BOX */
+        .info-box {
+            background-color: rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 16px;
+            font-size: 12px;
+            line-height: 1.6;
+            color: #CBD5E1;
+        }
+
+        .info-box strong {
+            color: #667EEA;
+        }
+
+        @media (max-width: 768px) {
+            .connection-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .boosters-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="header-left">
+                <div class="logo-small">🎮</div>
+                <div>
+                    <div class="header-title">Gaming Aura Boosters</div>
+                </div>
+            </div>
+            <button class="disconnect-btn" onclick="window.history.back()">← Back</button>
+        </div>
+
+        <div class="page-title">Connect Your Gaming Accounts</div>
+        <p class="page-subtitle">Link your gaming profiles to unlock aura boosters. Higher rank = more aura per post!</p>
+
+        <!-- CONNECTION STATUS -->
+        <div class="connection-status">
+            <div class="status-title">🎮 Gaming Platform Connections</div>
+            
+            <div class="connection-grid">
+                <!-- XBOX -->
+                <div class="connection-card connected" id="xbox-card">
+                    <div class="platform-icon">🎮</div>
+                    <div class="connection-info">
+                        <div class="connection-name">Xbox Live</div>
+                        <div class="connection-status-text">
+                            Connected as <strong>ProGamer92</strong>
+                            <span class="connected-badge">✓</span>
+                        </div>
+                    </div>
+                    <button class="connect-btn" onclick="disconnectPlatform('xbox')">Disconnect</button>
+                </div>
+
+                <!-- PLAYSTATION -->
+                <div class="connection-card" id="psn-card">
+                    <div class="platform-icon">🎮</div>
+                    <div class="connection-info">
+                        <div class="connection-name">PlayStation Network</div>
+                        <div class="connection-status-text">Not connected</div>
+                    </div>
+                    <button class="connect-btn" onclick="connectPlatform('psn')">Connect</button>
+                </div>
+
+                <!-- STEAM -->
+                <div class="connection-card" id="steam-card">
+                    <div class="platform-icon">🎮</div>
+                    <div class="connection-info">
+                        <div class="connection-name">Steam</div>
+                        <div class="connection-status-text">Not connected</div>
+                    </div>
+                    <button class="connect-btn" onclick="connectPlatform('steam')">Connect</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- XBOX STATS (Connected) -->
+        <div class="section" id="xbox-stats" style="display: block;">
+            <div class="section-title">📊 Xbox Live Stats - ProGamer92</div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Current Rank</div>
+                    <div class="stat-value">Diamond II</div>
+                    <div class="stat-description">Top 5% of players</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Total Wins</div>
+                    <div class="stat-value">1,247</div>
+                    <div class="stat-description">Across all games</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">K/D Ratio</div>
+                    <div class="stat-value">2.18</div>
+                    <div class="stat-description">Current season</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Hours Played</div>
+                    <div class="stat-value">1,842</div>
+                    <div class="stat-description">All time</div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                Last updated: Today at 2:34 PM • Auto-syncs every 6 hours
+            </div>
+        </div>
+
+        <!-- AURA BOOSTERS -->
+        <div class="section">
+            <div class="section-title">⚡ Active Aura Boosters</div>
+
+            <div class="boosters-grid">
+                <!-- Diamond Rank Booster -->
+                <div class="booster-card active">
+                    <div class="booster-icon">💎</div>
+                    <div class="booster-name">Diamond Rank</div>
+                    <div class="booster-badge">XBOX LIVE</div>
+                    <div class="booster-value">+200 Aura</div>
+                    <div class="booster-description">Bonus per gaming post for reaching Diamond II rank</div>
+                    <div class="booster-status unlocked">✓ Unlocked</div>
+                </div>
+
+                <!-- Pro Gamer Badge -->
+                <div class="booster-card active">
+                    <div class="booster-icon">🏆</div>
+                    <div class="booster-name">Pro Gamer</div>
+                    <div class="booster-badge">SPECIAL</div>
+                    <div class="booster-value">+150 Aura</div>
+                    <div class="booster-description">Unlocked for 1,000+ wins. Shows your skill</div>
+                    <div class="booster-status unlocked">✓ Unlocked</div>
+                </div>
+
+                <!-- Elite Player Badge -->
+                <div class="booster-card active">
+                    <div class="booster-icon">⭐</div>
+                    <div class="booster-name">Elite Player</div>
+                    <div class="booster-badge">SPECIAL</div>
+                    <div class="booster-value">+100 Aura</div>
+                    <div class="booster-description">K/D ratio above 2.0. Proves combat prowess</div>
+                    <div class="booster-status unlocked">✓ Unlocked</div>
+                </div>
+
+                <!-- Veteran Gamer Badge -->
+                <div class="booster-card active">
+                    <div class="booster-icon">🎖️</div>
+                    <div class="booster-name">Veteran Gamer</div>
+                    <div class="booster-badge">SPECIAL</div>
+                    <div class="booster-value">+100 Aura</div>
+                    <div class="booster-description">1,000+ hours played. You're serious</div>
+                    <div class="booster-status unlocked">✓ Unlocked</div>
+                </div>
+
+                <!-- Legendary Streak (Locked) -->
+                <div class="booster-card">
+                    <div class="booster-icon">🔥</div>
+                    <div class="booster-name">Legendary Streak</div>
+                    <div class="booster-badge">LOCKED</div>
+                    <div class="booster-value">+150 Aura</div>
+                    <div class="booster-description">Reach Master rank. Unlock for maximum prestige</div>
+                    <div class="booster-status locked">🔒 Master Rank Required</div>
+                </div>
+
+                <!-- Speedrunner Elite (Locked) -->
+                <div class="booster-card">
+                    <div class="booster-icon">⚡</div>
+                    <div class="booster-name">Speedrunner Elite</div>
+                    <div class="booster-badge">LOCKED</div>
+                    <div class="booster-value">+200 Aura</div>
+                    <div class="booster-description">Unlock speedrunning achievements. For speed runners only</div>
+                    <div class="booster-status locked">🔒 Achievements Required</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TOTAL AURA BOOST -->
+        <div class="total-boost">
+            <div class="total-boost-label">Total Aura Boost Per Post</div>
+            <div class="total-boost-value">+550</div>
+            <div class="total-boost-description">
+                Base 0 + Diamond Rank (+200) + Pro Gamer (+150) + Elite Player (+100) + Veteran Gamer (+100)
+            </div>
+            <div class="info-box" style="margin-top: 16px;">
+                💡 Each gaming post gets +550 bonus aura automatically. The better your stats, the higher your posts rank. Connect more platforms or rank up to unlock more boosters!
+            </div>
+        </div>
+
+        <!-- UNLOCK PROGRESSION -->
+        <div class="section">
+            <div class="section-title">🎯 Unlock Path for More Boosters</div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+                <!-- Master Rank Path -->
+                <div style="background-color: #0F172A; border: 1px solid rgba(102, 126, 234, 0.2); border-radius: 12px; padding: 16px;">
+                    <div style="font-size: 12px; font-weight: bold; color: #F1F5F9; margin-bottom: 12px;">Master Rank Challenge</div>
+                    <div style="font-size: 11px; color: #CBD5E1; line-height: 1.6; margin-bottom: 12px;">
+                        <strong>Current:</strong> Diamond II<br>
+                        <strong>Target:</strong> Master<br>
+                        <strong>Reward:</strong> +150 aura (Legendary Streak)
+                    </div>
+                    <div style="width: 100%; background-color: rgba(102, 126, 234, 0.1); border-radius: 4px; height: 6px; overflow: hidden;">
+                        <div style="width: 65%; height: 100%; background-color: #667EEA;"></div>
+                    </div>
+                    <div style="font-size: 10px; color: #CBD5E1; margin-top: 6px;">65% Progress</div>
+                </div>
+
+                <!-- Achievements Path -->
+                <div style="background-color: #0F172A; border: 1px solid rgba(102, 126, 234, 0.2); border-radius: 12px; padding: 16px;">
+                    <div style="font-size: 12px; font-weight: bold; color: #F1F5F9; margin-bottom: 12px;">Speedrunner Challenge</div>
+                    <div style="font-size: 11px; color: #CBD5E1; line-height: 1.6; margin-bottom: 12px;">
+                        <strong>Current:</strong> 3 achievements<br>
+                        <strong>Target:</strong> 10 achievements<br>
+                        <strong>Reward:</strong> +200 aura (Speedrunner Elite)
+                    </div>
+                    <div style="width: 100%; background-color: rgba(102, 126, 234, 0.1); border-radius: 4px; height: 6px; overflow: hidden;">
+                        <div style="width: 30%; height: 100%; background-color: #667EEA;"></div>
+                    </div>
+                    <div style="font-size: 10px; color: #CBD5E1; margin-top: 6px;">30% Progress</div>
+                </div>
+
+                <!-- Connect More Platforms -->
+                <div style="background-color: #0F172A; border: 1px solid rgba(102, 126, 234, 0.2); border-radius: 12px; padding: 16px;">
+                    <div style="font-size: 12px; font-weight: bold; color: #F1F5F9; margin-bottom: 12px;">Multi-Platform Bonus</div>
+                    <div style="font-size: 11px; color: #CBD5E1; line-height: 1.6; margin-bottom: 12px;">
+                        <strong>Connected:</strong> 1 of 3<br>
+                        <strong>Connect:</strong> PSN + Steam<br>
+                        <strong>Reward:</strong> +50 aura each
+                    </div>
+                    <div style="width: 100%; background-color: rgba(102, 126, 234, 0.1); border-radius: 4px; height: 6px; overflow: hidden;">
+                        <div style="width: 33%; height: 100%; background-color: #667EEA;"></div>
+                    </div>
+                    <div style="font-size: 10px; color: #CBD5E1; margin-top: 6px;">33% Progress</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function connectPlatform(platform) {
+            const platformNames = {
+                psn: 'PlayStation Network',
+                steam: 'Steam'
+            };
+            
+            alert(`🔗 Connecting to ${platformNames[platform]}...\n\nYou will be redirected to authenticate your account.\n\nOnce connected, your stats will automatically sync every 6 hours.`);
+            
+            // Mock: simulate connection
+            setTimeout(() => {
+                const cardId = platform === 'psn' ? 'psn-card' : 'steam-card';
+                document.getElementById(cardId).classList.add('connected');
+                alert(`✅ Successfully connected to ${platformNames[platform]}!`);
+            }, 1500);
+        }
+
+        function disconnectPlatform(platform) {
+            const platformNames = {
+                xbox: 'Xbox Live',
+                psn: 'PlayStation Network',
+                steam: 'Steam'
+            };
+            
+            if (confirm(`Disconnect from ${platformNames[platform]}?`)) {
+                alert(`Disconnected from ${platformNames[platform]}`);
+                const cardId = platform === 'xbox' ? 'xbox-card' : (platform === 'psn' ? 'psn-card' : 'steam-card');
+                document.getElementById(cardId).classList.remove('connected');
+            }
+        }
+
+        function goBack() {
+            alert('Going back...');
+        }
+    </script>
+</body>
+</html>

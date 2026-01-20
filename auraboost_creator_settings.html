@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraBoost - Creator Settings</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #0F172A;
+            color: #F1F5F9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* HEADER */
+        .header {
+            padding: 24px 20px;
+            background: linear-gradient(135deg, #F59E0B 0%, #EC4899 100%);
+            border-radius: 12px;
+            margin-bottom: 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #F1F5F9;
+        }
+
+        .header-btn {
+            background-color: rgba(241, 245, 249, 0.2);
+            color: #F1F5F9;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .header-btn:hover {
+            background-color: rgba(241, 245, 249, 0.3);
+        }
+
+        /* TABS */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 32px;
+            border-bottom: 1px solid rgba(245, 158, 11, 0.2);
+            overflow-x: auto;
+        }
+
+        .tab {
+            padding: 12px 20px;
+            background-color: transparent;
+            border: none;
+            color: #CBD5E1;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .tab:hover {
+            color: #F59E0B;
+        }
+
+        .tab.active {
+            color: #F59E0B;
+            border-bottom-color: #F59E0B;
+        }
+
+        /* CONTENT */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* GRID */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* CARD */
+        .card {
+            background-color: #1E293B;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #F1F5F9;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-icon {
+            font-size: 20px;
+        }
+
+        /* PROFILE SECTION */
+        .profile-section {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: 24px;
+            align-items: start;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #F59E0B, #EC4899);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            position: relative;
+        }
+
+        .avatar-upload {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 40px;
+            height: 40px;
+            background-color: #0F172A;
+            border: 2px solid #F59E0B;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 16px;
+        }
+
+        .avatar-upload:hover {
+            background-color: #1E293B;
+            transform: scale(1.1);
+        }
+
+        .avatar-upload input {
+            display: none;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            color: #CBD5E1;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px 12px;
+            background-color: #0F172A;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 6px;
+            color: #F1F5F9;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #F59E0B;
+            box-shadow: 0 0 8px rgba(245, 158, 11, 0.2);
+        }
+
+        .form-input:disabled {
+            background-color: rgba(0, 0, 0, 0.2);
+            color: #64748B;
+            cursor: not-allowed;
+        }
+
+        .form-hint {
+            font-size: 11px;
+            color: #7DD3C0;
+            margin-top: 6px;
+        }
+
+        /* STATS */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .stat-box {
+            background-color: #0F172A;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #F59E0B;
+            margin-bottom: 6px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #CBD5E1;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        /* EARNINGS */
+        .earnings-header {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .earning-stat {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(245, 158, 11, 0.05) 100%);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .earning-label {
+            font-size: 12px;
+            color: #CBD5E1;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .earning-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #10B981;
+            margin-bottom: 4px;
+        }
+
+        .earning-change {
+            font-size: 11px;
+            color: #7DD3C0;
+        }
+
+        /* REFERRAL */
+        .referral-box {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(245, 158, 11, 0.05) 100%);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .referral-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #F59E0B;
+            margin-bottom: 12px;
+        }
+
+        .referral-desc {
+            font-size: 12px;
+            color: #CBD5E1;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .referral-link-section {
+            background-color: #0F172A;
+            border-radius: 8px;
+            padding: 12px;
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .referral-link-input {
+            flex: 1;
+            background-color: transparent;
+            border: none;
+            color: #F59E0B;
+            font-size: 12px;
+            font-family: monospace;
+            padding: 0;
+        }
+
+        .referral-link-input::selection {
+            background-color: rgba(245, 158, 11, 0.3);
+        }
+
+        .copy-btn {
+            background-color: rgba(245, 158, 11, 0.2);
+            color: #F59E0B;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .copy-btn:hover {
+            background-color: rgba(245, 158, 11, 0.3);
+        }
+
+        .copy-btn.copied {
+            background-color: rgba(16, 185, 129, 0.2);
+            color: #10B981;
+        }
+
+        /* SOCIAL CONNECTIONS */
+        .social-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            background-color: #0F172A;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+
+        .social-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .social-icon {
+            font-size: 24px;
+        }
+
+        .social-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #F1F5F9;
+        }
+
+        .social-status {
+            font-size: 11px;
+            color: #10B981;
+        }
+
+        .social-status.disconnected {
+            color: #EF4444;
+        }
+
+        .connect-btn {
+            background-color: rgba(245, 158, 11, 0.2);
+            color: #F59E0B;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .connect-btn:hover {
+            background-color: rgba(245, 158, 11, 0.3);
+        }
+
+        .disconnect-btn {
+            background-color: rgba(239, 68, 68, 0.2);
+            color: #EF4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .disconnect-btn:hover {
+            background-color: rgba(239, 68, 68, 0.3);
+        }
+
+        /* PRIVACY SETTINGS */
+        .toggle-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            background-color: #0F172A;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+
+        .toggle-label {
+            flex: 1;
+        }
+
+        .toggle-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #F1F5F9;
+            margin-bottom: 4px;
+        }
+
+        .toggle-desc {
+            font-size: 11px;
+            color: #CBD5E1;
+        }
+
+        .toggle-switch {
+            width: 50px;
+            height: 28px;
+            background-color: rgba(245, 158, 11, 0.2);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 14px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .toggle-switch.enabled {
+            background-color: rgba(16, 185, 129, 0.2);
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .toggle-switch::before {
+            content: '';
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            background-color: #F59E0B;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: all 0.2s;
+        }
+
+        .toggle-switch.enabled::before {
+            left: 24px;
+            background-color: #10B981;
+        }
+
+        /* BUTTONS */
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #F59E0B 0%, #EC4899 100%);
+            color: white;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: rgba(245, 158, 11, 0.2);
+            color: #F59E0B;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(245, 158, 11, 0.3);
+        }
+
+        .danger-zone {
+            background-color: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 24px;
+        }
+
+        .danger-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #EF4444;
+            margin-bottom: 12px;
+        }
+
+        .danger-desc {
+            font-size: 12px;
+            color: #CBD5E1;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .btn-danger {
+            background-color: rgba(239, 68, 68, 0.2);
+            color: #EF4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            padding: 10px 16px;
+            font-size: 12px;
+        }
+
+        .btn-danger:hover {
+            background-color: rgba(239, 68, 68, 0.3);
+        }
+
+        /* MODALS */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: #1E293B;
+            border-radius: 12px;
+            padding: 24px;
+            max-width: 400px;
+            width: 90%;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #F1F5F9;
+            margin-bottom: 12px;
+        }
+
+        .modal-desc {
+            font-size: 12px;
+            color: #CBD5E1;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .modal-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .success-message {
+            background-color: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 16px;
+            font-size: 12px;
+            color: #10B981;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-section {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+
+            .earnings-header {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="header-title">⚙️ Creator Settings</div>
+            <button class="header-btn" onclick="window.location.href='/auraboost-mvp/auraboost_mobile_homepage.html'">← Back to Dashboard</button>
+        </div>
+
+        <!-- TABS -->
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('profile')">👤 Profile</button>
+            <button class="tab" onclick="switchTab('earnings')">💰 Earnings</button>
+            <button class="tab" onclick="switchTab('referrals')">🔗 Referrals</button>
+            <button class="tab" onclick="switchTab('social')">📱 Social</button>
+            <button class="tab" onclick="switchTab('privacy')">🔒 Privacy</button>
+        </div>
+
+        <!-- PROFILE TAB -->
+        <div class="tab-content active" id="profile">
+            <div class="card">
+                <div class="card-title">
+                    <span class="card-icon">👤</span>
+                    Creator Profile
+                </div>
+                <div class="profile-section">
+                    <div class="profile-avatar">
+                        💄
+                        <div class="avatar-upload" onclick="document.getElementById('avatarInput').click()">
+                            📷
+                            <input type="file" id="avatarInput" accept="image/*" onchange="uploadAvatar(this)">
+                        </div>
+                    </div>
+                    <div class="profile-info">
+                        <div class="form-group">
+                            <label class="form-label">Creator Name</label>
+                            <input type="text" class="form-input" value="Jessica M." readonly>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Username</label>
+                            <input type="text" class="form-input" value="@jessicam" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-input" value="jessica@email.com" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Category</label>
+                            <input type="text" class="form-input" value="Beauty Creator" readonly>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 24px;">
+                <div class="card-title">
+                    <span class="card-icon">✏️</span>
+                    Bio & About
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Bio (150 characters max)</label>
+                    <textarea class="form-input" style="resize: vertical; min-height: 80px; font-family: inherit;" placeholder="Tell creators about you...">Beauty enthusiast • Makeup artist • Available for collaborations 💄✨</textarea>
+                    <div class="form-hint">63 / 150 characters</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Website / Link</label>
+                    <input type="url" class="form-input" placeholder="https://yourwebsite.com">
+                </div>
+                <button class="btn btn-primary">💾 Save Changes</button>
+            </div>
+
+            <div class="card" style="margin-top: 24px;">
+                <div class="card-title">
+                    <span class="card-icon">🏷️</span>
+                    Creator Tags
+                </div>
+                <p style="font-size: 12px; color: #CBD5E1; margin-bottom: 16px;">Add tags to help others discover you</p>
+                <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px;">
+                    <span style="background-color: rgba(245, 158, 11, 0.2); color: #F59E0B; padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 600;">Makeup ✕</span>
+                    <span style="background-color: rgba(245, 158, 11, 0.2); color: #F59E0B; padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 600;">Beauty ✕</span>
+                    <span style="background-color: rgba(245, 158, 11, 0.2); color: #F59E0B; padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 600;">Fashion ✕</span>
+                </div>
+                <input type="text" class="form-input" placeholder="Add new tag..." style="margin-bottom: 16px;">
+                <button class="btn btn-secondary">+ Add Tag</button>
+            </div>
+        </div>
+
+        <!-- EARNINGS TAB -->
+        <div class="tab-content" id="earnings">
+            <div class="earnings-header">
+                <div class="earning-stat">
+                    <div class="earning-label">This Month</div>
+                    <div class="earning-value">$1,247</div>
+                    <div class="earning-change">↑ 28% from last month</div>
+                </div>
+                <div class="earning-stat">
+                    <div class="earning-label">Total Earned</div>
+                    <div class="earning-value">$3,847</div>
+                    <div class="earning-change">Since joining (3 months ago)</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    <span class="card-icon">📊</span>
+                    Your Stats
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div class="stat-value">1,247</div>
+                        <div class="stat-label">Total Followers</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">125</div>
+                        <div class="stat-label">Referrals This Month</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">$9.99</div>
+                        <div class="stat-label">Avg Subscription</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">10%</div>
+                        <div class="stat-label">Conversion Rate</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 24px;">
+                <div class="card-title">
+                    <span class="card-icon">💵</span>
+                    Earnings Breakdown
+                </div>
+                <div style="font-size: 12px; color: #CBD5E1;">
+                    <div style="display: flex; justify-content: space-between; padding: 12px; background-color: #0F172A; border-radius: 6px; margin-bottom: 8px;">
+                        <span>Referral Commission (30%)</span>
+                        <span style="color: #10B981; font-weight: 700;">$1,247 / $1,247</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 12px; background-color: #0F172A; border-radius: 6px; margin-bottom: 8px;">
+                        <span>Bonus (Streaks + Rank)</span>
+                        <span style="color: #10B981; font-weight: 700;">$0 (unlocked at 30-day)</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 12px; background-color: #0F172A; border-radius: 6px; margin-bottom: 8px;">
+                        <span>Platform Fees</span>
+                        <span style="color: #EF4444; font-weight: 700;">-$0 (Waived first 3 months)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 24px;">
+                <div class="card-title">
+                    <span class="card-icon">🏦</span>
+                    Payout Method
+                </div>
+                <div style="margin-bottom: 16px;">
+                    <label class="form-label">Current Method</label>
+                    <div style="padding: 12px; background-color: #0F172A; border-radius: 6px; font-size: 12px; margin-bottom: 12px;">
+                        💳 PayPal • ****@email.com
+                    </div>
+                </div>
+                <button class="btn btn-secondary" style="width: 100%; margin-bottom: 8px;">Change Payout Method</button>
+                <div style="font-size: 11px; color: #7DD3C0; text-align: center;">Minimum payout: $10 • Processed weekly on Fridays</div>
+            </div>
+        </div>
+
+        <!-- REFERRALS TAB -->
+        <div class="tab-content" id="referrals">
+            <div class="card">
+                <div class="card-title">
+                    <span class="card-icon">🔗</span>
+                    Your Referral Link
+                </div>
+                <div class="referral-box">
+                    <div class="referral-title">Share & Earn 30% Commission</div>
+                    <div class="referral-desc">
+                        Every creator who joins AuraBoost through your link becomes your referral. You earn 30% commission on all their first-year revenue. No limits!
+                    </div>
+                    <div class="referral-link-section">
+                        <input type="text" class="referral-link-input" id="referralLink" value="auraboost.xyz/ref/jessicam" readonly>
+                        <button class="copy-btn" onclick="copyReferralLink()">📋 Copy</button>
+                    </div>
+                    <div style="font-size: 11px; color: #7DD3C0;">
+                        ✅ Link copied to clipboard!
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 24px;">
+                <div class="card-title">
+                    <span class="card-icon">👥</span>
+                    Your Referrals
+                </div>
+                <div style="display: grid; gap: 12px;">
+                    <div style="padding: 12px; background-color: #0F172A; border-radius: 6px; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <div style="font-size: 12px; font-weight: 600; color: #F1F5F9;">Sarah K. (Beauty Creator)</div>
+                            <div style="font-size: 11px; color: #CBD5E1;">Joined 2 months ago</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-size: 13px; font-weight: 700; color: #10B981;">$247</div>
+                            <div style="font-size: 10px; color: #7DD3C0;">Earned</div>
+                        </div>
+                    </div>
+                    <div style="padding: 12px; background-color: #0F172A; border-radius: 6px; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <div style="font-size: 12px; font-weight: 600; color: #F1F5F9;">Alex J. (Fitness Creator)</div>
+                            <div style="font-size: 11px; color: #CBD5E1;">Joined 1 month ago</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-size: 13px; font-weight: 700; color: #10B981;">$156</div>
+                            <div style="font-size: 10px; color: #7DD3C0;">Earned</div>
+                        </div>
+                    </div>
+                    <div style="padding: 12px; background-color: #0F172A; border-radius: 6px; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <div style="font-size: 12px; font-weight: 600; color: #F1F5F9;">Jordan M. (Gaming Creator)</div>
+                            <div style="font-size: 11px; color: #CBD5E1;">Joined 1 week ago</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-size: 13px; font-weight: 700; color: #10B981;">$45</div>
+                            <div style="font-size: 10px; color: #7DD3C0;">Earned</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top: 16px; padding: 12px; background-color: rgba(245, 158, 11, 0.1); border-radius: 6px; font-size: 12px; color: #F59E0B;">
+                    📈 <strong>3 Active Referrals</strong> • $448 Total Earned
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 24px;">
+                <div class="card-title">
+                    <span class="card-icon">📤</span>
+                    Share Your Link
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 16px;">
+                    <button class="btn btn-secondary">Share to Twitter</button>
+                    <button class="btn btn-secondary">Share to Instagram</button>
+                    <button class="btn btn-secondary">Share to TikTok</button>
+                    <button class="btn btn-secondary">Share to Discord</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SOCIAL TAB -->
+        <div class="tab-content" id="social">
+            <div class="card">
+                <div class="card-title">
+                    <span class="card-icon">📱</span>
+                    Connected Accounts
+                </div>
+                <p style="font-size: 12px; color: #CBD5E1; margin-bottom: 20px;">Connect your social media to auto-share content and track engagement</p>
+
+                <div class="social-item">
+                    <div class="social-info">
+                        <div class="social-icon">📸</div>
+                        <div>
+                            <div class="social-name">Instagram</div>
+                            <div class="social-status">Connected • @jessicam</div>
+                        </div>
+                    </div>
+                    <button class="connect-btn disconnect-btn" onclick="openDisconnectModal('Instagram')">Disconnect</button>
+                </div>
+
+                <div class="social-item">
+                    <div class="social-info">
+                        <div class="social-icon">𝕏</div>
+                        <div>
+                            <div class="social-name">Twitter/X</div>
+                            <div class="social-status">Connected • @jessicam</div>
+                        </div>
+                    </div>
+                    <button class="connect-btn disconnect-btn" onclick="openDisconnectModal('Twitter')">Disconnect</button>
+                </div>
+
+                <div class="social-item">
+                    <div class="social-info">
+                        <div class="social-icon">🎵</div>
+                        <div>
+                            <div class="social-name">TikTok</div>
+                            <div class="social-status disconnected">Not Connected</div>
+                        </div>
+                    </div>
+                    <button class="connect-btn" onclick="alert('Redirecting to TikTok login...')">Connect</button>
+                </div>
+
+                <div class="social-item">
+                    <div class="social-info">
+                        <div class="social-icon">👻</div>
+                        <div>
+                            <div class="social-name">Snapchat</div>
+                            <div class="social-status disconnected">Not Connected</div>
+                        </div>
+                    </div>
+                    <button class="connect-btn" onclick="alert('Redirecting to Snapchat login...')">Connect</button>
+                </div>
+
+                <div class="social-item">
+                    <div class="social-info">
+                        <div class="social-icon">🎮</div>
+                        <div>
+                            <div class="social-name">Twitch</div>
+                            <div class="social-status disconnected">Not Connected</div>
+                        </div>
+                    </div>
+                    <button class="connect-btn" onclick="alert('Redirecting to Twitch login...')">Connect</button>
+                </div>
+
+                <div class="social-item">
+                    <div class="social-info">
+                        <div class="social-icon">📺</div>
+                        <div>
+                            <div class="social-name">YouTube</div>
+                            <div class="social-status disconnected">Not Connected</div>
+                        </div>
+                    </div>
+                    <button class="connect-btn" onclick="alert('Redirecting to YouTube login...')">Connect</button>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 24px;">
+                <div class="card-title">
+                    <span class="card-icon">⚡</span>
+                    Auto-Share Settings
+                </div>
+                <p style="font-size: 12px; color: #CBD5E1; margin-bottom: 20px;">Auto-post to connected accounts when you share on AuraBoost</p>
+
+                <div class="toggle-item">
+                    <div class="toggle-label">
+                        <div class="toggle-name">Auto-share to Instagram</div>
+                        <div class="toggle-desc">Post to feed when you upload</div>
+                    </div>
+                    <div class="toggle-switch enabled" onclick="toggleSwitch(this)"></div>
+                </div>
+
+                <div class="toggle-item">
+                    <div class="toggle-label">
+                        <div class="toggle-name">Auto-share to Twitter/X</div>
+                        <div class="toggle-desc">Tweet your posts</div>
+                    </div>
+                    <div class="toggle-switch enabled" onclick="toggleSwitch(this)"></div>
+                </div>
+
+                <div class="toggle-item">
+                    <div class="toggle-label">
+                        <div class="toggle-name">Auto-share to TikTok</div>
+                        <div class="toggle-desc">Cross-post videos</div>
+                    </div>
+                    <div class="toggle-switch" onclick="toggleSwitch(this)"></div>
+                </div>
+
+                <button class="btn btn-primary" style="margin-top: 16px;">💾 Save Settings</button>
+            </div>
+        </div>
+
+        <!-- PRIVACY TAB -->
+        <div class="tab-content" id="privacy">
+            <div class="card">
+                <div class="card-title">
+                    <span class="card-icon">🔐</span>
+                    Privacy & Safety
+                </div>
+
+                <div class="toggle-item">
+                    <div class="toggle-label">
+                        <div class="toggle-name">Profile Visibility</div>
+                        <div class="toggle-desc">Allow others to discover your profile</div>
+                    </div>
+                    <div class="toggle-switch enabled" onclick="toggleSwitch(this)"></div>
+                </div>
+
+                <div class="toggle-item">
+                    <div class="toggle-label">
+                        <div class="toggle-name">Show Earnings Publicly</div>
+                        <div class="toggle-desc">Display earnings on your profile</div>
+                    </div>
+                    <div class="toggle-switch" onclick="toggleSwitch(this)"></div>
+                </div>
+
+                <div class="toggle-item">
+                    <div class="toggle-label">
+                        <div class="toggle-name">Allow Followers to Comment</div>
+                        <div class="toggle-desc">Enable comments on your posts</div>
+                    </div>
+                    <div class="toggle-switch enabled" onclick="toggleSwitch(this)"></div>
+                </div>
+
+                <div class="toggle-item">
+                    <div class="toggle-label">
+                        <div class="toggle-name">Two-Factor Authentication</div>
+                        <div class="toggle-desc">Extra security for your account</div>
+                    </div>
+                    <div class="toggle-switch" onclick="toggleSwitch(this)"></div>
+                </div>
+
+                <button class="btn btn-primary" style="margin-top: 16px;">💾 Save Settings</button>
+            </div>
+
+            <div class="card" style="margin-top: 24px;">
+                <div class="card-title">
+                    <span class="card-icon">🔑</span>
+                    Change Password
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Current Password</label>
+                    <input type="password" class="form-input" placeholder="••••••••">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">New Password</label>
+                    <input type="password" class="form-input" placeholder="••••••••">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Confirm New Password</label>
+                    <input type="password" class="form-input" placeholder="••••••••">
+                </div>
+                <button class="btn btn-primary">🔄 Update Password</button>
+            </div>
+
+            <div class="danger-zone">
+                <div class="danger-title">⚠️ Danger Zone</div>
+                <div class="danger-desc">
+                    These actions are permanent and cannot be undone. Please proceed with caution.
+                </div>
+                <button class="btn btn-danger" onclick="openDeleteModal()">🗑️ Delete Account</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- DISCONNECT MODAL -->
+    <div class="modal" id="disconnectModal">
+        <div class="modal-content">
+            <div class="modal-title">Disconnect <span id="socialName"></span>?</div>
+            <div class="modal-desc">
+                You won't be able to auto-share to this account anymore. You can reconnect at any time.
+            </div>
+            <div class="modal-buttons">
+                <button class="btn btn-secondary" onclick="closeModal('disconnectModal')">Cancel</button>
+                <button class="btn btn-danger" onclick="disconnectAccount()">Disconnect</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- DELETE MODAL -->
+    <div class="modal" id="deleteModal">
+        <div class="modal-content">
+            <div class="modal-title">Delete Account?</div>
+            <div class="modal-desc">
+                This will permanently delete your AuraBoost account, all your content, and earnings data. This action cannot be undone.
+            </div>
+            <div class="modal-buttons">
+                <button class="btn btn-secondary" onclick="closeModal('deleteModal')">Cancel</button>
+                <button class="btn btn-danger" onclick="deleteAccount()">Delete My Account</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function copyReferralLink() {
+            const link = document.getElementById('referralLink');
+            link.select();
+            document.execCommand('copy');
+            
+            const btn = event.target;
+            btn.textContent = '✅ Copied!';
+            btn.classList.add('copied');
+            
+            setTimeout(() => {
+                btn.textContent = '📋 Copy';
+                btn.classList.remove('copied');
+            }, 2000);
+        }
+
+        function uploadAvatar(input) {
+            if (input.files && input.files[0]) {
+                alert('✅ Avatar updated!\n\nIn production: File would be uploaded to server');
+            }
+        }
+
+        function toggleSwitch(element) {
+            element.classList.toggle('enabled');
+        }
+
+        function openDisconnectModal(socialName) {
+            document.getElementById('socialName').textContent = socialName;
+            document.getElementById('disconnectModal').classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        function disconnectAccount() {
+            alert('✅ Account disconnected successfully');
+            closeModal('disconnectModal');
+            location.reload();
+        }
+
+        function openDeleteModal() {
+            document.getElementById('deleteModal').classList.add('active');
+        }
+
+        function deleteAccount() {
+            alert('😢 Your account has been deleted.\n\nRedirecting to homepage...');
+            window.location.href = '/auraboost-mvp/auraboost_homepage_beauty.html';
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+</body>
+</html>

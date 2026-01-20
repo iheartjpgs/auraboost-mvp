@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraBoost - Legal & Terms</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #0F172A;
+            color: #F1F5F9;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
+            padding: 24px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #F1F5F9;
+        }
+
+        .back-btn {
+            background-color: rgba(241, 245, 249, 0.2);
+            color: #F1F5F9;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .main-content {
+            padding: 40px 20px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            color: #F1F5F9;
+        }
+
+        .page-subtitle {
+            font-size: 14px;
+            color: #CBD5E1;
+            margin-bottom: 32px;
+        }
+
+        /* TABS */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid rgba(102, 126, 234, 0.2);
+            padding-bottom: 16px;
+        }
+
+        .tab-btn {
+            padding: 10px 16px;
+            background-color: transparent;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 6px;
+            color: #CBD5E1;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tab-btn:hover {
+            border-color: rgba(102, 126, 234, 0.5);
+            color: #F1F5F9;
+        }
+
+        .tab-btn.active {
+            background-color: #667EEA;
+            color: #F1F5F9;
+            border-color: #667EEA;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* SECTION */
+        .legal-section {
+            background-color: #1E293B;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 16px;
+            color: #F1F5F9;
+        }
+
+        .section-subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            color: #CBD5E1;
+            margin-top: 16px;
+            margin-bottom: 8px;
+        }
+
+        .section-text {
+            font-size: 12px;
+            color: #CBD5E1;
+            line-height: 1.8;
+            margin-bottom: 12px;
+        }
+
+        .highlight-box {
+            background-color: rgba(102, 126, 234, 0.1);
+            border-left: 3px solid #667EEA;
+            border-radius: 6px;
+            padding: 16px;
+            margin: 16px 0;
+            font-size: 12px;
+            line-height: 1.6;
+            color: #CBD5E1;
+        }
+
+        .list-item {
+            margin-left: 16px;
+            margin-bottom: 8px;
+            font-size: 12px;
+            color: #CBD5E1;
+            line-height: 1.6;
+        }
+
+        .list-item::before {
+            content: "→ ";
+            color: #667EEA;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .footer {
+            background-color: #1E293B;
+            border-top: 1px solid rgba(102, 126, 234, 0.2);
+            padding: 24px 20px;
+            margin-top: 40px;
+            font-size: 11px;
+            color: #6B7280;
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+            .tabs {
+                flex-direction: column;
+            }
+
+            .page-title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-left">
+            <a href="/auraboost-mvp/auraboost_homepage.html" style="color: white; text-decoration: none; font-size: 20px; font-weight: bold; cursor: pointer; margin-right: 20px;"><img src="/auraboost-mvp/auraboost_logo.png" alt="AuraBoost" style="width: 40px; height: 40px; object-fit: contain;"> AuraBoost</a>
+            <h1 class="header-title">📋 Legal & Terms</h1>
+        </div>
+        <button class="back-btn" onclick="window.location.href='/auraboost-mvp/auraboost_homepage.html'">← Home</button>
+    </div>
+
+    <div class="container">
+        <div class="main-content">
+            <div class="page-title">AuraBoost Legal Documentation</div>
+            <p class="page-subtitle">Terms of Service, Privacy Policy, and Content Guidelines</p>
+
+            <!-- TABS -->
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('terms')">Terms of Service</button>
+                <button class="tab-btn" onclick="switchTab('privacy')">Privacy Policy</button>
+                <button class="tab-btn" onclick="switchTab('content')">Content Policy</button>
+                <button class="tab-btn" onclick="switchTab('payments')">Payments & Earnings</button>
+                <button class="tab-btn" onclick="switchTab('safety')">Safety & Compliance</button>
+            </div>
+
+            <!-- TERMS TAB -->
+            <div id="terms" class="tab-content active">
+                <div class="legal-section">
+                    <div class="section-title">📜 Terms of Service</div>
+                    <div class="section-text">Last Updated: January 2026</div>
+
+                    <div class="highlight-box">
+                        ⚖️ By using AuraBoost, you agree to these terms in their entirety. If you do not agree, you may not use the platform.
+                    </div>
+
+                    <div class="section-subtitle">1. Age Verification & Legal Requirements</div>
+                    <div class="list-item">You must be at least 18 years old to use AuraBoost</div>
+                    <div class="list-item">You may not create accounts for minors or on behalf of minors</div>
+                    <div class="list-item">All information provided must be accurate and truthful</div>
+                    <div class="list-item">Misrepresenting your age violates COPPA and platform policy</div>
+                    <div class="list-item">AuraBoost is not responsible for user-provided false information</div>
+
+                    <div class="section-subtitle">2. Account Ownership & Responsibility</div>
+                    <div class="list-item">You own your account and are responsible for all activity</div>
+                    <div class="list-item">You agree to protect your password and not share credentials</div>
+                    <div class="list-item">AuraBoost is not liable for unauthorized account access</div>
+                    <div class="list-item">You agree to notify us of suspicious activity immediately</div>
+
+                    <div class="section-subtitle">3. Content Guidelines</div>
+                    <div class="list-item">All content must comply with local, state, and federal laws</div>
+                    <div class="list-item">You retain ownership of your content; you grant AuraBoost a non-exclusive license</div>
+                    <div class="list-item">You warrant you own or have rights to all content posted</div>
+                    <div class="list-item">Prohibited: illegal content, minors, non-consensual intimate content, spam</div>
+
+                    <div class="section-subtitle">4. Intellectual Property</div>
+                    <div class="list-item">AuraBoost owns all platform code, design, and trademarks</div>
+                    <div class="list-item">You may not reproduce, modify, or distribute AuraBoost without permission</div>
+                    <div class="list-item">Respect all third-party intellectual property rights</div>
+
+                    <div class="section-subtitle">5. Revenue Sharing Model</div>
+                    <div class="list-item">AuraBoost takes 70% commission; creators receive 30% per subscription</div>
+                    <div class="list-item">Affiliate Badge multiplier: 3X earnings (verified creators only)</div>
+                    <div class="list-item">Payments processed monthly via Stripe/PayPal</div>
+                    <div class="list-item">Minimum payout threshold: $25</div>
+                    <div class="list-item">AuraBoost reserves right to withhold payment for violations</div>
+
+                    <div class="section-subtitle">6. Prohibited Conduct</div>
+                    <div class="list-item">No harassment, hate speech, or discrimination</div>
+                    <div class="list-item">No spam, bots, or automated engagement manipulation</div>
+                    <div class="list-item">No fraud, impersonation, or misleading claims</div>
+                    <div class="list-item">No sharing of non-consensual intimate images</div>
+                    <div class="list-item">Violations result in account suspension or permanent termination</div>
+
+                    <div class="section-subtitle">7. Limitation of Liability</div>
+                    <div class="list-item">AuraBoost provided "AS IS" without warranties</div>
+                    <div class="list-item">We are not liable for lost earnings, data loss, or platform outages</div>
+                    <div class="list-item">Maximum liability: amount you paid in past 12 months</div>
+                    <div class="list-item">Some jurisdictions do not allow limitation of liability</div>
+                </div>
+            </div>
+
+            <!-- PRIVACY TAB -->
+            <div id="privacy" class="tab-content">
+                <div class="legal-section">
+                    <div class="section-title">🔒 Privacy Policy</div>
+                    <div class="section-text">Last Updated: January 2026</div>
+
+                    <div class="highlight-box">
+                        🛡️ Your privacy matters. We collect minimal data and never sell to third parties. GDPR & CCPA compliant.
+                    </div>
+
+                    <div class="section-subtitle">1. What We Collect</div>
+                    <div class="list-item">Age (for 18+ verification)</div>
+                    <div class="list-item">Email address</div>
+                    <div class="list-item">Platform accounts via OAuth (Twitch, Discord, Xbox, PlayStation, Steam, etc)</div>
+                    <div class="list-item">Upload/stream data and metadata</div>
+                    <div class="list-item">Payment information (processed by Stripe/PayPal, we don't store cards)</div>
+                    <div class="list-item">Usage analytics (page views, time on site, clicks)</div>
+
+                    <div class="section-subtitle">2. What We DON'T Collect</div>
+                    <div class="list-item">Passwords (OAuth only, no local passwords stored)</div>
+                    <div class="list-item">Biometric data</div>
+                    <div class="list-item">Medical or financial information beyond payments</div>
+                    <div class="list-item">Location data (unless you voluntarily provide)</div>
+
+                    <div class="section-subtitle">3. Data Sharing</div>
+                    <div class="list-item">We NEVER sell personal data to third parties</div>
+                    <div class="list-item">We share only with payment processors & law enforcement (when required)</div>
+                    <div class="list-item">Your data stays with AuraBoost</div>
+                    <div class="list-item">No data brokers. No ad networks. No tracking pixels (besides Google Analytics)</div>
+
+                    <div class="section-subtitle">4. Data Security</div>
+                    <div class="list-item">All data encrypted in transit (HTTPS/TLS)</div>
+                    <div class="list-item">Database encrypted at rest</div>
+                    <div class="list-item">Regular security audits and penetration testing</div>
+                    <div class="list-item">Two-factor authentication available</div>
+
+                    <div class="section-subtitle">5. Your Rights (GDPR/CCPA)</div>
+                    <div class="list-item">Right to access: Request copy of your data anytime</div>
+                    <div class="list-item">Right to deletion: Request permanent account deletion</div>
+                    <div class="list-item">Right to data portability: Export your data</div>
+                    <div class="list-item">Right to opt-out: Disable non-essential tracking</div>
+
+                    <div class="section-subtitle">6. Retention</div>
+                    <div class="list-item">We retain data for 3 years after account deletion</div>
+                    <div class="list-item">You can request deletion earlier</div>
+                    <div class="list-item">Aggregate analytics retained indefinitely (no personal data)</div>
+                </div>
+            </div>
+
+            <!-- CONTENT TAB -->
+            <div id="content" class="tab-content">
+                <div class="legal-section">
+                    <div class="section-title">📷 Content Policy</div>
+                    <div class="section-text">Last Updated: January 2026</div>
+
+                    <div class="highlight-box">
+                        📌 AuraBoost is an 18+ platform for attractiveness ranking. Content must comply with all laws and platform rules.
+                    </div>
+
+                    <div class="section-subtitle">✅ Allowed Content</div>
+                    <div class="list-item">Attractive selfies and photos (clothed or swimwear)</div>
+                    <div class="list-item">Fitness/gym content and workout videos</div>
+                    <div class="list-item">Gaming streams and clips with attractive creators</div>
+                    <div class="list-item">Travel, lifestyle, and adventure content</div>
+                    <div class="list-item">Hot/flirty content (suggestive but not explicit)</div>
+                    <div class="list-item">OnlyFans/Patreon promotional content (as allowed)</div>
+                    <div class="list-item">Fully clothed content featuring attractive people</div>
+
+                    <div class="section-subtitle">❌ Prohibited Content</div>
+                    <div class="list-item">Illegal content (drugs, weapons, etc)</div>
+                    <div class="list-item">Any content involving minors (strictly enforced)</div>
+                    <div class="list-item">Non-consensual intimate imagery</div>
+                    <div class="list-item">Explicit sexual content (penetration, extreme acts)</div>
+                    <div class="list-item">Content violating third-party rights</div>
+                    <div class="list-item">Harassment, hate speech, or discrimination</div>
+                    <div class="list-item">Spam, scams, or misleading content</div>
+
+                    <div class="section-subtitle">🚨 COPPA Compliance - Minors Absolutely Prohibited</div>
+                    <div class="list-item">AuraBoost strictly prohibits content depicting minors</div>
+                    <div class="list-item">We report child exploitation to NCMEC (National Center for Missing & Exploited Children)</div>
+                    <div class="list-item">Violators are permanently banned and reported to authorities</div>
+                    <div class="list-item">Parents/guardians creating accounts for minors will be prosecuted</div>
+
+                    <div class="section-subtitle">🔍 Moderation</div>
+                    <div class="list-item">All uploads reviewed by AI + human moderators</div>
+                    <div class="list-item">Violations removed within 24 hours</div>
+                    <div class="list-item">Multiple violations result in account suspension</div>
+                    <div class="list-item">Severe violations (COPPA, illegal content) result in permanent ban</div>
+                </div>
+            </div>
+
+            <!-- PAYMENTS TAB -->
+            <div id="payments" class="tab-content">
+                <div class="legal-section">
+                    <div class="section-title">💰 Payments & Earnings</div>
+                    <div class="section-text">Last Updated: January 2026</div>
+
+                    <div class="highlight-box">
+                        💵 AuraBoost takes 70% commission. Creators receive 30% per subscription + badge multipliers.
+                    </div>
+
+                    <div class="section-subtitle">1. Revenue Model</div>
+                    <div class="list-item">Base commission: 30% of subscription revenue</div>
+                    <div class="list-item">Affiliate Badge: 3X multiplier (for verified creators)</div>
+                    <div class="list-item">Gaming platform boosters: Unlock via Xbox/PSN/Steam connections</div>
+                    <div class="list-item">Streamer boosters: Unlock via Twitch/Discord connections</div>
+
+                    <div class="section-subtitle">2. How Earnings Work</div>
+                    <div class="list-item">Each post is verified (URL + screenshot proof)</div>
+                    <div class="list-item">Verified posts earn aura points</div>
+                    <div class="list-item">Aura points boost your leaderboard ranking</div>
+                    <div class="list-item">Higher ranking = more followers = more referrals</div>
+                    <div class="list-item">Each referral who subscribes = 30% of their subscription fee</div>
+
+                    <div class="section-subtitle">3. Payments & Payouts</div>
+                    <div class="list-item">Payments processed monthly via Stripe or PayPal</div>
+                    <div class="list-item">Minimum payout threshold: $25</div>
+                    <div class="list-item">Payouts within 5-7 business days</div>
+                    <div class="list-item">You responsible for all taxes (1099 contractors)</div>
+                    <div class="list-item">We provide annual earnings statement for tax purposes</div>
+
+                    <div class="section-subtitle">4. Chargebacks & Fraud</div>
+                    <div class="list-item">Chargebacks result in immediate account suspension</div>
+                    <div class="list-item">Fraudulent referrals detected via AI = earnings withheld</div>
+                    <div class="list-item">Ban for chargeback fraud or referral manipulation</div>
+
+                    <div class="section-subtitle">5. Payment Hold Policy</div>
+                    <div class="list-item">AuraBoost reserves right to hold payments for investigation</div>
+                    <div class="list-item">Policy violations trigger payment holds up to 90 days</div>
+                    <div class="list-item">Repeated violations result in permanent earnings forfeiture</div>
+                </div>
+            </div>
+
+            <!-- SAFETY & COMPLIANCE TAB -->
+            <div id="safety" class="tab-content">
+                <div class="legal-section">
+                    <div class="section-title">🛡️ Safety & Compliance</div>
+                    <div class="section-text">Last Updated: January 2026</div>
+
+                    <div class="highlight-box">
+                        ⚖️ AuraBoost complies with COPPA, GDPR, CCPA, and all applicable laws. Our top priority is user safety.
+                    </div>
+
+                    <div class="section-subtitle">1. COPPA Compliance (Children's Online Privacy)</div>
+                    <div class="list-item">AuraBoost is 18+ only. Strict enforcement via age verification</div>
+                    <div class="list-item">No personal data collected from users under 13 (prohibited)</div>
+                    <div class="list-item">No marketing to minors</div>
+                    <div class="list-item">Users who misrepresent age are permanently banned</div>
+                    <div class="list-item">Child exploitation reports sent to NCMEC</div>
+
+                    <div class="section-subtitle">2. GDPR Compliance (EU Users)</div>
+                    <div class="list-item">Lawful basis: Legitimate interest (age-verified adult content)</div>
+                    <div class="list-item">Data processing agreement available upon request</div>
+                    <div class="list-item">Data subject rights honored (access, deletion, portability)</div>
+                    <div class="list-item">Data Protection Officer contact: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ea9a98839c8b8993aa8b9f988b99898b84c48385">[email&#160;protected]</a></div>
+
+                    <div class="section-subtitle">3. CCPA Compliance (California Users)</div>
+                    <div class="list-item">Right to know what data we collect</div>
+                    <div class="list-item">Right to delete your personal information</div>
+                    <div class="list-item">Right to opt-out of data sales (we don't sell data)</div>
+                    <div class="list-item">No discrimination for exercising rights</div>
+
+                    <div class="section-subtitle">4. Trust & Safety</div>
+                    <div class="list-item">24/7 automated content moderation AI</div>
+                    <div class="list-item">Human review team for escalations</div>
+                    <div class="list-item">User reporting system for harmful content</div>
+                    <div class="list-item">Banned users cannot create new accounts (device + IP tracking)</div>
+
+                    <div class="section-subtitle">5. Dispute Resolution</div>
+                    <div class="list-item">Contact: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e2919792928d9096a2839790839181838ccc8b8d">[email&#160;protected]</a></div>
+                    <div class="list-item">Response time: 48 hours</div>
+                    <div class="list-item">Appeals process for account bans</div>
+                    <div class="list-item">Binding arbitration for unresolved disputes</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div style="margin-bottom: 12px;">
+                <strong>AuraBoost Legal Documentation</strong><br>
+                18+ Adult Content Platform | COPPA/GDPR/CCPA Compliant
+            </div>
+            <div>
+                Questions? Contact: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f9959c9e9895b9988c8b988a9a9897d79096">[email&#160;protected]</a><br>
+                Last updated: January 20, 2026
+            </div>
+        </div>
+    </div>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab

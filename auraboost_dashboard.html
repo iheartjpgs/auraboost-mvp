@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraBoost Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #0F172A;
+            color: #F1F5F9;
+        }
+
+        .header {
+            background-color: #1E293B;
+            border-bottom: 1px solid #F59E0B;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            position: sticky;
+            top: 0;
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: bold;
+            color: #F59E0B;
+        }
+
+        .header-bottom {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .username {
+            color: #CBD5E1;
+            font-size: 14px;
+        }
+
+        .logout-btn {
+            background-color: #F59E0B;
+            color: #0F172A;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .main-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 24px 20px;
+        }
+
+        .aura-card {
+            background: linear-gradient(135deg, #1E293B 0%, rgba(245, 158, 11, 0.1) 100%);
+            border: 2px solid #F59E0B;
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .aura-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #CBD5E1;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+        }
+
+        .aura-number {
+            font-size: 80px;
+            font-weight: bold;
+            color: #F59E0B;
+            margin: 0;
+        }
+
+        .aura-stars {
+            font-size: 32px;
+            margin: 16px 0 8px 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background-color: #1E293B;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #CBD5E1;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #F59E0B;
+            margin-bottom: 4px;
+        }
+
+        .milestone-card {
+            background-color: #1E293B;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .milestone-target {
+            font-size: 18px;
+            font-weight: bold;
+            color: #F59E0B;
+            margin-bottom: 16px;
+        }
+
+        .progress-bar {
+            background-color: #0F172A;
+            border-radius: 8px;
+            height: 8px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .progress-fill {
+            background-color: #F59E0B;
+            height: 100%;
+            width: 78%;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .btn-primary {
+            background-color: #F59E0B;
+            color: #0F172A;
+            border: none;
+            border-radius: 8px;
+            padding: 16px 12px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-secondary {
+            background-color: #1E293B;
+            color: #F1F5F9;
+            border: 2px solid #F59E0B;
+            border-radius: 8px;
+            padding: 16px 12px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .achievement {
+            background-color: #1E293B;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .achievement-emoji {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .achievement-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: #F1F5F9;
+            margin-bottom: 4px;
+        }
+
+        .stats-table {
+            background-color: #1E293B;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(245, 158, 11, 0.1);
+        }
+
+        .stat-row:last-child {
+            border-bottom: none;
+        }
+
+        .stat-key {
+            color: #CBD5E1;
+            font-size: 14px;
+        }
+
+        .stat-val {
+            color: #F59E0B;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        h3 {
+            font-size: 16px;
+            font-weight: bold;
+            color: #F1F5F9;
+            margin: 24px 0 16px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-top">
+            <svg width="40" height="40" viewBox="0 0 400 400" fill="none">
+                <circle cx="200" cy="200" r="160" stroke="#F59E0B" stroke-width="28" />
+                <circle cx="200" cy="200" r="110" stroke="#FCD34D" stroke-width="24" />
+                <circle cx="200" cy="200" r="60" stroke="#F59E0B" stroke-width="20" />
+                <circle cx="200" cy="200" r="25" fill="#F59E0B" />
+            </svg>
+            <h1>AuraBoost</h1>
+        </div>
+        <div class="header-bottom">
+            <span class="username">@testuser</span>
+            <button class="logout-btn">Logout</button>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <!-- Aura Score -->
+        <div class="aura-card">
+            <p class="aura-label">Your Aura Score</p>
+            <h2 class="aura-number">187</h2>
+            <p class="aura-stars">✨✨✨✨✨</p>
+            <p style="color: #CBD5E1; font-size: 14px; margin: 0;">5 Star Rating</p>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <p class="stat-label">Global Rank</p>
+                <p class="stat-value">#247</p>
+                <p style="font-size: 12px; color: #CBD5E1; margin: 0;">Out of millions</p>
+            </div>
+            <div class="stat-card">
+                <p class="stat-label">Current Streak</p>
+                <p class="stat-value">47d</p>
+                <p style="font-size: 12px; color: #CBD5E1; margin: 0;">🔥 Keep it going!</p>
+            </div>
+            <div class="stat-card">
+                <p class="stat-label">Total Workouts</p>
+                <p class="stat-value">89</p>
+                <p style="font-size: 12px; color: #CBD5E1; margin: 0;">All time</p>
+            </div>
+        </div>
+
+        <!-- Milestone -->
+        <div class="milestone-card">
+            <p style="font-size: 12px; color: #CBD5E1; margin: 0 0 4px 0; text-transform: uppercase;">Next Achievement</p>
+            <p class="milestone-target">Day 60 Badge ✨</p>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <p style="font-size: 12px; color: #CBD5E1; margin: 0 0 8px 0;">47/60 days</p>
+            <p style="font-size: 14px; color: #FCD34D; margin: 0; font-weight: 500;">13 days until your next milestone! 💪</p>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <button class="btn-primary" onclick="alert('📷 Camera/Upload coming in Step 3!')">
+                <span style="font-size: 20px;">💪</span>
+                <span>Log Workout</span>
+            </button>
+            <button class="btn-secondary" onclick="alert('🏆 Leaderboard coming soon!')">
+                <span style="font-size: 20px;">🏆</span>
+                <span>Leaderboard</span>
+            </button>
+            <button class="btn-secondary" onclick="alert('💰 Creator Dashboard coming soon!')">
+                <span style="font-size: 20px;">💰</span>
+                <span>Earn</span>
+            </button>
+        </div>
+
+        <!-- Achievements -->
+        <h3>🏅 Achievements</h3>
+        <div class="achievements-grid">
+            <div class="achievement" style="opacity: 1;">
+                <div class="achievement-emoji">🏅</div>
+                <p class="achievement-name">Day 7</p>
+                <p style="font-size: 10px; color: #CBD5E1; margin: 0;">✓ Earned</p>
+            </div>
+            <div class="achievement" style="opacity: 1;">
+                <div class="achievement-emoji">🥈</div>
+                <p class="achievement-name">Day 30</p>
+                <p style="font-size: 10px; color: #CBD5E1; margin: 0;">✓ Earned</p>
+            </div>
+            <div class="achievement" style="opacity: 0.4;">
+                <div class="achievement-emoji">🥇</div>
+                <p class="achievement-name">Day 60</p>
+                <p style="font-size: 10px; color: #CBD5E1; margin: 0;">🔒 Locked</p>
+            </div>
+            <div class="achievement" style="opacity: 1;">
+                <div class="achievement-emoji">⚡</div>
+                <p class="achievement-name">Streak Master</p>
+                <p style="font-size: 10px; color: #CBD5E1; margin: 0;">✓ Earned</p>
+            </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <h3>📊 Quick Stats</h3>
+        <div class="stats-table">
+            <div class="stat-row">
+                <span class="stat-key">Member Since</span>
+                <span class="stat-val">Nov 2024</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-key">Avg Per Week</span>
+                <span class="stat-val">7.4 workouts</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-key">Best Streak</span>
+                <span class="stat-val">47 days 🔥</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

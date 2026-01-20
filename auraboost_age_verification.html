@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraBoost - 18+ Only</title>
+    <meta name="theme-color" content="#0F172A">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0F172A 0%, #1A1F3A 100%);
+            color: #F1F5F9;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .modal {
+            background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+            border: 2px solid rgba(245, 158, 11, 0.3);
+            border-radius: 16px;
+            padding: 40px 24px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-icon {
+            font-size: 64px;
+            margin-bottom: 24px;
+        }
+
+        .modal-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #F59E0B 0%, #EC4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .modal-subtitle {
+            font-size: 14px;
+            color: #CBD5E1;
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(248, 113, 113, 0.05) 100%);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+            font-size: 12px;
+            color: #FECACA;
+            line-height: 1.6;
+        }
+
+        .warning-title {
+            font-weight: 700;
+            color: #FCA5A5;
+            margin-bottom: 8px;
+        }
+
+        .input-group {
+            margin-bottom: 24px;
+            text-align: left;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 12px;
+            color: #CBD5E1;
+            margin-bottom: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px 16px;
+            background-color: #0F172A;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 6px;
+            color: #F1F5F9;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #F59E0B;
+            box-shadow: 0 0 12px rgba(245, 158, 11, 0.2);
+        }
+
+        .checkbox-group {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+            text-align: left;
+        }
+
+        .checkbox-input {
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+            margin-top: 2px;
+            cursor: pointer;
+            accent-color: #F59E0B;
+        }
+
+        .checkbox-label {
+            font-size: 12px;
+            color: #CBD5E1;
+            line-height: 1.5;
+            cursor: pointer;
+        }
+
+        .checkbox-label a {
+            color: #F59E0B;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .checkbox-label a:hover {
+            text-decoration: underline;
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+        }
+
+        .btn-decline {
+            background-color: rgba(107, 114, 128, 0.2);
+            color: #D1D5DB;
+            border: 1px solid rgba(107, 114, 128, 0.3);
+        }
+
+        .btn-decline:hover {
+            background-color: rgba(107, 114, 128, 0.3);
+            border-color: rgba(107, 114, 128, 0.5);
+        }
+
+        .btn-accept {
+            background: linear-gradient(135deg, #F59E0B 0%, #EC4899 100%);
+            color: #0F172A;
+            grid-column: 1 / -1;
+        }
+
+        .btn-accept:hover:not(:disabled) {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(245, 158, 11, 0.2);
+        }
+
+        .btn-accept:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .footer-text {
+            font-size: 10px;
+            color: #6B7280;
+            margin-top: 24px;
+            line-height: 1.5;
+        }
+
+        .error-message {
+            display: none;
+            background-color: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #FECACA;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            margin-bottom: 16px;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div style="background: linear-gradient(135deg, #F59E0B 0%, #EC4899 100%); padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);"><a href="/auraboost-mvp/auraboost_homepage.html" style="display: flex; align-items: center; gap: 12px; color: white; text-decoration: none; cursor: pointer; font-weight: bold;"><img src="/auraboost-mvp/auraboost_logo.png" alt="AuraBoost" style="width: 40px; height: 40px; object-fit: contain;"><span>AuraBoost</span></a><div style="display: flex; gap: 20px;"><a href="/auraboost-mvp/auraboost_homepage.html" style="color: white; text-decoration: none;">Home</a></div></div>
+    <div class="container">
+        <div class="modal">
+            <div class="modal-icon">🔞</div>
+            <div class="modal-title">18+ Only</div>
+            <div class="modal-subtitle">
+                AuraBoost is for creators aged 18 and older. By entering, you confirm you meet this requirement and accept our terms.
+            </div>
+
+            <div class="warning-box">
+                <div class="warning-title">⚠️ Important Notice</div>
+                This platform features adult content and is designed for creators sharing content for adult audiences. By proceeding, you confirm you are of legal age and accept all terms and conditions.
+            </div>
+
+            <form id="verificationForm" onsubmit="handleSubmit(event)">
+                <div class="error-message" id="errorMessage"></div>
+
+                <!-- Age Verification -->
+                <div class="input-group">
+                    <label class="input-label">What is your age?</label>
+                    <input type="number" id="ageInput" class="input-field" placeholder="Enter your age" min="1" max="150" required>
+                </div>
+
+                <!-- Checkbox 1: Confirm Age -->
+                <div class="checkbox-group">
+                    <input type="checkbox" id="ageConfirm" class="checkbox-input" onchange="updateButtonState()">
+                    <label for="ageConfirm" class="checkbox-label">
+                        I confirm that I am at least 18 years old
+                    </label>
+                </div>
+
+                <!-- Checkbox 2: Terms Agreement -->
+                <div class="checkbox-group">
+                    <input type="checkbox" id="termsConfirm" class="checkbox-input" onchange="updateButtonState()">
+                    <label for="termsConfirm" class="checkbox-label">
+                        I have read and accept the <a href="#terms" onclick="showTerms(event)">Terms of Service</a>, <a href="#privacy" onclick="showPrivacy(event)">Privacy Policy</a>, and <a href="#content" onclick="showContentPolicy(event)">Content Policy</a>
+                    </label>
+                </div>
+
+                <!-- Checkbox 3: COPPA Compliance -->
+                <div class="checkbox-group">
+                    <input type="checkbox" id="notChild" class="checkbox-input" onchange="updateButtonState()">
+                    <label for="notChild" class="checkbox-label">
+                        I confirm I am not a child under 18, or a parent/guardian creating an account on behalf of a minor
+                    </label>
+                </div>
+
+                <!-- Buttons -->
+                <div class="button-group">
+                    <button type="button" class="btn btn-decline" onclick="declineAccess()">Decline</button>
+                    <button type="submit" id="acceptBtn" class="btn btn-accept" disabled>I Agree & Enter</button>
+                </div>
+            </form>
+
+            <div class="footer-text">
+                By clicking "I Agree & Enter", you are confirming that you are 18+ years of age and accept our legal terms. Misrepresenting your age violates platform policy.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateButtonState() {
+            const ageInput = document.getElementById('ageInput').value;
+            const ageConfirm = document.getElementById('ageConfirm').checked;
+            const termsConfirm = document.getElementById('termsConfirm').checked;
+            const notChild = document.getElementById('notChild').checked;
+            
+            const age = parseInt(ageInput);
+            const isValidAge = age >= 18 && age <= 150;
+            
+            const allChecked = ageConfirm && termsConfirm && notChild;
+            const acceptBtn = document.getElementById('acceptBtn');
+            
+            acceptBtn.disabled = !(isValidAge && allChecked);
+        }
+
+        function handleSubmit(event) {
+            event.preventDefault();
+            
+            const age = parseInt(document.getElementById('ageInput').value);
+            const errorMessage = document.getElementById('errorMessage');
+            
+            if (age < 18) {
+                errorMessage.textContent = '❌ You must be at least 18 years old to access AuraBoost.';
+                errorMessage.classList.add('show');
+                return;
+            }
+            
+            if (age > 120) {
+                errorMessage.textContent = '⚠️ Please enter a valid age.';
+                errorMessage.classList.add('show');
+                return;
+            }
+            
+            // Store verification in localStorage
+            localStorage.setItem('auraScan_ageVerified', 'true');
+            localStorage.setItem('auraScan_verificationDate', new Date().toISOString());
+            localStorage.setItem('auraScan_userAge', age);
+            
+            // Redirect to mobile homepage
+            window.location.href = '/auraboost-mvp/auraboost_mobile_homepage.html';
+        }
+
+        function declineAccess() {
+            alert('You must be 18+ to access AuraBoost. Please visit when you meet the age requirement.');
+            // Redirect to blank page or external site
+            window.location.href = '/auraboost-mvp/about:blank';
+        }
+
+        function showTerms(event) {
+            event.preventDefault();
+            alert('📋 TERMS OF SERVICE\n\n' +
+                'By using AuraBoost, you agree to:\n\n' +
+                '• Be at least 18 years old\n' +
+                '• Not create accounts for minors\n' +
+                '• Follow all platform rules\n' +
+                '• Use accurate information\n' +
+                '• Not engage in fraud\n' +
+                '• Respect intellectual property\n' +
+                '• Accept 30% revenue share model\n\n' +
+                'Violations may result in account termination and legal action.');
+        }
+
+        function showPrivacy(event) {
+            event.preventDefault();
+            alert('🔒 PRIVACY POLICY\n\n' +
+                'We collect:\n\n' +
+                '• Age (for verification)\n' +
+                '• Platform accounts (OAuth)\n' +
+                '• Stream/upload data\n' +
+                '• Payment information\n' +
+                '• Usage analytics\n\n' +
+                'We do NOT:\n\n' +
+                '• Share personal data with 3rd parties\n' +
+                '• Store passwords\n' +
+                '• Sell user data\n' +
+                '• Contact minors directly\n\n' +
+                'GDPR & CCPA compliant.');
+        }
+
+        function showContentPolicy(event) {
+            event.preventDefault();
+            alert('📷 CONTENT POLICY\n\n' +
+                'Allowed content:\n' +
+                '• Attractive selfies/photos\n' +
+                '• Workout/fitness content\n' +
+                '• Gaming streams & clips\n' +
+                '• Travel & lifestyle\n' +
+                '• Hot/flirty content (18+ only)\n' +
+                '• Suggestive content\n\n' +
+                'Prohibited:\n' +
+                '• Illegal content\n' +
+                '• Content involving minors\n' +
+                '• Harassment/hate speech\n' +
+                '• Non-consensual intimate content\n' +
+                '• Spam/scams\n\n' +
+                'All content reviewed by AI + human moderators.');
+        }
+
+        // Add event listener for age input changes
+        document.getElementById('ageInput').addEventListener('input', updateButtonState);
+
+        // Check if already verified
+        window.addEventListener('load', function() {
+            if (localStorage.getItem('auraScan_ageVerified') === 'true') {
+                window.location.href = '/auraboost-mvp/auraboost_mobile_homepage.html';
+            }
+        });
+    </script>
+</body>
+</html>

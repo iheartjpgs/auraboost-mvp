@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraBoost for Streamers</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #0F172A;
+            color: #F1F5F9;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #5B42F3 0%, #9D4EDD 100%);
+            padding: 24px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(91, 66, 243, 0.2);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-small {
+            width: 32px;
+            height: 32px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+
+        .header-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #F1F5F9;
+        }
+
+        .header-badge {
+            background-color: rgba(241, 245, 249, 0.2);
+            color: #F1F5F9;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-btn {
+            background-color: rgba(241, 245, 249, 0.2);
+            color: #F1F5F9;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .back-btn:hover {
+            background-color: rgba(241, 245, 249, 0.3);
+        }
+
+        .main-content {
+            padding: 24px 20px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #5B42F3 0%, #9D4EDD 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-subtitle {
+            color: #CBD5E1;
+            margin-bottom: 24px;
+            font-size: 14px;
+        }
+
+        /* VALUE PROP BANNER */
+        .value-prop-banner {
+            background: linear-gradient(135deg, #5B42F3 0%, #9D4EDD 100%);
+            border-radius: 12px;
+            padding: 32px 24px;
+            margin-bottom: 24px;
+            color: #F1F5F9;
+            box-shadow: 0 8px 24px rgba(91, 66, 243, 0.15);
+        }
+
+        .vp-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 16px;
+        }
+
+        .vp-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+        }
+
+        .vp-item {
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .vp-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .vp-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            opacity: 0.9;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .vp-value {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        /* SECTION */
+        .section {
+            background-color: #1E293B;
+            border: 1px solid rgba(91, 66, 243, 0.2);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            transition: all 0.3s;
+        }
+
+        .section:hover {
+            border-color: rgba(91, 66, 243, 0.4);
+            box-shadow: 0 4px 12px rgba(91, 66, 243, 0.1);
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 16px;
+            color: #F1F5F9;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* PLATFORM CONNECTIONS */
+        .connection-banner {
+            background: linear-gradient(135deg, rgba(91, 66, 243, 0.2) 0%, rgba(157, 78, 221, 0.2) 100%);
+            border: 2px solid #5B42F3;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .connection-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #5B42F3;
+            margin-bottom: 8px;
+        }
+
+        .connection-text {
+            font-size: 12px;
+            color: #CBD5E1;
+            line-height: 1.6;
+        }
+
+        .connection-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .connection-card {
+            background-color: #0F172A;
+            border: 1px solid rgba(91, 66, 243, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .connection-card:hover {
+            border-color: rgba(91, 66, 243, 0.5);
+            background-color: rgba(91, 66, 243, 0.05);
+            transform: translateY(-4px);
+        }
+
+        .connection-card.connected {
+            border: 2px solid #10B981;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%);
+        }
+
+        .platform-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .platform-name {
+            font-size: 14px;
+            font-weight: bold;
+            color: #F1F5F9;
+            margin-bottom: 8px;
+        }
+
+        .platform-description {
+            font-size: 11px;
+            color: #CBD5E1;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .platform-benefits {
+            font-size: 10px;
+            color: #5B42F3;
+            font-weight: 600;
+            margin-bottom: 12px;
+            padding: 8px;
+            background-color: rgba(91, 66, 243, 0.1);
+            border-radius: 6px;
+        }
+
+        .connection-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #5B42F3 0%, #9D4EDD 100%);
+            color: #F1F5F9;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .connection-btn:hover {
+            opacity: 0.9;
+        }
+
+        .connection-btn.connected {
+            background-color: rgba(16, 185, 129, 0.2);
+            color: #10B981;
+            cursor: default;
+            font-weight: 700;
+        }
+
+        /* EARNINGS CALCULATOR */
+        .calc-row {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 16px;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(91, 66, 243, 0.1);
+            align-items: center;
+        }
+
+        .calc-row:last-child {
+            border-bottom: none;
+        }
+
+        .calc-label {
+            font-size: 12px;
+            color: #CBD5E1;
+            font-weight: 500;
+        }
+
+        .calc-input {
+            padding: 10px 12px;
+            background-color: #0F172A;
+            border: 1px solid rgba(91, 66, 243, 0.3);
+            border-radius: 6px;
+            color: #F1F5F9;
+            font-size: 12px;
+            width: 100px;
+            text-align: right;
+            transition: all 0.2s;
+        }
+
+        .calc-input:focus {
+            outline: none;
+            border-color: #5B42F3;
+            box-shadow: 0 0 8px rgba(91, 66, 243, 0.2);
+        }
+
+        .calc-value {
+            font-size: 14px;
+            font-weight: bold;
+            color: #5B42F3;
+        }
+
+        .calc-total {
+            background-color: rgba(91, 66, 243, 0.1);
+            border-left: 3px solid #5B42F3;
+            border-radius: 6px;
+            padding: 16px;
+            margin-top: 16px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .calc-total-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #5B42F3;
+            margin-top: 8px;
+        }
+
+        .calc-note {
+            font-size: 11px;
+            color: #CBD5E1;
+            margin-top: 8px;
+        }
+
+        /* CONTENT TYPES */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+        }
+
+        .content-card {
+            background-color: #0F172A;
+            border: 1px solid rgba(91, 66, 243, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .content-card:hover {
+            border-color: #5B42F3;
+            background-color: rgba(91, 66, 243, 0.05);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(91, 66, 243, 0.1);
+        }
+
+        .content-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .content-name {
+            font-size: 12px;
+            font-weight: bold;
+            color: #F1F5F9;
+            margin-bottom: 6px;
+        }
+
+        .content-aura {
+            font-size: 11px;
+            color: #5B42F3;
+            font-weight: 700;
+        }
+
+        /* TIPS GRID */
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+        }
+
+        .tip-card {
+            background-color: #0F172A;
+            border: 1px solid rgba(91, 66, 243, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+            transition: all 0.3s;
+        }
+
+        .tip-card:hover {
+            border-color: #5B42F3;
+            box-shadow: 0 4px 12px rgba(91, 66, 243, 0.1);
+        }
+
+        .tip-icon {
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        .tip-title {
+            font-size: 12px;
+            font-weight: bold;
+            color: #F1F5F9;
+            margin-bottom: 8px;
+        }
+
+        .tip-text {
+            font-size: 11px;
+            color: #CBD5E1;
+            line-height: 1.6;
+        }
+
+        /* EXAMPLES */
+        .example-card {
+            background: linear-gradient(135deg, #0F172A 0%, rgba(91, 66, 243, 0.05) 100%);
+            border: 1px solid rgba(91, 66, 243, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            transition: all 0.3s;
+        }
+
+        .example-card:hover {
+            border-color: #5B42F3;
+            box-shadow: 0 4px 12px rgba(91, 66, 243, 0.1);
+        }
+
+        .example-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .example-name {
+            font-weight: bold;
+            color: #5B42F3;
+            font-size: 12px;
+        }
+
+        .example-stat {
+            font-size: 11px;
+            color: #CBD5E1;
+        }
+
+        .example-detail {
+            font-size: 11px;
+            color: #CBD5E1;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .example-earnings {
+            background: linear-gradient(135deg, rgba(91, 66, 243, 0.2) 0%, rgba(91, 66, 243, 0.05) 100%);
+            border-left: 3px solid #5B42F3;
+            border-radius: 6px;
+            padding: 12px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #5B42F3;
+        }
+
+        /* INFO BOX */
+        .info-box {
+            background-color: rgba(91, 66, 243, 0.1);
+            border: 1px solid rgba(91, 66, 243, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+            font-size: 12px;
+            line-height: 1.6;
+            color: #CBD5E1;
+        }
+
+        .info-box strong {
+            color: #5B42F3;
+        }
+
+        /* CTA */
+        .cta-section {
+            text-align: center;
+            padding: 32px 0;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #5B42F3 0%, #9D4EDD 100%);
+            color: #F1F5F9;
+            padding: 14px 32px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(91, 66, 243, 0.2);
+            max-width: 300px;
+            margin: 0 auto;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(91, 66, 243, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .cta-text {
+            margin-top: 16px;
+            font-size: 12px;
+            color: #CBD5E1;
+            line-height: 1.6;
+        }
+
+        .highlight {
+            color: #5B42F3;
+            font-weight: 700;
+        }
+
+        /* VERIFICATION SECTION */
+        .verification-box {
+            padding: 16px;
+            background: linear-gradient(135deg, rgba(91, 66, 243, 0.15) 0%, rgba(157, 78, 221, 0.1) 100%);
+            border: 1px solid rgba(91, 66, 243, 0.3);
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .verification-title {
+            font-size: 12px;
+            color: #CBD5E1;
+            line-height: 1.8;
+        }
+
+        .verification-title strong {
+            color: #5B42F3;
+        }
+
+        .verification-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .verification-step {
+            background-color: #0F172A;
+            border: 1px solid rgba(91, 66, 243, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .step-icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .step-title {
+            font-size: 12px;
+            font-weight: bold;
+            color: #F1F5F9;
+            margin-bottom: 8px;
+        }
+
+        .step-description {
+            font-size: 11px;
+            color: #CBD5E1;
+            line-height: 1.5;
+        }
+
+        .verification-note {
+            padding: 12px;
+            background-color: rgba(91, 66, 243, 0.1);
+            border-left: 3px solid #5B42F3;
+            border-radius: 6px;
+            font-size: 11px;
+            color: #CBD5E1;
+        }
+
+        .verification-note strong {
+            color: #5B42F3;
+        }
+
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 24px;
+            }
+
+            .vp-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .content-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .tips-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .connection-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-left">
+            <svg class="logo-small" viewBox="0 0 400 400" fill="none">
+                <circle cx="200" cy="200" r="160" stroke="#F1F5F9" stroke-width="28" />
+                <circle cx="200" cy="200" r="110" stroke="#9D4EDD" stroke-width="24" />
+                <circle cx="200" cy="200" r="60" stroke="#F1F5F9" stroke-width="20" />
+                <circle cx="200" cy="200" r="25" fill="#F1F5F9" />
+            </svg>
+            <h1 class="header-title">AuraBoost</h1>
+            <div class="header-badge">🎮 FOR STREAMERS</div>
+        </div>
+        <button class="back-btn" onclick="window.history.back()">← Back</button>
+    </div>
+
+    <div class="container">
+        <div class="main-content">
+            <div class="page-title">🎮 Streamer Opportunity</div>
+            <p class="page-subtitle">Connect Twitch & Discord. Monetize your stream clips and community with AuraBoost</p>
+
+            <!-- VALUE PROP BANNER -->
+            <div class="value-prop-banner">
+                <div class="vp-title">Why Streamers Win</div>
+                <div class="vp-grid">
+                    <div class="vp-item">
+                        <div class="vp-icon">📹</div>
+                        <div class="vp-label">Stream Clips</div>
+                        <div class="vp-value">100K+ Views</div>
+                    </div>
+                    <div class="vp-item">
+                        <div class="vp-icon">👥</div>
+                        <div class="vp-label">Community</div>
+                        <div class="vp-value">5-10% Convert</div>
+                    </div>
+                    <div class="vp-item">
+                        <div class="vp-icon">💰</div>
+                        <div class="vp-label">Per Subscription</div>
+                        <div class="vp-value">30% Commission</div>
+                    </div>
+                    <div class="vp-item">
+                        <div class="vp-icon">⚡</div>
+                        <div class="vp-label">Multiplier Badge</div>
+                        <div class="vp-value">3X Earnings</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                💡 <strong>Streamer's Unique Edge:</strong> Your stream viewers are HYPER-ENGAGED. They're already in chat, donating, gifting subs. They're used to tipping creators. Your Discord community is even MORE loyal. Connect both platforms and unlock automatic boosts + earn from every clip you broadcast.
+            </div>
+
+            <!-- PLATFORM CONNECTIONS SECTION -->
+            <div class="section">
+                <div class="section-title">🔗 Connect Your Streaming Platforms</div>
+                
+                <div class="connection-banner">
+                    <div class="connection-title">Platform Integration</div>
+                    <div class="connection-text">
+                        Connect Twitch and Discord to unlock platform-specific boosters, auto-clip generation, and community engagement tracking. Your stream stats directly boost aura on AuraBoost.
+                    </div>
+                </div>
+
+                <div class="connection-grid">
+                    <!-- TWITCH CONNECTION -->
+                    <div class="connection-card connected" id="twitch-card">
+                        <div class="platform-icon">🎮</div>
+                        <div class="platform-name">Twitch</div>
+                        <div class="platform-description">
+                            Connect your Twitch channel. Auto-sync viewers, followers, and stream stats for real-time aura boosters.
+                        </div>
+                        <div class="platform-benefits">
+                            Viewers: +50-200 aura per post<br>
+                            Follower Count: +100 aura bonus
+                        </div>
+                        <button class="connection-btn connected" id="twitch-btn" onclick="disconnectPlatform('twitch')">✓ Connected: streamer_pro</button>
+                    </div>
+
+                    <!-- DISCORD CONNECTION -->
+                    <div class="connection-card" id="discord-card">
+                        <div class="platform-icon">💬</div>
+                        <div class="platform-name">Discord</div>
+                        <div class="platform-description">
+                            Link your Discord server. Community size and engagement unlock special badges and boosters.
+                        </div>
+                        <div class="platform-benefits">
+                            Server Members: +50-150 aura<br>
+                            Community Badge: +200 aura
+                        </div>
+                        <button class="connection-btn" id="discord-btn" onclick="connectPlatform('discord')">Connect Discord</button>
+                    </div>
+                </div>
+
+                <div style="padding: 12px; background-color: rgba(91, 66, 243, 0.1); border-radius: 6px; border-left: 3px solid #5B42F3; font-size: 11px; color: #CBD5E1; margin-top: 16px;">
+                    <strong style="color: #5B42F3;">How it works:</strong> Connect once. Stats sync automatically every hour. Each clip you post gets boosted by viewer count, follower milestones, and community engagement. Higher stream numbers = higher aura = better rankings = more followers = more earnings!
+                </div>
+            </div>
+
+            <!-- TWITCH STATS PREVIEW (When Connected) -->
+            <div class="section" id="twitch-stats" style="display: block;">
+                <div class="section-title">📊 Twitch Stream Stats - streamer_pro</div>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 20px;">
+                    <div style="background-color: #0F172A; border: 1px solid rgba(91, 66, 243, 0.2); border-radius: 12px; padding: 16px;">
+                        <div style="font-size: 11px; color: #CBD5E1; text-transform: uppercase; margin-bottom: 8px; font-weight: 600;">Current Viewers</div>
+                        <div style="font-size: 24px; font-weight: bold; color: #5B42F3; margin-bottom: 4px;">2,450</div>
+                        <div style="font-size: 10px; color: #CBD5E1;">Live right now</div>
+                    </div>
+
+                    <div style="background-color: #0F172A; border: 1px solid rgba(91, 66, 243, 0.2); border-radius: 12px; padding: 16px;">
+                        <div style="font-size: 11px; color: #CBD5E1; text-transform: uppercase; margin-bottom: 8px; font-weight: 600;">Total Followers</div>
+                        <div style="font-size: 24px; font-weight: bold; color: #5B42F3; margin-bottom: 4px;">185,400</div>
+                        <div style="font-size: 10px; color: #CBD5E1;">All time</div>
+                    </div>
+
+                    <div style="background-color: #0F172A; border: 1px solid rgba(91, 66, 243, 0.2); border-radius: 12px; padding: 16px;">
+                        <div style="font-size: 11px; color: #CBD5E1; text-transform: uppercase; margin-bottom: 8px; font-weight: 600;">Avg Stream Viewers</div>
+                        <div style="font-size: 24px; font-weight: bold; color: #5B42F3; margin-bottom: 4px;">1,824</div>
+                        <div style="font-size: 10px; color: #CBD5E1;">Last 30 days</div>
+                    </div>
+
+                    <div style="background-color: #0F172A; border: 1px solid rgba(91, 66, 243, 0.2); border-radius: 12px; padding: 16px;">
+                        <div style="font-size: 11px; color: #CBD5E1; text-transform: uppercase; margin-bottom: 8px; font-weight: 600;">Stream Rank</div>
+                        <div style="font-size: 24px; font-weight: bold; color: #5B42F3; margin-bottom: 4px;">Affiliate</div>
+                        <div style="font-size: 10px; color: #CBD5E1;">Twitch status</div>
+                    </div>
+                </div>
+
+                <div style="padding: 12px; background-color: rgba(91, 66, 243, 0.1); border-radius: 6px; font-size: 10px; color: #CBD5E1;">
+                    Last synced: 12 minutes ago • Auto-syncs every hour
+                </div>
+            </div>
+
+            <!-- EARNINGS CALCULATOR -->
+            <div class="section">
+                <div class="section-title">💰 What You Can Earn</div>
+                
+                <div class="calc-row">
+                    <div class="calc-label">Your Twitch followers</div>
+                    <input type="number" class="calc-input" id="followers" value="185000" onkeyup="calculateEarnings()">
+                </div>
+
+                <div class="calc-row">
+                    <div class="calc-label">Stream clips to AuraBoost per month</div>
+                    <input type="number" class="calc-input" id="clipsPerMonth" value="30" onkeyup="calculateEarnings()">
+                </div>
+
+                <div class="calc-row">
+                    <div class="calc-label">Average views per clip</div>
+                    <div class="calc-value">~100K - 500K</div>
+                </div>
+
+                <div class="calc-row">
+                    <div class="calc-label">Streamer community conversion</div>
+                    <div class="calc-value">~5-10% (HIGH)</div>
+                </div>
+
+                <div class="calc-row">
+                    <div class="calc-label">Expected new referrals/month</div>
+                    <input type="number" class="calc-input" id="newReferrals" value="80" onkeyup="calculateEarnings()">
+                </div>
+
+                <div class="calc-total">
+                    <div>Monthly Income from AuraBoost</div>
+                    <div class="calc-total-value" id="monthlyEarning">$240</div>
+                    <div class="calc-note">= 80 subs × $3.00 commission</div>
+                </div>
+
+                <div class="calc-total" style="background-color: rgba(91, 66, 243, 0.15); border-color: #5B42F3; margin-top: 12px;">
+                    <div>WITH Affiliate Badge (3X)</div>
+                    <div class="calc-total-value" id="monthlyEarningBadge" style="color: #5B42F3;">$720</div>
+                    <div class="calc-note">= 80 subs × $3.00 × 3</div>
+                </div>
+
+                <div style="padding: 12px; background-color: rgba(91, 66, 243, 0.1); border-radius: 6px; font-size: 11px; color: #CBD5E1; margin-top: 12px; text-align: center; font-weight: 600;">
+                    📊 <span id="annualEarning">$2,880</span>/year without badge | <span id="annualEarningBadge">$8,640</span>/year WITH badge
+                </div>
+            </div>
+
+            <!-- CONTENT THAT CONVERTS -->
+            <div class="section">
+                <div class="section-title">🔥 Streamer Content That Converts Best</div>
+                
+                <div class="content-grid">
+                    <div class="content-card">
+                        <div class="content-icon">😂</div>
+                        <div class="content-name">Funny Moments</div>
+                        <div class="content-aura">+380-550</div>
+                    </div>
+                    <div class="content-card">
+                        <div class="content-icon">🎯</div>
+                        <div class="content-name">Clutch Plays</div>
+                        <div class="content-aura">+380-520</div>
+                    </div>
+                    <div class="content-card">
+                        <div class="content-icon">🔥</div>
+                        <div class="content-name">Hot Moments</div>
+                        <div class="content-aura">+420-600</div>
+                    </div>
+                    <div class="content-card">
+                        <div class="content-icon">💬</div>
+                        <div class="content-name">Chat Reactions</div>
+                        <div class="content-aura">+340-420</div>
+                    </div>
+                    <div class="content-card">
+                        <div class="content-icon">🏆</div>
+                        <div class="content-name">Tournament Wins</div>
+                        <div class="content-aura">+400-550</div>
+                    </div>
+                    <div class="content-card">
+                        <div class="content-icon">🎮</div>
+                        <div class="content-name">Gameplay Clips</div>
+                        <div class="content-aura">+320-420</div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 16px; padding: 12px; background-color: rgba(91, 66, 243, 0.1); border-radius: 6px; border-left: 3px solid #5B42F3; font-size: 11px; color: #CBD5E1;">
+                    <strong>Key insight:</strong> Streamer clips ALWAYS perform well because they feature engagement + personality. Your chat, reactions, and community energy = maximum aura points.
+                </div>
+            </div>
+
+            <!-- STRATEGY -->
+            <div class="section">
+                <div class="section-title">🎯 Streamer Growth Strategy</div>
+                
+                <div class="tips-grid">
+                    <div class="tip-card">
+                        <div class="tip-icon">📹</div>
+                        <div class="tip-title">Auto-Clip Your Streams</div>
+                        <div class="tip-text">Twitch auto-generates clips. Enable in settings. Post best clips to AuraBoost within 24 hours. Ride the momentum.</div>
+                    </div>
+
+                    <div class="tip-card">
+                        <div class="tip-icon">💬</div>
+                        <div class="tip-title">Discord Community Loop</div>
+                        <div class="tip-text">Share AuraBoost clips in Discord. Tell community to check it out. Build hype. More referrals. Community engagement boost.</div>
+                    </div>
+
+                    <div class="tip-card">
+                        <div class="tip-icon">🔗</div>
+                        <div class="tip-title">Multi-Platform Links</div>
+                        <div class="tip-text">Twitch panels + Discord channels + alerts. Put AuraBoost link EVERYWHERE. Make it easy for community to find.</div>
+                    </div>
+
+                    <div class="tip-card">
+                        <div class="tip-icon">⚡</div>
+                        <div class="tip-title">Post High-Engagement Clips</div>
+                        <div class="tip-text">Post clips that got max chat hype. Moments where community went crazy. Those = highest conversion to AuraBoost.</div>
+                    </div>
+
+                    <div class="tip-card">
+                        <div class="tip-icon">🎯</div>
+                        <div class="tip-title">Get Badge in Weeks</div>
+                        <div class="tip-text">Streamers with active communities unlock Affiliate Badge fast (2-3 weeks). That 3X multiplier changes everything.</div>
+                    </div>
+
+                    <div class="tip-card">
+                        <div class="tip-icon">🌟</div>
+                        <div class="tip-title">Build Revenue Stacking</div>
+                        <div class="tip-text">Twitch subs + bits + YouTube + AuraBoost = diversified income. No single platform dependency. Smart creator economy.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VERIFICATION & TRUST SECTION -->
+            <div class="section">
+                <div class="section-title">✅ How Verification Works (Anti-Fraud Protection)</div>
+                
+                <div class="verification-box">
+                    <div class="verification-title">
+                        <strong style="color: #5B42F3;">We verify EVERY post to prevent gaming & protect your earnings.</strong><br>
+                        No fake shares. No gaming the system. Your commission is based on REAL posts on REAL platforms.
+                    </div>
+                </div>
+
+                <div class="verification-grid">
+                    <!-- Step 1 -->
+                    <div class="verification-step">
+                        <div class="step-icon">1️⃣</div>
+                        <div class="step-title">You Upload</div>
+                        <div class="step-description">
+                            Post your Twitch clip to AuraBoost. AI analyzes engagement & entertainment value.
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="verification-step">
+                        <div class="step-icon">2️⃣</div>
+                        <div class="step-title">You Share URL</div>
+                        <div class="step-description">
+                            Paste the direct Twitch clip link (twitch.tv/videos/ABC123 or clips/ABC123)
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="verification-step">
+                        <div class="step-icon">3️⃣</div>
+                        <div class="step-title">You Upload Screenshot</div>
+                        <div class="step-description">
+                            Screenshot showing your clip is live on Twitch (with URL visible in screenshot)
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="verification-step">
+                        <div class="step-icon">4️⃣</div>
+                        <div class="step-title">We Verify & Pay</div>
+                        <div class="step-description">
+                            AI video matching confirms clip is real. Aura points awarded instantly.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="verification-note">
+                    <strong>Why this matters:</strong> We prevent fake posts & gaming. Every referral you make is real. Every commission you earn is legitimate. No wasted effort on clips that won't be verified. Transparent, honest system.
+                </div>
+            </div>
+
+            <!-- REAL EXAMPLES -->
+            <div class="section">
+                <div class="section-title">💼 Real Streamers on AuraBoost</div>
+
+                <div class="example-card">
+                    <div class="example-header">
+                        <div class="example-name">@streamer_pro</div>
+                        <div class="example-stat">📊 185K Twitch followers • Rank #40</div>
+                    </div>
+                    <div class="example-detail">
+                        FPS streamer. Posts 25-30 clips per month. Gets 100K-500K views per clip. Active Discord (5K members). Community converts at 4% to AuraBoost. Gets 80+ referrals monthly.
+                    </div>
+                    <div class="example-earnings">
+                        💰 $240/month = $2,880/year (without badge). $720/month = $8,640/year (with badge)
+                    </div>
+                </div>
+
+                <div class="example-card">
+                    <div class="example-header">
+                        <div class="example-name">@twitch_entertainer</div>
+                        <div class="example-stat">📊 420K Twitch followers • Rank #15 🎖️</div>
+                    </div>
+                    <div class="example-detail">
+                        Comedy/variety streamer with Affiliate Badge (3X multiplier). Posts 35+ clips per month. Discord community 15K strong. Average 300K views per clip × 3% conversion = 150 AuraBoost referrals monthly.
+                    </div>
+                    <div class="example-earnings">
+                        💰 $1,350/month = $16.2K/year (with 3X badge from 150 subs × $3 × 3)
+                    </div>
+                </div>
+
+                <div class="example-card">
+                    <div class="example-header">
+                        <div class="example-name">@mega_streamer</div>
+                        <div class="example-stat">📊 1.2M Twitch followers • Rank #3 🎖️</div>
+                    </div>
+                    <div class="example-detail">
+                        Mega Twitch creator with massive community. Posts 40+ clips monthly. Discord 50K+ members. Clips average 1M+ views. Conversion rate 5% (highly engaged community). Gets 500+ AuraBoost referrals monthly.
+                    </div>
+                    <div class="example-earnings">
+                        💰 $4,500/month = $54K/year (with 3X badge from 500 subs × $3 × 3) - PURE PASSIVE
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA SECTION -->
+            <div class="cta-section">
+                <button class="btn" onclick="startEarning()">🚀 Start Earning Now</button>
+                <div class="cta-text">
+                    Your stream clips are GOLD.<br>
+                    <span class="highlight">Why not monetize them directly?</span><br><br>
+                    Connect Twitch & Discord. Post clips to AuraBoost. Your community converts at 5-10%. Watch passive income flow from every great stream moment.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function connectPlatform(platform) {
+            const platformNames = {
+                discord: 'Discord'
+            };
+            
+            alert(`🔗 Connecting to ${platformNames[platform]}...\n\nYou will be redirected to authorize AuraBoost access to your ${platformNames[platform]} server.\n\nOnce connected, your community stats will automatically sync every hour.`);
+            
+            // Mock: simulate connection
+            setTimeout(() => {
+                const cardId = platform === 'discord' ? 'discord-card' : '';
+                const btnId = platform === 'discord' ? 'discord-btn' : '';
+                
+                if (cardId) {
+                    document.getElementById(cardId).classList.add('connected');
+                    document.getElementById(btnId).classList.add('connected');
+                    document.getElementById(btnId).textContent = '✓ Connected: Your Discord Server';
+                    document.getElementById(btnId).onclick = function() { disconnectPlatform('discord'); };
+                }
+                alert(`✅ Successfully connected to ${platformNames[platform]}!`);
+            }, 1500);
+        }
+
+        function disconnectPlatform(platform) {
+            const platformNames = {
+                twitch: 'Twitch',
+                discord: 'Discord'
+            };
+            
+            if (confirm(`Disconnect from ${platformNames[platform]}?`)) {
+                alert(`Disconnected from ${platformNames[platform]}`);
+                const cardId = platform === 'twitch' ? 'twitch-card' : 'discord-card';
+                const btnId = platform === 'twitch' ? 'twitch-btn' : 'discord-btn';
+                
+                document.getElementById(cardId).classList.remove('connected');
+                document.getElementById(btnId).classList.remove('connected');
+                
+                if (platform === 'discord') {
+                    document.getElementById(btnId).textContent = 'Connect Discord';
+                    document.getElementById(btnId).onclick = function() { connectPlatform('discord'); };
+                }
+            }
+        }
+
+        function calculateEarnings() {
+            const newReferrals = parseInt(document.getElementById('newReferrals').value) || 0;
+            
+            const monthlyEarning = newReferrals * 3.00;
+            const withBadge = monthlyEarning * 3;
+            const annualEarning = monthlyEarning * 12;
+            const annualWithBadge = withBadge * 12;
+            
+            document.getElementById('monthlyEarning').textContent = '$' + monthlyEarning.toFixed(2);
+            document.getElementById('monthlyEarningBadge').textContent = '$' + withBadge.toFixed(2);
+            document.getElementById('annualEarning').textContent = '$' + annualEarning.toFixed(0);
+            document.getElementById('annualEarningBadge').textContent = '$' + annualWithBadge.toFixed(0);
+        }
+
+        function startEarning() {
+            alert('🚀 Let\'s go!\n\nSteps:\n1. Post your best Twitch clips to AuraBoost\n2. AI scores engagement & entertainment\n3. Climb the leaderboard\n4. Your Discord community sees you\n5. They subscribe to AuraBoost\n6. You get 30% commission\n7. Unlock badge = 3X earnings\n\nStreamers make $2.8K-$54K/year depending on community size!');
+        }
+
+        function goBack() {
+            alert('Going back...');
+        }
+
+        // Calculate initial earnings
+        calculateEarnings();
+    </script>
+</body>
+</html>

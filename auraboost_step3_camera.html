@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraBoost - Camera & Boost Video</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #0F172A;
+            color: #F1F5F9;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background-color: #1E293B;
+            border-bottom: 1px solid #F59E0B;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            position: sticky;
+            top: 0;
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: bold;
+            color: #F59E0B;
+        }
+
+        .header-bottom {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .username {
+            color: #CBD5E1;
+            font-size: 14px;
+        }
+
+        .logout-btn {
+            background-color: #F59E0B;
+            color: #0F172A;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .main-content {
+            padding: 24px 20px;
+        }
+
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        .upload-area {
+            background-color: #1E293B;
+            border: 2px dashed #F59E0B;
+            border-radius: 12px;
+            padding: 40px 20px;
+            text-align: center;
+            margin-bottom: 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .upload-area:hover {
+            background-color: rgba(245, 158, 11, 0.05);
+            border-color: #FCD34D;
+        }
+
+        .upload-emoji {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .upload-text {
+            color: #CBD5E1;
+            margin-bottom: 8px;
+        }
+
+        .upload-subtext {
+            color: #64748B;
+            font-size: 12px;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .preview-container {
+            background-color: #1E293B;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 24px;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .preview-image {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .customization-panel {
+            background-color: #1E293B;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .customization-group {
+            margin-bottom: 16px;
+        }
+
+        .customization-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .customization-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #CBD5E1;
+            margin-bottom: 8px;
+            display: block;
+            text-transform: uppercase;
+        }
+
+        .customization-input,
+        .customization-select {
+            width: 100%;
+            padding: 10px 12px;
+            background-color: #0F172A;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 6px;
+            color: #F1F5F9;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .customization-input:focus,
+        .customization-select:focus {
+            outline: none;
+            border-color: #F59E0B;
+        }
+
+        .color-picker-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+            gap: 8px;
+        }
+
+        .color-option {
+            width: 40px;
+            height: 40px;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .color-option.selected {
+            border-color: #F59E0B;
+            box-shadow: 0 0 8px rgba(245, 158, 11, 0.5);
+        }
+
+        .video-preview {
+            background-color: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 24px;
+            aspect-ratio: 9/16;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .video-content {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1E293B, #0F172A);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .boost-animation {
+            font-size: 60px;
+            margin-bottom: 16px;
+            animation: bounce 0.6s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .video-aura-text {
+            font-size: 32px;
+            font-weight: bold;
+            color: #F59E0B;
+            margin: 12px 0;
+        }
+
+        .video-streak-text {
+            font-size: 18px;
+            color: #FCD34D;
+            margin: 8px 0;
+        }
+
+        .video-location-text {
+            font-size: 14px;
+            color: #CBD5E1;
+            margin: 8px 0;
+        }
+
+        .video-username-text {
+            font-size: 12px;
+            color: #64748B;
+            margin-top: 12px;
+        }
+
+        .video-logo {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            font-size: 24px;
+            opacity: 0.5;
+        }
+
+        .action-buttons {
+            display: grid;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .btn {
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background-color: #F59E0B;
+            color: #0F172A;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+
+        .btn-secondary {
+            background-color: #1E293B;
+            color: #F1F5F9;
+            border: 2px solid #F59E0B;
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(245, 158, 11, 0.1);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .share-buttons {
+            display: grid;
+            gap: 12px;
+        }
+
+        .share-btn {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background-color: #1E293B;
+            color: #F1F5F9;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            transition: all 0.2s;
+        }
+
+        .share-btn:hover {
+            background-color: rgba(245, 158, 11, 0.1);
+            border-color: #F59E0B;
+        }
+
+        .info-box {
+            background-color: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #F1F5F9;
+            margin-bottom: 16px;
+        }
+
+        .back-btn {
+            background-color: #1E293B;
+            color: #F1F5F9;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-top">
+            <svg width="40" height="40" viewBox="0 0 400 400" fill="none">
+                <circle cx="200" cy="200" r="160" stroke="#F59E0B" stroke-width="28" />
+                <circle cx="200" cy="200" r="110" stroke="#FCD34D" stroke-width="24" />
+                <circle cx="200" cy="200" r="60" stroke="#F59E0B" stroke-width="20" />
+                <circle cx="200" cy="200" r="25" fill="#F59E0B" />
+            </svg>
+            <h1>AuraBoost</h1>
+        </div>
+        <div class="header-bottom">
+            <span class="username">@testuser</span>
+            <button class="logout-btn" onclick="goToDashboard()">Back</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="main-content">
+            <!-- UPLOAD SCREEN -->
+            <div id="uploadScreen" class="screen active">
+                <h2 style="margin-bottom: 12px;">📷 Scan Your Aura</h2>
+                <p style="color: #CBD5E1; margin-bottom: 24px;">Upload a gym photo and we'll generate your boost video</p>
+
+                <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+                    <div class="upload-emoji">📸</div>
+                    <div class="upload-text">Click to upload or drag and drop</div>
+                    <div class="upload-subtext">PNG, JPG up to 10MB</div>
+                </div>
+
+                <input type="file" id="fileInput" accept="image/*" onchange="handleImageUpload(event)">
+
+                <div class="info-box">
+                    💡 <strong>Pro tip:</strong> Take a photo at the gym with your workout equipment, gym sign, or workout gear visible. This makes your boost video more authentic!
+                </div>
+            </div>
+
+            <!-- CUSTOMIZATION SCREEN -->
+            <div id="customizationScreen" class="screen">
+                <button class="back-btn" onclick="backToUpload()">← Back</button>
+
+                <h2 style="margin-bottom: 12px;">✨ Customize Your Video</h2>
+                <p style="color: #CBD5E1; margin-bottom: 24px;">Personalize how your aura boost video looks</p>
+
+                <div id="previewContainer" class="preview-container">
+                    <img id="previewImage" class="preview-image" src="" alt="Preview">
+                </div>
+
+                <div class="customization-panel">
+                    <div class="customization-group">
+                        <label class="customization-label">Date Stamp Font</label>
+                        <select class="customization-select" id="dateFont" onchange="updateVideoPreview()">
+                            <option value="Arial, sans-serif">Modern (Arial)</option>
+                            <option value="'Courier New', monospace">Monospace</option>
+                            <option value="Georgia, serif">Classic (Georgia)</option>
+                        </select>
+                    </div>
+
+                    <div class="customization-group">
+                        <label class="customization-label">Timestamp Color</label>
+                        <div class="color-picker-row">
+                            <div class="color-option selected" style="background-color: #FFFFFF;" onclick="selectColor(this, '#FFFFFF', 'White')"></div>
+                            <div class="color-option" style="background-color: #F59E0B;" onclick="selectColor(this, '#F59E0B', 'Gold')"></div>
+                            <div class="color-option" style="background-color: #10B981;" onclick="selectColor(this, '#10B981', 'Green')"></div>
+                            <div class="color-option" style="background-color: #EF4444;" onclick="selectColor(this, '#EF4444', 'Red')"></div>
+                        </div>
+                        <input type="hidden" id="selectedColor" value="#FFFFFF">
+                    </div>
+
+                    <div class="customization-group">
+                        <label class="customization-label">Location Tag</label>
+                        <input type="text" class="customization-input" id="locationInput" placeholder="e.g., Gold's Gym NYC" onchange="updateVideoPreview()" value="Gold's Gym NYC">
+                    </div>
+
+                    <div class="customization-group">
+                        <label class="customization-label">Boost Type</label>
+                        <select class="customization-select" id="boostType" onchange="updateVideoPreview()">
+                            <option value="gym">🏋️ Gym Boost (+20 points)</option>
+                            <option value="cardio">🏃 Cardio Boost (+15 points)</option>
+                            <option value="strength">💪 Strength Boost (+25 points)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" style="width: 100%; margin-bottom: 24px;" onclick="generateVideo()">
+                    <span>🎬</span>
+                    <span>Generate Boost Video</span>
+                </button>
+            </div>
+
+            <!-- VIDEO PREVIEW SCREEN -->
+            <div id="videoScreen" class="screen">
+                <button class="back-btn" onclick="backToCustomization()">← Back</button>
+
+                <h2 style="margin-bottom: 12px;">✨ Your Boost Video</h2>
+                <p style="color: #CBD5E1; margin-bottom: 24px;">18-second video ready to share!</p>
+
+                <div class="video-preview">
+                    <div class="video-content">
+                        <div class="boost-animation">🔥</div>
+                        <div class="video-aura-text">+20 AURA POINTS!</div>
+                        <div class="video-streak-text">47-DAY STREAK!</div>
+                        <div id="videoLocation" class="video-location-text">Gold's Gym NYC</div>
+                        <div class="video-username-text">@testuser</div>
+                        <div class="video-logo">🎯</div>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    🚀 <strong>Share this video to social media!</strong> Your referral link will be automatically included in the caption so your friends can join.
+                </div>
+
+                <div class="section-title">Share to Social Media</div>
+                <div class="share-buttons">
+                    <button class="share-btn" onclick="shareToX()">
+                        <span>𝕏</span>
+                        <span>Share to X (Twitter)</span>
+                    </button>
+                    <button class="share-btn" onclick="shareToInstagram()">
+                        <span>📷</span>
+                        <span>Share to Instagram Stories</span>
+                    </button>
+                    <button class="share-btn" onclick="shareToTikTok()">
+                        <span>🎵</span>
+                        <span>Share to TikTok</span>
+                    </button>
+                    <button class="share-btn" onclick="shareToOnlyFans()">
+                        <span>💎</span>
+                        <span>Post to OnlyFans</span>
+                    </button>
+                </div>
+
+                <button class="btn btn-secondary" style="width: 100%; margin-top: 24px;" onclick="downloadVideo()">
+                    <span>⬇️</span>
+                    <span>Download Video</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let uploadedImage = null;
+        let selectedColor = '#FFFFFF';
+
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    uploadedImage = e.target.result;
+                    document.getElementById('previewImage').src = uploadedImage;
+                    goToCustomization();
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function selectColor(element, color, name) {
+            document.querySelectorAll('.color-option').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedColor = color;
+            document.getElementById('selectedColor').value = color;
+        }
+
+        function updateVideoPreview() {
+            const location = document.getElementById('locationInput').value || 'Gold\'s Gym';
+            document.getElementById('videoLocation').textContent = location;
+        }
+
+        function goToCustomization() {
+            document.getElementById('uploadScreen').classList.remove('active');
+            document.getElementById('customizationScreen').classList.add('active');
+        }
+
+        function backToUpload() {
+            document.getElementById('customizationScreen').classList.remove('active');
+            document.getElementById('uploadScreen').classList.add('active');
+        }
+
+        function generateVideo() {
+            document.getElementById('customizationScreen').classList.remove('active');
+            document.getElementById('videoScreen').classList.add('active');
+            updateVideoPreview();
+        }
+
+        function backToCustomization() {
+            document.getElementById('videoScreen').classList.remove('active');
+            document.getElementById('customizationScreen').classList.add('active');
+        }
+
+        function shareToX() {
+            const caption = "Just hit 47 days on my fitness streak! 🔥\n\nTracking my aura with AuraBoost\n\nJoin me and earn rewards:\nauraboost.app/ref/testuser\n\n#AuraBoost #StreakLife #GymBoost";
+            alert(`Share to X:\n\n${caption}\n\n(In real app, this opens Twitter)`);
+        }
+
+        function shareToInstagram() {
+            const caption = "47-day streak! 🔥💪\nTracking my aura...\nauraboost.app/ref/testuser\n#AuraBoost #FitnessGoals #GymLife";
+            alert(`Share to Instagram:\n\n${caption}\n\n(In real app, this opens Instagram with video)`);
+        }
+
+        function shareToTikTok() {
+            const caption = "POV: You're tracking your gym aura 🔥\nDay 47 streak! Join the movement\nauraboost.app/ref/testuser\n#AuraBoost #FitnessTok #Motivation";
+            alert(`Share to TikTok:\n\n${caption}\n\n(In real app, this opens TikTok)`);
+        }
+
+        function shareToOnlyFans() {
+            alert("Share to OnlyFans:\n\nVideo + caption posted to your feed with referral link.\n\n(In real app, this connects to OnlyFans API)");
+        }
+
+        function downloadVideo() {
+            alert("📥 Video downloading!\n\nIn real app, this saves a 1080x1920px MP4 video to your device.");
+        }
+
+        function goToDashboard() {
+            alert("Going back to dashboard...\n\nIn real app, this navigates back to the main dashboard.");
+        }
+    </script>
+</body>
+</html>

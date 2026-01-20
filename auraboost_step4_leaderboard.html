@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraBoost - Leaderboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #0F172A;
+            color: #F1F5F9;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background-color: #1E293B;
+            border-bottom: 1px solid #F59E0B;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: bold;
+            color: #F59E0B;
+        }
+
+        .header-bottom {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .username {
+            color: #CBD5E1;
+            font-size: 14px;
+        }
+
+        .back-btn {
+            background-color: #F59E0B;
+            color: #0F172A;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .main-content {
+            padding: 24px 20px;
+        }
+
+        .page-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #F1F5F9;
+            margin-bottom: 8px;
+        }
+
+        .page-subtitle {
+            color: #CBD5E1;
+            margin-bottom: 24px;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+        }
+
+        .filter-tab {
+            padding: 10px 16px;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            background-color: #1E293B;
+            color: #CBD5E1;
+            border-radius: 6px;
+            cursor: pointer;
+            white-space: nowrap;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .filter-tab.active {
+            background-color: #F59E0B;
+            color: #0F172A;
+            border-color: #F59E0B;
+        }
+
+        .filter-tab:hover {
+            border-color: #F59E0B;
+        }
+
+        .leaderboard-container {
+            background-color: #1E293B;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        .leaderboard-header {
+            display: grid;
+            grid-template-columns: 50px 1fr 100px 100px 60px;
+            gap: 12px;
+            padding: 16px 20px;
+            background-color: #0F172A;
+            border-bottom: 1px solid rgba(245, 158, 11, 0.2);
+            font-size: 12px;
+            font-weight: 600;
+            color: #CBD5E1;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .leaderboard-row {
+            display: grid;
+            grid-template-columns: 50px 1fr 100px 100px 60px;
+            gap: 12px;
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(245, 158, 11, 0.1);
+            align-items: center;
+            transition: background-color 0.2s;
+        }
+
+        .leaderboard-row:hover {
+            background-color: rgba(245, 158, 11, 0.05);
+        }
+
+        .leaderboard-row:last-child {
+            border-bottom: none;
+        }
+
+        .rank-badge {
+            font-size: 18px;
+            font-weight: bold;
+            color: #F59E0B;
+            text-align: center;
+        }
+
+        .rank-1 { color: #FFD700; font-size: 20px; }
+        .rank-2 { color: #C0C0C0; font-size: 20px; }
+        .rank-3 { color: #CD7F32; font-size: 20px; }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #F59E0B, #FCD34D);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 16px;
+            color: #0F172A;
+            flex-shrink: 0;
+        }
+
+        .user-details {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: #F1F5F9;
+            font-size: 14px;
+        }
+
+        .user-location {
+            font-size: 12px;
+            color: #CBD5E1;
+        }
+
+        .user-badge {
+            display: inline-block;
+            background-color: rgba(245, 158, 11, 0.2);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            color: #FCD34D;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 600;
+            margin-top: 2px;
+            width: fit-content;
+        }
+
+        .aura-stat {
+            text-align: center;
+        }
+
+        .aura-value {
+            font-weight: bold;
+            color: #F59E0B;
+            font-size: 16px;
+        }
+
+        .aura-label {
+            font-size: 10px;
+            color: #CBD5E1;
+            margin-top: 2px;
+        }
+
+        .streak-stat {
+            text-align: center;
+        }
+
+        .streak-value {
+            font-weight: bold;
+            color: #10B981;
+            font-size: 16px;
+        }
+
+        .streak-label {
+            font-size: 10px;
+            color: #CBD5E1;
+            margin-top: 2px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+        }
+
+        .btn-small {
+            padding: 6px 10px;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            background-color: transparent;
+            color: #F59E0B;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .btn-small:hover {
+            background-color: rgba(245, 158, 11, 0.1);
+            border-color: #F59E0B;
+        }
+
+        .your-rank-section {
+            background: linear-gradient(135deg, #1E293B 0%, rgba(245, 158, 11, 0.1) 100%);
+            border: 2px solid #F59E0B;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .your-rank-label {
+            font-size: 12px;
+            color: #CBD5E1;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .your-rank-content {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .your-rank-number {
+            font-size: 48px;
+            font-weight: bold;
+            color: #F59E0B;
+            text-align: center;
+        }
+
+        .your-rank-info h3 {
+            font-size: 18px;
+            color: #F1F5F9;
+            margin-bottom: 8px;
+        }
+
+        .your-rank-stats {
+            display: flex;
+            gap: 16px;
+            color: #CBD5E1;
+            font-size: 14px;
+        }
+
+        .your-rank-progress {
+            text-align: right;
+        }
+
+        .points-to-rank {
+            font-size: 18px;
+            font-weight: bold;
+            color: #FCD34D;
+        }
+
+        .points-to-rank-label {
+            font-size: 12px;
+            color: #CBD5E1;
+        }
+
+        .top-creators-section {
+            margin-top: 32px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #F1F5F9;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .top-creators-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .creator-card {
+            background-color: #1E293B;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .creator-card:hover {
+            border-color: #F59E0B;
+            background-color: rgba(245, 158, 11, 0.05);
+        }
+
+        .creator-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #F59E0B, #FCD34D);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 24px;
+            color: #0F172A;
+            margin: 0 auto 12px;
+        }
+
+        .creator-name {
+            font-weight: 600;
+            color: #F1F5F9;
+            margin-bottom: 4px;
+        }
+
+        .creator-category {
+            display: inline-block;
+            background-color: rgba(245, 158, 11, 0.2);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            color: #FCD34D;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .creator-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 12px;
+            font-size: 12px;
+        }
+
+        .creator-stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .creator-stat-value {
+            font-weight: bold;
+            color: #F59E0B;
+        }
+
+        .creator-stat-label {
+            color: #CBD5E1;
+            font-size: 10px;
+        }
+
+        .creator-action-btn {
+            width: 100%;
+            padding: 8px;
+            background-color: #F59E0B;
+            color: #0F172A;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .creator-action-btn:hover {
+            opacity: 0.9;
+        }
+
+        .info-banner {
+            background-color: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #CBD5E1;
+            margin-bottom: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-top">
+            <svg width="40" height="40" viewBox="0 0 400 400" fill="none">
+                <circle cx="200" cy="200" r="160" stroke="#F59E0B" stroke-width="28" />
+                <circle cx="200" cy="200" r="110" stroke="#FCD34D" stroke-width="24" />
+                <circle cx="200" cy="200" r="60" stroke="#F59E0B" stroke-width="20" />
+                <circle cx="200" cy="200" r="25" fill="#F59E0B" />
+            </svg>
+            <h1>AuraBoost</h1>
+        </div>
+        <div class="header-bottom">
+            <span class="username">@testuser</span>
+            <button class="back-btn" onclick="goToDashboard()">← Back</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="main-content">
+            <div class="page-title">🏆 Global Leaderboard</div>
+            <p class="page-subtitle">Compete with thousands of fitness enthusiasts worldwide</p>
+
+            <!-- YOUR RANK -->
+            <div class="your-rank-section">
+                <div class="your-rank-label">Your Current Position</div>
+                <div class="your-rank-content">
+                    <div class="your-rank-number">247</div>
+                    <div class="your-rank-info">
+                        <h3>@testuser</h3>
+                        <div class="your-rank-stats">
+                            <div>187 aura points</div>
+                            <div>47-day streak 🔥</div>
+                        </div>
+                    </div>
+                    <div class="your-rank-progress">
+                        <div class="points-to-rank">+47</div>
+                        <div class="points-to-rank-label">to reach top 100</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FILTER TABS -->
+            <div class="filter-tabs">
+                <button class="filter-tab active" onclick="filterLeaderboard('all')">All Time</button>
+                <button class="filter-tab" onclick="filterLeaderboard('week')">This Week</button>
+                <button class="filter-tab" onclick="filterLeaderboard('month')">This Month</button>
+                <button class="filter-tab" onclick="filterLeaderboard('streak')">Top Streaks</button>
+                <button class="filter-tab" onclick="filterLeaderboard('creators')">Top Creators</button>
+            </div>
+
+            <!-- INFO BANNER -->
+            <div class="info-banner">
+                💡 <strong>Challenge others!</strong> Click the challenge button to compete with any user. Whoever has the highest aura in 7 days wins! Click 'Follow' to track their progress.
+            </div>
+
+            <!-- LEADERBOARD -->
+            <div class="leaderboard-container">
+                <div class="leaderboard-header">
+                    <div>Rank</div>
+                    <div>User</div>
+                    <div>Aura</div>
+                    <div>Streak</div>
+                    <div>Action</div>
+                </div>
+
+                <!-- ROW 1 -->
+                <div class="leaderboard-row">
+                    <div class="rank-badge rank-1">🥇</div>
+                    <div class="user-info">
+                        <div class="user-avatar">X</div>
+                        <div class="user-details">
+                            <div class="user-name">@xo_fitness</div>
+                            <div class="user-location">📍 LA, Gold's Gym</div>
+                            <div class="user-badge">💎 Verified Creator</div>
+                        </div>
+                    </div>
+                    <div class="aura-stat">
+                        <div class="aura-value">2,450</div>
+                        <div class="aura-label">points</div>
+                    </div>
+                    <div class="streak-stat">
+                        <div class="streak-value">365d</div>
+                        <div class="streak-label">streak</div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn-small" onclick="alert('Following @xo_fitness')">Follow</button>
+                        <button class="btn-small" onclick="alert('Challenge sent to @xo_fitness')">Challenge</button>
+                    </div>
+                </div>
+
+                <!-- ROW 2 -->
+                <div class="leaderboard-row">
+                    <div class="rank-badge rank-2">🥈</div>
+                    <div class="user-info">
+                        <div class="user-avatar">G</div>
+                        <div class="user-details">
+                            <div class="user-name">@gainz_queen</div>
+                            <div class="user-location">📍 NYC, Equinox</div>
+                            <div class="user-badge">💎 Verified Creator</div>
+                        </div>
+                    </div>
+                    <div class="aura-stat">
+                        <div class="aura-value">2,230</div>
+                        <div class="aura-label">points</div>
+                    </div>
+                    <div class="streak-stat">
+                        <div class="streak-value">298d</div>
+                        <div class="streak-label">streak</div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn-small" onclick="alert('Following @gainz_queen')">Follow</button>
+                        <button class="btn-small" onclick="alert('Challenge sent to @gainz_queen')">Challenge</button>
+                    </div>
+                </div>
+
+                <!-- ROW 3 -->
+                <div class="leaderboard-row">
+                    <div class="rank-badge rank-3">🥉</div>
+                    <div class="user-info">
+                        <div class="user-avatar">C</div>
+                        <div class="user-details">
+                            <div class="user-name">@crypto_jock</div>
+                            <div class="user-location">📍 SF, SoulCycle</div>
+                        </div>
+                    </div>
+                    <div class="aura-stat">
+                        <div class="aura-value">1,987</div>
+                        <div class="aura-label">points</div>
+                    </div>
+                    <div class="streak-stat">
+                        <div class="streak-value">256d</div>
+                        <div class="streak-label">streak</div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn-small" onclick="alert('Following @crypto_jock')">Follow</button>
+                        <button class="btn-small" onclick="alert('Challenge sent to @crypto_jock')">Challenge</button>
+                    </div>
+                </div>
+
+                <!-- ROW 4 -->
+                <div class="leaderboard-row">
+                    <div class="rank-badge">4</div>
+                    <div class="user-info">
+                        <div class="user-avatar">M</div>
+                        <div class="user-details">
+                            <div class="user-name">@muscle_maven</div>
+                            <div class="user-location">📍 Boston, Crunch Fitness</div>
+                        </div>
+                    </div>
+                    <div class="aura-stat">
+                        <div class="aura-value">1,856</div>
+                        <div class="aura-label">points</div>
+                    </div>
+                    <div class="streak-stat">
+                        <div class="streak-value">234d</div>
+                        <div class="streak-label">streak</div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn-small" onclick="alert('Following @muscle_maven')">Follow</button>
+                        <button class="btn-small" onclick="alert('Challenge sent to @muscle_maven')">Challenge</button>
+                    </div>
+                </div>
+
+                <!-- ROW 5 -->
+                <div class="leaderboard-row">
+                    <div class="rank-badge">5</div>
+                    <div class="user-info">
+                        <div class="user-avatar">F</div>
+                        <div class="user-details">
+                            <div class="user-name">@fitlife_guru</div>
+                            <div class="user-location">📍 Miami, Life Time</div>
+                            <div class="user-badge">💎 Verified Creator</div>
+                        </div>
+                    </div>
+                    <div class="aura-stat">
+                        <div class="aura-value">1,723</div>
+                        <div class="aura-label">points</div>
+                    </div>
+                    <div class="streak-stat">
+                        <div class="streak-value">198d</div>
+                        <div class="streak-label">streak</div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn-small" onclick="alert('Following @fitlife_guru')">Follow</button>
+                        <button class="btn-small" onclick="alert('Challenge sent to @fitlife_guru')">Challenge</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGINATION HINT -->
+            <div class="info-banner" style="text-align: center;">
+                Showing users 1-5 of 50,000+ | Scroll down to see more
+            </div>
+
+            <!-- TOP CREATORS SECTION -->
+            <div class="top-creators-section">
+                <div class="section-title">💰 Top Creators (Earning Most)</div>
+                <p class="page-subtitle" style="margin-bottom: 16px;">These creators are earning the most through referrals</p>
+
+                <div class="top-creators-grid">
+                    <div class="creator-card">
+                        <div class="creator-avatar">X</div>
+                        <div class="creator-name">@xo_fitness</div>
+                        <div class="creator-category">💪 Fitness Influencer</div>
+                        <div class="creator-stats">
+                            <div class="creator-stat">
+                                <div class="creator-stat-value">$2,450</div>
+                                <div class="creator-stat-label">this month</div>
+                            </div>
+                            <div class="creator-stat">
+                                <div class="creator-stat-value">287</div>
+                                <div class="creator-stat-label">referrals</div>
+                            </div>
+                        </div>
+                        <button class="creator-action-btn" onclick="alert('Viewing @xo_fitness creator profile')">View Profile</button>
+                    </div>
+
+                    <div class="creator-card">
+                        <div class="creator-avatar">G</div>
+                        <div class="creator-name">@gainz_queen</div>
+                        <div class="creator-category">🎮 Gamer + Fitness</div>
+                        <div class="creator-stats">
+                            <div class="creator-stat">
+                                <div class="creator-stat-value">$1,890</div>
+                                <div class="creator-stat-label">this month</div>
+                            </div>
+                            <div class="creator-stat">
+                                <div class="creator-stat-value">234</div>
+                                <div class="creator-stat-label">referrals</div>
+                            </div>
+                        </div>
+                        <button class="creator-action-btn" onclick="alert('Viewing @gainz_queen creator profile')">View Profile</button>
+                    </div>
+
+                    <div class="creator-card">
+                        <div class="creator-avatar">F</div>
+                        <div class="creator-name">@fitlife_guru</div>
+                        <div class="creator-category">📱 Social Media Star</div>
+                        <div class="creator-stats">
+                            <div class="creator-stat">
+                                <div class="creator-stat-value">$1,456</div>
+                                <div class="creator-stat-label">this month</div>
+                            </div>
+                            <div class="creator-stat">
+                                <div class="creator-stat-value">189</div>
+                                <div class="creator-stat-label">referrals</div>
+                            </div>
+                        </div>
+                        <button class="creator-action-btn" onclick="alert('Viewing @fitlife_guru creator profile')">View Profile</button>
+                    </div>
+
+                    <div class="creator-card">
+                        <div class="creator-avatar">T</div>
+                        <div class="creator-name">@trainer_tony</div>
+                        <div class="creator-category">🏋️ Personal Trainer</div>
+                        <div class="creator-stats">
+                            <div class="creator-stat">
+                                <div class="creator-stat-value">$987</div>
+                                <div class="creator-stat-label">this month</div>
+                            </div>
+                            <div class="creator-stat">
+                                <div class="creator-stat-value">156</div>
+                                <div class="creator-stat-label">referrals</div>
+                            </div>
+                        </div>
+                        <button class="creator-action-btn" onclick="alert('Viewing @trainer_tony creator profile')">View Profile</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function filterLeaderboard(type) {
+            // Remove active class from all tabs
+            document.querySelectorAll('.filter-tab').forEach(tab => tab.classList.remove('active'));
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+            
+            // In real app, this would fetch different data
+            alert(`Loading ${type} leaderboard...`);
+        }
+
+        function goToDashboard() {
+            alert('Going back to dashboard...\n\nIn real app, this navigates back.');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraBoost - Share Workout</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #0F172A;
+            color: #F1F5F9;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding-bottom: 100px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #F59E0B 0%, #EC4899 100%);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+        }
+
+        .header-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #F1F5F9;
+        }
+
+        .back-btn {
+            background-color: rgba(241, 245, 249, 0.2);
+            color: #F1F5F9;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .back-btn:hover {
+            background-color: rgba(241, 245, 249, 0.3);
+        }
+
+        .main-content {
+            padding: 24px 20px;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #F1F5F9;
+        }
+
+        .page-subtitle {
+            color: #CBD5E1;
+            margin-bottom: 24px;
+            font-size: 13px;
+        }
+
+        /* VIDEO PREVIEW */
+        .video-preview-section {
+            background-color: #1E293B;
+            border: 2px solid rgba(245, 158, 11, 0.2);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 24px;
+            position: relative;
+            aspect-ratio: 9 / 16;
+        }
+
+        .video-preview-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .play-icon {
+            position: absolute;
+            font-size: 48px;
+            opacity: 0.5;
+            z-index: 1;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .filter-effect-overlay {
+            position: absolute;
+            font-size: 120px;
+            opacity: 0.8;
+            z-index: 2;
+            animation: bounce 0.6s ease;
+        }
+
+        .video-preview-label {
+            position: absolute;
+            bottom: 16px;
+            left: 16px;
+            background-color: rgba(245, 158, 11, 0.9);
+            color: #0F172A;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            z-index: 3;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: scale(1) translateY(0); }
+            50% { transform: scale(1.15) translateY(-20px); }
+        }
+
+        /* SECTION */
+        .section {
+            background-color: #1E293B;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 13px;
+            color: #CBD5E1;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+        }
+
+        /* FILTERS - SNAPCHAT STYLE CAROUSEL */
+        .filters-carousel {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+            scroll-behavior: smooth;
+        }
+
+        .filters-carousel::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .filters-carousel::-webkit-scrollbar-track {
+            background: rgba(245, 158, 11, 0.1);
+            border-radius: 2px;
+        }
+
+        .filters-carousel::-webkit-scrollbar-thumb {
+            background: rgba(245, 158, 11, 0.3);
+            border-radius: 2px;
+        }
+
+        .filter-option {
+            position: relative;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+
+        .filter-option input[type="radio"] {
+            display: none;
+        }
+
+        .filter-preview {
+            width: 90px;
+            height: 160px;
+            border-radius: 8px;
+            border: 2px solid rgba(245, 158, 11, 0.3);
+            overflow: hidden;
+            transition: all 0.2s;
+            background: linear-gradient(135deg, #1E293B, #0F172A);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 36px;
+            padding: 12px;
+            text-align: center;
+            position: relative;
+        }
+
+        .filter-option input[type="radio"]:checked + .filter-preview {
+            border-color: #F59E0B;
+            box-shadow: 0 0 16px rgba(245, 158, 11, 0.5);
+            transform: scale(1.08);
+        }
+
+        .filter-name {
+            font-size: 10px;
+            font-weight: 700;
+            color: #F59E0B;
+            position: absolute;
+            bottom: 8px;
+            left: 0;
+            right: 0;
+        }
+
+        /* TEMPLATES */
+        .templates-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .template-option {
+            position: relative;
+        }
+
+        .template-option input[type="radio"] {
+            display: none;
+        }
+
+        .template-card {
+            padding: 16px;
+            background-color: #0F172A;
+            border: 2px solid rgba(245, 158, 11, 0.3);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .template-option input[type="radio"]:checked + .template-card {
+            border-color: #F59E0B;
+            background-color: rgba(245, 158, 11, 0.1);
+            box-shadow: 0 0 12px rgba(245, 158, 11, 0.3);
+        }
+
+        .template-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .template-name {
+            font-size: 12px;
+            font-weight: 700;
+            color: #F59E0B;
+            margin-bottom: 6px;
+        }
+
+        .template-description {
+            font-size: 10px;
+            color: #CBD5E1;
+            line-height: 1.4;
+        }
+
+        /* CAPTION EDITOR */
+        .caption-section {
+            background-color: #1E293B;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .caption-label {
+            font-size: 13px;
+            color: #CBD5E1;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .caption-textarea {
+            width: 100%;
+            padding: 14px 16px;
+            background-color: #0F172A;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 8px;
+            color: #F1F5F9;
+            font-size: 13px;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 120px;
+            transition: all 0.2s;
+            line-height: 1.5;
+        }
+
+        .caption-textarea:focus {
+            outline: none;
+            border-color: #F59E0B;
+            box-shadow: 0 0 12px rgba(245, 158, 11, 0.2);
+        }
+
+        .caption-counter {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+            font-size: 11px;
+            color: #CBD5E1;
+        }
+
+        .caption-counter-num {
+            color: #F59E0B;
+            font-weight: 700;
+        }
+
+        /* HASHTAGS */
+        .hashtags-section {
+            background-color: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-top: 12px;
+        }
+
+        .hashtags-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            color: #CBD5E1;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .hashtags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .hashtag {
+            background-color: rgba(245, 158, 11, 0.2);
+            color: #F59E0B;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        /* SOCIAL SHARE */
+        .social-share-section {
+            background-color: #1E293B;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .social-share-title {
+            font-size: 13px;
+            color: #CBD5E1;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+        }
+
+        .social-share-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .social-share-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            background-color: #0F172A;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .social-share-checkbox:hover {
+            border-color: rgba(245, 158, 11, 0.5);
+            background-color: rgba(245, 158, 11, 0.05);
+        }
+
+        .social-share-checkbox input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #F59E0B;
+        }
+
+        .social-share-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #F1F5F9;
+            cursor: pointer;
+        }
+
+        /* BUTTONS */
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+            position: sticky;
+            bottom: 0;
+            background-color: #0F172A;
+            padding: 20px;
+            border-top: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .btn {
+            padding: 14px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-secondary {
+            background-color: rgba(245, 158, 11, 0.2);
+            color: #F59E0B;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(245, 158, 11, 0.3);
+            border-color: rgba(245, 158, 11, 0.5);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #F59E0B 0%, #EC4899 100%);
+            color: #0F172A;
+            grid-column: 1 / -1;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        /* SUCCESS MESSAGE */
+        .success-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .success-overlay.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .success-card {
+            background-color: #1E293B;
+            border-radius: 16px;
+            padding: 40px 24px;
+            text-align: center;
+            max-width: 400px;
+            animation: scaleIn 0.4s ease;
+        }
+
+        .success-animation {
+            font-size: 64px;
+            margin-bottom: 16px;
+            animation: bounce 0.6s ease;
+        }
+
+        .success-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #10B981;
+            margin-bottom: 12px;
+        }
+
+        .success-message-text {
+            font-size: 13px;
+            color: #CBD5E1;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .success-stats {
+            background-color: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .success-stat {
+            font-size: 12px;
+            color: #CBD5E1;
+            margin-bottom: 8px;
+        }
+
+        .success-stat:last-child {
+            margin-bottom: 0;
+        }
+
+        .success-stat-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #10B981;
+        }
+
+        .success-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .success-btn {
+            padding: 12px 16px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+        }
+
+        .success-btn-primary {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            color: white;
+            grid-column: 1 / -1;
+        }
+
+        .success-btn-primary:hover {
+            opacity: 0.9;
+        }
+
+        .success-btn-secondary {
+            background-color: rgba(245, 158, 11, 0.2);
+            color: #F59E0B;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .success-btn-secondary:hover {
+            background-color: rgba(245, 158, 11, 0.3);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .info-box {
+            background-color: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+            font-size: 12px;
+            line-height: 1.6;
+            color: #CBD5E1;
+        }
+
+        .info-box strong {
+            color: #F59E0B;
+        }
+
+        @media (max-width: 600px) {
+            .templates-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-title">📤 Share Workout</div>
+        <button class="back-btn" onclick="window.history.back()">← Back</button>
+    </div>
+
+    <div class="container">
+        <div class="main-content">
+            <div class="page-title">Share Your Workout</div>
+            <p class="page-subtitle">Record & post with Snapchat-style video filters</p>
+
+            <div class="info-box">
+                💡 <strong>Tip:</strong> Switch between video filters to find your vibe! Use emojis to make your workout look epic.
+            </div>
+
+            <!-- VIDEO PREVIEW -->
+            <div class="video-preview-section">
+                <div class="video-preview-container">
+                    <span class="play-icon">▶️</span>
+                    <div class="filter-effect-overlay" id="filterOverlay">💥</div>
+                    <span class="video-preview-label" id="filterLabel">Bright</span>
+                </div>
+            </div>
+
+            <!-- FILTERS SECTION - SNAPCHAT STYLE -->
+            <div class="section">
+                <div class="section-title">✨ Video Filters (Swipe to Browse)</div>
+                <div class="filters-carousel" id="filtersCarousel">
+                    <label class="filter-option">
+                        <input type="radio" name="filter" value="bright" checked onchange="applyFilter('bright')">
+                        <div class="filter-preview">
+                            💥
+                            <div class="filter-name">Bright</div>
+                        </div>
+                    </label>
+                    <label class="filter-option">
+                        <input type="radio" name="filter" value="fire" onchange="applyFilter('fire')">
+                        <div class="filter-preview">
+                            🔥
+                            <div class="filter-name">Fire</div>
+                        </div>
+                    </label>
+                    <label class="filter-option">
+                        <input type="radio" name="filter" value="sparkle" onchange="applyFilter('sparkle')">
+                        <div class="filter-preview">
+                            ✨
+                            <div class="filter-name">Sparkle</div>
+                        </div>
+                    </label>
+                    <label class="filter-option">
+                        <input type="radio" name="filter" value="rainbow" onchange="applyFilter('rainbow')">
+                        <div class="filter-preview">
+                            🌈
+                            <div class="filter-name">Rainbow</div>
+                        </div>
+                    </label>
+                    <label class="filter-option">
+                        <input type="radio" name="filter" value="muscle" onchange="applyFilter('muscle')">
+                        <div class="filter-preview">
+                            💪
+                            <div class="filter-name">Muscle</div>
+                        </div>
+                    </label>
+                    <label class="filter-option">
+                        <input type="radio" name="filter" value="beast" onchange="applyFilter('beast')">
+                        <div class="filter-preview">
+                            🦁
+                            <div class="filter-name">Beast</div>
+                        </div>
+                    </label>
+                    <label class="filter-option">
+                        <input type="radio" name="filter" value="victory" onchange="applyFilter('victory')">
+                        <div class="filter-preview">
+                            🏆
+                            <div class="filter-name">Victory</div>
+                        </div>
+                    </label>
+                    <label class="filter-option">
+                        <input type="radio" name="filter" value="lightning" onchange="applyFilter('lightning')">
+                        <div class="filter-preview">
+                            ⚡
+                            <div class="filter-name">Lightning</div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- TEMPLATES SECTION -->
+            <div class="section">
+                <div class="section-title">📋 Caption Template</div>
+                <div class="templates-grid">
+                    <label class="template-option">
+                        <input type="radio" name="template" value="grind" checked onchange="applyTemplate('grind')">
+                        <div class="template-card">
+                            <div class="template-icon">💪</div>
+                            <div class="template-name">Grind</div>
+                            <div class="template-description">Stats-focused. Show your effort & rank.</div>
+                        </div>
+                    </label>
+                    <label class="template-option">
+                        <input type="radio" name="template" value="progress" onchange="applyTemplate('progress')">
+                        <div class="template-card">
+                            <div class="template-icon">📈</div>
+                            <div class="template-name">Progress</div>
+                            <div class="template-description">Before/after. Document growth.</div>
+                        </div>
+                    </label>
+                    <label class="template-option">
+                        <input type="radio" name="template" value="motivation" onchange="applyTemplate('motivation')">
+                        <div class="template-card">
+                            <div class="template-icon">🔥</div>
+                            <div class="template-name">Motivation</div>
+                            <div class="template-description">Inspirational. Pump up others.</div>
+                        </div>
+                    </label>
+                    <label class="template-option">
+                        <input type="radio" name="template" value="pb" onchange="applyTemplate('pb')">
+                        <div class="template-card">
+                            <div class="template-icon">🏆</div>
+                            <div class="template-name">Personal Best</div>
+                            <div class="template-description">Achievement. Celebrate wins.</div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- CAPTION EDITOR -->
+            <div class="caption-section">
+                <div class="caption-label">📝 Edit Caption</div>
+                <textarea class="caption-textarea" id="captionText" placeholder="Your caption here..." maxlength="280" oninput="updateCaptionCounter()">Just crushed 30 min run! 💪 +85 aura earned 🎉 🔥 3 day streak #AuraBoost #FitnessJourney</textarea>
+                
+                <div class="caption-counter">
+                    <span>Character count: <span class="caption-counter-num" id="charCount">77</span>/280</span>
+                    <span id="charWarning"></span>
+                </div>
+
+                <div class="hashtags-section">
+                    <div class="hashtags-label">Auto-Generated Hashtags</div>
+                    <div class="hashtags" id="hashtags">
+                        <span class="hashtag">#AuraBoost</span>
+                        <span class="hashtag">#FitnessJourney</span>
+                        <span class="hashtag">#Grind</span>
+                        <span class="hashtag">#FitnessGoals</span>
+                        <span class="hashtag">#Motivation</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SOCIAL SHARE -->
+            <div class="social-share-section">
+                <div class="social-share-title">📱 Share To Socials (If Linked)</div>
+                <div class="social-share-grid">
+                    <label class="social-share-checkbox">
+                        <input type="checkbox" id="shareTwitter" checked>
+                        <span class="social-share-label">𝕏 Twitter</span>
+                    </label>
+                    <label class="social-share-checkbox">
+                        <input type="checkbox" id="shareInstagram" checked>
+                        <span class="social-share-label">📸 Instagram</span>
+                    </label>
+                    <label class="social-share-checkbox">
+                        <input type="checkbox" id="shareTikTok">
+                        <span class="social-share-label">🎵 TikTok</span>
+                    </label>
+                    <label class="social-share-checkbox">
+                        <input type="checkbox" id="shareSnapchat">
+                        <span class="social-share-label">👻 Snapchat</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BUTTONS -->
+    <div class="button-group">
+        <button class="btn btn-secondary" onclick="window.history.back()">← Back</button>
+        <button class="btn btn-primary" onclick="shareWorkout()">📤 Post Video</button>
+    </div>
+
+    <!-- SUCCESS OVERLAY -->
+    <div class="success-overlay" id="successOverlay">
+        <div class="success-card">
+            <div class="success-animation">✅</div>
+            <div class="success-title">Workout Video Posted!</div>
+            <div class="success-message-text">
+                Your video with filter is live and earning aura. Check your rank on the leaderboard!
+            </div>
+            <div class="success-stats">
+                <div class="success-stat">
+                    Shared with
+                    <div class="success-stat-value" id="shareCount">2 platforms</div>
+                </div>
+                <div class="success-stat">
+                    Total Reach
+                    <div class="success-stat-value" id="shareReach">~2,500 users</div>
+                </div>
+            </div>
+            <div class="success-buttons">
+                <button class="success-btn success-btn-secondary" onclick="window.history.back()">Back</button>
+                <button class="success-btn success-btn-primary" onclick="viewLeaderboard()">View Rank 🏆</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const filterEmojis = {
+            bright: '💥',
+            fire: '🔥',
+            sparkle: '✨',
+            rainbow: '🌈',
+            muscle: '💪',
+            beast: '🦁',
+            victory: '🏆',
+            lightning: '⚡'
+        };
+
+        const filterNames = {
+            bright: 'Bright',
+            fire: 'Fire',
+            sparkle: 'Sparkle',
+            rainbow: 'Rainbow',
+            muscle: 'Muscle',
+            beast: 'Beast',
+            victory: 'Victory',
+            lightning: 'Lightning'
+        };
+
+        // Template captions
+        const templates = {
+            grind: 'Just crushed 30 min run! 💪 +85 aura earned 🎉 🔥 3 day streak\nRank: #47 on leaderboard\n#AuraBoost #FitnessJourney',
+            progress: 'Progress > Perfection 📈\nBefore: Average fitness\nAfter: Grind pays off! 💪\n3 day streak keeping me honest\n#TransformationTuesday',
+            motivation: '🔥 The only bad workout is the one you didn\'t do.\n\nJust logged 30 min run\n+85 aura earned\nLet\'s keep this streak alive 🔥\n#AuraBoost #NoExcuses',
+            pb: '🎉 NEW PERSONAL BEST!\n30 min Run, Moderate Intensity 💪\nTotal Aura: +85\nRank: #47 📈\n#PersonalRecord'
+        };
+
+        function applyFilter(filterName) {
+            const overlay = document.getElementById('filterOverlay');
+            const label = document.getElementById('filterLabel');
+            
+            overlay.textContent = filterEmojis[filterName];
+            label.textContent = filterNames[filterName];
+            
+            // Animate the emoji
+            overlay.style.animation = 'none';
+            setTimeout(() => {
+                overlay.style.animation = 'bounce 0.6s ease';
+            }, 10);
+            
+            console.log('Filter applied:', filterName);
+        }
+
+        function applyTemplate(templateName) {
+            const captionText = document.getElementById('captionText');
+            captionText.value = templates[templateName];
+            updateCaptionCounter();
+        }
+
+        function updateCaptionCounter() {
+            const captionText = document.getElementById('captionText');
+            const charCount = captionText.value.length;
+            document.getElementById('charCount').textContent = charCount;
+
+            // Show warning if near limit
+            const warning = document.getElementById('charWarning');
+            if (charCount > 240) {
+                warning.textContent = '⚠️ Nearing limit';
+                warning.style.color = '#EF4444';
+            } else if (charCount > 200) {
+                warning.textContent = '✓ Good length';
+                warning.style.color = '#10B981';
+            } else {
+                warning.textContent = '';
+            }
+        }
+
+        function shareWorkout() {
+            const caption = document.getElementById('captionText').value;
+            const filter = document.querySelector('input[name="filter"]:checked').value;
+            const template = document.querySelector('input[name="template"]:checked').value;
+            const shareTwitter = document.getElementById('shareTwitter').checked;
+            const shareInstagram = document.getElementById('shareInstagram').checked;
+            const shareTikTok = document.getElementById('shareTikTok').checked;
+            const shareSnapchat = document.getElementById('shareSnapchat').checked;
+
+            // Count platforms
+            let platformCount = 0;
+            if (shareTwitter) platformCount++;
+            if (shareInstagram) platformCount++;
+            if (shareTikTok) platformCount++;
+            if (shareSnapchat) platformCount++;
+
+            // Log data (in real app, send to backend)
+            console.log({
+                caption: caption,
+                filter: filter,
+                template: template,
+                filterEmoji: filterEmojis[filter],
+                platforms: {
+                    twitter: shareTwitter,
+                    instagram: shareInstagram,
+                    tiktok: shareTikTok,
+                    snapchat: shareSnapchat
+                }
+            });
+
+            // Show success overlay
+            document.getElementById('shareCount').textContent = platformCount > 0 ? platformCount + ' platform' + (platformCount > 1 ? 's' : '') : 'Just AuraBoost';
+            document.getElementById('shareReach').textContent = '~' + (500 * (1 + platformCount)) + ' users';
+            document.getElementById('successOverlay').classList.add('show');
+        }
+
+        function viewLeaderboard() {
+            alert('🏆 Viewing Leaderboard...\n\nYou would be taken to:\nauraboost_leaderboard.html\n\nYour rank jumped: #52 → #47 ↑');
+            // In production: window.location.href = '/auraboost-mvp/fitness_leaderboard.html';
+        }
+
+        function goBack() {
+            if (document.getElementById('successOverlay').classList.contains('show')) {
+                document.getElementById('successOverlay').classList.remove('show');
+            }
+            window.history.back();
+        }
+
+        // Initialize
+        updateCaptionCounter();
+    </script>
+</body>
+</html>

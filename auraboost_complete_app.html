@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraBoost - Complete App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #0F172A;
+            color: #F1F5F9;
+            overflow-x: hidden;
+        }
+
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* HEADER */
+        .header {
+            background-color: #1E293B;
+            border-bottom: 1px solid #F59E0B;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-small {
+            width: 32px;
+            height: 32px;
+        }
+
+        .header-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #F59E0B;
+            margin: 0;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-info {
+            text-align: right;
+            font-size: 12px;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: #F1F5F9;
+        }
+
+        .user-rank {
+            color: #CBD5E1;
+        }
+
+        .logout-btn {
+            background-color: #F59E0B;
+            color: #0F172A;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 11px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .logout-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* MAIN CONTENT */
+        .main-content {
+            flex: 1;
+            max-width: 1000px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 24px 20px;
+        }
+
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* BOTTOM NAVIGATION */
+        .bottom-nav {
+            background-color: #1E293B;
+            border-top: 1px solid #F59E0B;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0;
+            padding: 0;
+            position: sticky;
+            bottom: 0;
+            z-index: 50;
+        }
+
+        .nav-item {
+            padding: 12px;
+            text-align: center;
+            background: none;
+            border: none;
+            color: #CBD5E1;
+            cursor: pointer;
+            font-size: 10px;
+            font-weight: 600;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+            border-top: 2px solid transparent;
+        }
+
+        .nav-item:hover {
+            background-color: rgba(245, 158, 11, 0.05);
+            color: #F59E0B;
+        }
+
+        .nav-item.active {
+            color: #F59E0B;
+            border-top-color: #F59E0B;
+        }
+
+        .nav-icon {
+            font-size: 20px;
+        }
+
+        /* QUICK STYLES FOR SHARED COMPONENTS */
+        .page-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #F1F5F9;
+        }
+
+        .page-subtitle {
+            color: #CBD5E1;
+            margin-bottom: 24px;
+            font-size: 14px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 16px;
+            color: #F1F5F9;
+        }
+
+        .stat-card {
+            background-color: #1E293B;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .stat-card.highlight {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, #1E293B 100%);
+            border: 1px solid #F59E0B;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #CBD5E1;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #F59E0B;
+            margin-bottom: 4px;
+        }
+
+        .stat-subtext {
+            font-size: 12px;
+            color: #CBD5E1;
+        }
+
+        .btn {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background-color: #F59E0B;
+            color: #0F172A;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+
+        .btn-secondary {
+            background-color: #1E293B;
+            color: #F1F5F9;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(245, 158, 11, 0.1);
+            border-color: #F59E0B;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .profile-card {
+            background: linear-gradient(135deg, #1E293B 0%, rgba(245, 158, 11, 0.1) 100%);
+            border: 2px solid #F59E0B;
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #F59E0B, #FCD34D);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 48px;
+            color: #0F172A;
+            margin: 0 auto 16px;
+            border: 4px solid #F59E0B;
+        }
+
+        .profile-name {
+            font-size: 20px;
+            font-weight: bold;
+            color: #F1F5F9;
+            margin-bottom: 8px;
+        }
+
+        .leaderboard-row {
+            display: grid;
+            grid-template-columns: 50px 1fr 100px 100px 100px;
+            gap: 12px;
+            padding: 12px;
+            background-color: #1E293B;
+            border-bottom: 1px solid rgba(245, 158, 11, 0.1);
+            align-items: center;
+            margin-bottom: 8px;
+            border-radius: 6px;
+        }
+
+        .rank-badge {
+            font-size: 18px;
+            text-align: center;
+        }
+
+        .user-cell {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .avatar-small {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #F59E0B, #FCD34D);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            color: #0F172A;
+            flex-shrink: 0;
+        }
+
+        .username {
+            font-weight: 600;
+            color: #F1F5F9;
+            font-size: 13px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 6px;
+        }
+
+        .btn-small {
+            padding: 4px 8px;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            background-color: transparent;
+            color: #F59E0B;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .btn-small:hover {
+            background-color: rgba(245, 158, 11, 0.1);
+        }
+
+        .info-box {
+            background-color: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 12px;
+            color: #CBD5E1;
+            margin-bottom: 16px;
+        }
+
+        .upload-area {
+            background-color: #1E293B;
+            border: 2px dashed #F59E0B;
+            border-radius: 12px;
+            padding: 40px 20px;
+            text-align: center;
+            margin-bottom: 16px;
+            cursor: pointer;
+        }
+
+        .upload-emoji {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .header {
+                padding: 12px 16px;
+            }
+
+            .main-content {
+                padding: 16px;
+            }
+
+            .leaderboard-row {
+                grid-template-columns: 40px 1fr 60px;
+            }
+
+            .action-buttons {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="header-left">
+                <svg class="logo-small" viewBox="0 0 400 400" fill="none">
+                    <circle cx="200" cy="200" r="160" stroke="#F59E0B" stroke-width="28" />
+                    <circle cx="200" cy="200" r="110" stroke="#FCD34D" stroke-width="24" />
+                    <circle cx="200" cy="200" r="60" stroke="#F59E0B" stroke-width="20" />
+                    <circle cx="200" cy="200" r="25" fill="#F59E0B" />
+                </svg>
+                <h1 class="header-title">AuraBoost</h1>
+            </div>
+            <div class="header-right">
+                <div class="user-info">
+                    <div class="user-name">@testuser</div>
+                    <div class="user-rank">Rank #247</div>
+                </div>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <!-- DASHBOARD SCREEN -->
+            <div id="dashboardScreen" class="screen active">
+                <div class="page-title">📊 Dashboard</div>
+                <p class="page-subtitle">Track your aura • Compete • Earn</p>
+
+                <div class="profile-card">
+                    <div class="profile-avatar">T</div>
+                    <div class="profile-name">Your Aura Score</div>
+                    <div style="font-size: 48px; color: #F59E0B; margin: 12px 0;">187 ✨✨✨✨✨</div>
+                    <div style="color: #CBD5E1; font-size: 12px;">5 Star Rating</div>
+                </div>
+
+                <div class="grid-4">
+                    <div class="stat-card">
+                        <div class="stat-label">Global Rank</div>
+                        <div class="stat-value">#247</div>
+                        <div class="stat-subtext">Out of millions</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Current Streak</div>
+                        <div class="stat-value">47d</div>
+                        <div class="stat-subtext">🔥 Keep it going!</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Total Workouts</div>
+                        <div class="stat-value">89</div>
+                        <div class="stat-subtext">All time</div>
+                    </div>
+                    <div class="stat-card highlight">
+                        <div class="stat-label">Next Milestone</div>
+                        <div class="stat-value">13</div>
+                        <div class="stat-subtext">Days to Day 60</div>
+                    </div>
+                </div>
+
+                <div class="section-title">🎯 Quick Actions</div>
+                <div class="grid-2" style="margin-bottom: 24px;">
+                    <button class="btn btn-primary" style="padding: 16px;" onclick="navigateTo('uploadScreen')">📷 Log Workout</button>
+                    <button class="btn btn-secondary" style="padding: 16px;" onclick="navigateTo('leaderboardScreen')">🏆 View Leaderboard</button>
+                    <button class="btn btn-secondary" style="padding: 16px;" onclick="navigateTo('creatorScreen')">💰 Creator Dashboard</button>
+                    <button class="btn btn-secondary" style="padding: 16px;" onclick="navigateTo('profileScreen')">👤 View Profile</button>
+                </div>
+            </div>
+
+            <!-- UPLOAD SCREEN -->
+            <div id="uploadScreen" class="screen">
+                <div class="page-title">📷 Log Workout</div>
+                <p class="page-subtitle">Upload a gym photo and generate your boost video</p>
+
+                <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+                    <div class="upload-emoji">📸</div>
+                    <div style="color: #CBD5E1; margin-bottom: 8px;">Click to upload or drag and drop</div>
+                    <div style="color: #64748B; font-size: 12px;">PNG, JPG up to 10MB</div>
+                </div>
+                <input type="file" id="fileInput" accept="image/*" onchange="handleImageUpload(event)" style="display: none;">
+
+                <div class="info-box">
+                    💡 Pro tip: Take a photo at the gym with your workout equipment visible. This makes your boost video more authentic!
+                </div>
+
+                <button class="btn btn-primary" style="width: 100%; padding: 14px;" onclick="alert('📷 In real app: Camera opens here\n\n✨ Then customization screen appears\n\n🎬 Finally video preview & share options')">Simulate Upload →</button>
+            </div>
+
+            <!-- LEADERBOARD SCREEN -->
+            <div id="leaderboardScreen" class="screen">
+                <div class="page-title">🏆 Global Leaderboard</div>
+                <p class="page-subtitle">Compete with thousands of fitness enthusiasts</p>
+
+                <div class="profile-card" style="text-align: left;">
+                    <div style="display: grid; grid-template-columns: auto 1fr auto; gap: 20px; align-items: center;">
+                        <div style="font-size: 36px; font-weight: bold; color: #F59E0B;">247</div>
+                        <div>
+                            <div style="font-size: 14px; font-weight: bold; color: #F1F5F9;">@testuser</div>
+                            <div style="font-size: 12px; color: #CBD5E1;">187 aura • 47-day streak 🔥</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-size: 18px; font-weight: bold; color: #FCD34D;">+47</div>
+                            <div style="font-size: 10px; color: #CBD5E1;">to top 100</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-title">Top Users</div>
+
+                <div class="leaderboard-row">
+                    <div class="rank-badge">🥇</div>
+                    <div class="user-cell">
+                        <div class="avatar-small">X</div>
+                        <div>
+                            <div class="username">@xo_fitness</div>
+                            <div style="font-size: 10px; color: #CBD5E1;">📍 LA • 💎 Creator</div>
+                        </div>
+                    </div>
+                    <div style="text-align: center; font-weight: bold; color: #F59E0B;">2,450</div>
+                    <div style="text-align: center; font-weight: bold; color: #10B981;">365d</div>
+                    <div class="action-buttons">
+                        <button class="btn-small" onclick="alert('Following...')">Follow</button>
+                        <button class="btn-small" onclick="alert('Challenge sent!')">Challenge</button>
+                    </div>
+                </div>
+
+                <div class="leaderboard-row">
+                    <div class="rank-badge">🥈</div>
+                    <div class="user-cell">
+                        <div class="avatar-small">G</div>
+                        <div>
+                            <div class="username">@gainz_queen</div>
+                            <div style="font-size: 10px; color: #CBD5E1;">📍 NYC • 💎 Creator</div>
+                        </div>
+                    </div>
+                    <div style="text-align: center; font-weight: bold; color: #F59E0B;">2,230</div>
+                    <div style="text-align: center; font-weight: bold; color: #10B981;">298d</div>
+                    <div class="action-buttons">
+                        <button class="btn-small" onclick="alert('Following...')">Follow</button>
+                        <button class="btn-small" onclick="alert('Challenge sent!')">Challenge</button>
+                    </div>
+                </div>
+
+                <div class="leaderboard-row">
+                    <div class="rank-badge">🥉</div>
+                    <div class="user-cell">
+                        <div class="avatar-small">C</div>
+                        <div>
+                            <div class="username">@crypto_jock</div>
+                            <div style="font-size: 10px; color: #CBD5E1;">📍 SF • SoulCycle</div>
+                        </div>
+                    </div>
+                    <div style="text-align: center; font-weight: bold; color: #F59E0B;">1,987</div>
+                    <div style="text-align: center; font-weight: bold; color: #10B981;">256d</div>
+                    <div class="action-buttons">
+                        <button class="btn-small" onclick="alert('Following...')">Follow</button>
+                        <button class="btn-small" onclick="alert('Challenge sent!')">Challenge</button>
+                    </div>
+                </div>
+
+                <button class="btn btn-secondary" style="width: 100%; margin-top: 16px;">View More Users →</button>
+            </div>
+
+            <!-- CREATOR DASHBOARD SCREEN -->
+            <div id="creatorScreen" class="screen">
+                <div class="page-title">💰 Creator Dashboard</div>
+                <p class="page-subtitle">Manage your referrals and earnings</p>
+
+                <div class="profile-card">
+                    <div style="display: flex; gap: 16px; align-items: center;">
+                        <div class="profile-avatar" style="width: 80px; height: 80px; font-size: 36px; margin: 0;">X</div>
+                        <div style="text-align: left;">
+                            <div class="profile-name">@xo_fitness</div>
+                            <div style="font-size: 12px; color: #CBD5E1; margin-top: 4px;">💎 Verified Creator • 💪 Fitness</div>
+                            <div style="font-size: 12px; color: #CBD5E1;">📍 Los Angeles, CA</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-4">
+                    <div class="stat-card highlight">
+                        <div class="stat-label">Total Earnings</div>
+                        <div class="stat-value">$2,450</div>
+                        <div class="stat-subtext">all time</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">This Month</div>
+                        <div class="stat-value">$340</div>
+                        <div class="stat-subtext">Jan 2026</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Active Referrals</div>
+                        <div class="stat-value">156</div>
+                        <div class="stat-subtext">paying users</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Avg User LTV</div>
+                        <div class="stat-value">$8.33</div>
+                        <div class="stat-subtext">lifetime value</div>
+                    </div>
+                </div>
+
+                <div class="section-title">📲 Your Referral Link</div>
+                <div style="display: flex; gap: 8px; margin-bottom: 24px;">
+                    <input type="text" value="auraboost.app/ref/xo_fitness" readonly style="flex: 1; padding: 10px; background-color: #0F172A; border: 1px solid rgba(245, 158, 11, 0.3); color: #F59E0B; border-radius: 6px; font-family: monospace; font-size: 12px;">
+                    <button class="btn btn-primary" onclick="alert('Link copied!')">Copy</button>
+                </div>
+
+                <div class="section-title">💳 Next Payout</div>
+                <div style="background-color: #1E293B; border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 8px; padding: 16px; margin-bottom: 24px;">
+                    <div style="display: grid; grid-template-columns: 1fr auto; gap: 20px;">
+                        <div>
+                            <div style="font-size: 14px; font-weight: bold; margin-bottom: 8px;">Monday, January 27, 2026</div>
+                            <div style="font-size: 12px; color: #CBD5E1;">Stripe → Your Bank Account</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-size: 28px; font-weight: bold; color: #10B981;">$340</div>
+                            <div style="font-size: 10px; color: #CBD5E1;">processing</div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" style="width: 100%; padding: 12px;" onclick="alert('Opening detailed analytics dashboard...')">View Detailed Analytics →</button>
+            </div>
+
+            <!-- PROFILE SCREEN -->
+            <div id="profileScreen" class="screen">
+                <div class="page-title">👤 Your Profile</div>
+                <p class="page-subtitle">View your stats and achievements</p>
+
+                <div class="profile-card">
+                    <div class="profile-avatar">T</div>
+                    <div class="profile-name">@testuser</div>
+                    <div style="color: #CBD5E1; margin-bottom: 12px;">testuser</div>
+                    <div style="display: flex; gap: 8px; justify-content: center; margin-bottom: 12px; flex-wrap: wrap;">
+                        <div style="background-color: rgba(245, 158, 11, 0.2); border: 1px solid rgba(245, 158, 11, 0.3); color: #FCD34D; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600;">🔥 47-Day Streak</div>
+                        <div style="background-color: rgba(245, 158, 11, 0.2); border: 1px solid rgba(245, 158, 11, 0.3); color: #FCD34D; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600;">⚡ Streak Master</div>
+                    </div>
+                    <div style="color: #CBD5E1; font-size: 12px; margin-bottom: 12px;">📍 New York, NY • Gold's Gym</div>
+                    <div style="display: flex; gap: 6px; justify-content: center;">
+                        <button class="btn btn-primary" onclick="alert('Following...')">Follow</button>
+                        <button class="btn btn-secondary" onclick="alert('Challenge sent!')">Challenge</button>
+                        <button class="btn btn-secondary" onclick="alert('Sharing profile...')">Share</button>
+                    </div>
+                </div>
+
+                <div class="grid-4">
+                    <div class="stat-card">
+                        <div class="stat-label">Aura Score</div>
+                        <div class="stat-value">187</div>
+                        <div class="stat-subtext">#247 global</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Current Streak</div>
+                        <div class="stat-value">47d</div>
+                        <div class="stat-subtext">🔥 active</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Followers</div>
+                        <div class="stat-value">152</div>
+                        <div class="stat-subtext">growing</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Total Workouts</div>
+                        <div class="stat-value">89</div>
+                        <div class="stat-subtext">all time</div>
+                    </div>
+                </div>
+
+                <div class="section-title">🏅 Achievements</div>
+                <div class="grid-4">
+                    <div style="background-color: #1E293B; border: 1px solid rgba(245, 158, 11, 0.2); border-radius: 8px; padding: 12px; text-align: center;">
+                        <div style="font-size: 28px; margin-bottom: 8px;">🏅</div>
+                        <div style="font-size: 11px; font-weight: 600; color: #F1F5F9; margin-bottom: 4px;">Day 7</div>
+                        <div style="font-size: 9px; color: #CBD5E1;">✓ Earned</div>
+                    </div>
+                    <div style="background-color: #1E293B; border: 1px solid rgba(245, 158, 11, 0.2); border-radius: 8px; padding: 12px; text-align: center;">
+                        <div style="font-size: 28px; margin-bottom: 8px;">🥈</div>
+                        <div style="font-size: 11px; font-weight: 600; color: #F1F5F9; margin-bottom: 4px;">Day 30</div>
+                        <div style="font-size: 9px; color: #CBD5E1;">✓ Earned</div>
+                    </div>
+                    <div style="background-color: #1E293B; border: 1px solid rgba(245, 158, 11, 0.2); border-radius: 8px; padding: 12px; text-align: center; opacity: 0.4;">
+                        <div style="font-size: 28px; margin-bottom: 8px;">🥇</div>
+                        <div style="font-size: 11px; font-weight: 600; color: #F1F5F9; margin-bottom: 4px;">Day 60</div>
+                        <div style="font-size: 9px; color: #CBD5E1;">13 days left</div>
+                    </div>
+                    <div style="background-color: #1E293B; border: 1px solid rgba(245, 158, 11, 0.2); border-radius: 8px; padding: 12px; text-align: center;">
+                        <div style="font-size: 28px; margin-bottom: 8px;">⚡</div>
+                        <div style="font-size: 11px; font-weight: 600; color: #F1F5F9; margin-bottom: 4px;">Streak Master</div>
+                        <div style="font-size: 9px; color: #CBD5E1;">✓ Earned</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOTTOM NAVIGATION -->
+        <div class="bottom-nav">
+            <button class="nav-item active" onclick="navigateTo('dashboardScreen')">
+                <span class="nav-icon">📊</span>
+                <span>Dashboard</span>
+            </button>
+            <button class="nav-item" onclick="navigateTo('uploadScreen')">
+                <span class="nav-icon">📷</span>
+                <span>Log Workout</span>
+            </button>
+            <button class="nav-item" onclick="navigateTo('leaderboardScreen')">
+                <span class="nav-icon">🏆</span>
+                <span>Leaderboard</span>
+            </button>
+            <button class="nav-item" onclick="navigateTo('creatorScreen')">
+                <span class="nav-icon">💰</span>
+                <span>Creator</span>
+            </button>
+            <button class="nav-item" onclick="navigateTo('profileScreen')">
+                <span class="nav-icon">👤</span>
+                <span>Profile</span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function navigateTo(screenId) {
+            // Hide all screens
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            
+            // Show selected screen
+            document.getElementById(screenId).classList.add('active');
+            
+            // Update nav items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Highlight clicked nav item
+            event.target.closest('.nav-item')?.classList.add('active');
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                alert('✅ Logged out successfully!\n\nIn real app, this would redirect to login screen.');
+            }
+        }
+
+        // Set first nav item as active on load
+        window.addEventListener('load', () => {
+            document.querySelector('.nav-item').classList.add('active');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraBoost Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #0F172A;
+            color: #F1F5F9;
+            line-height: 1.6;
+        }
+
+        /* HEADER */
+        .header {
+            background: linear-gradient(135deg, #F59E0B 0%, #EC4899 100%);
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: white;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .logo-link:hover {
+            opacity: 0.8;
+        }
+
+        .logo-img {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+        }
+
+        .logo-text {
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .header-link {
+            color: white;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .header-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .profile-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .profile-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* CONTAINER */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px 120px 20px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: #F1F5F9;
+        }
+
+        /* WELCOME BANNER */
+        .welcome-banner {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(236, 72, 153, 0.1));
+            border: 2px solid rgba(245, 158, 11, 0.3);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .banner-emoji {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .banner-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #F1F5F9;
+        }
+
+        .banner-subtitle {
+            font-size: 14px;
+            color: #CBD5E1;
+            margin-bottom: 24px;
+        }
+
+        .banner-cta {
+            background: linear-gradient(135deg, #F59E0B 0%, #EC4899 100%);
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .banner-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(245, 158, 11, 0.3);
+        }
+
+        /* STATS GRID */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: #1E293B;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .stat-card:hover {
+            border-color: rgba(245, 158, 11, 0.5);
+            transform: translateY(-4px);
+        }
+
+        .stat-icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: #CBD5E1;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #F59E0B;
+            margin-bottom: 4px;
+        }
+
+        .stat-change {
+            font-size: 12px;
+            color: #10B981;
+        }
+
+        /* ACTION BUTTONS */
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        .action-btn {
+            background: #1E293B;
+            border: 2px solid rgba(245, 158, 11, 0.3);
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            color: #F1F5F9;
+        }
+
+        .action-btn:hover {
+            border-color: #F59E0B;
+            box-shadow: 0 8px 24px rgba(245, 158, 11, 0.2);
+            transform: translateY(-4px);
+        }
+
+        .action-icon {
+            font-size: 40px;
+            margin-bottom: 12px;
+        }
+
+        .action-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .action-desc {
+            font-size: 12px;
+            color: #CBD5E1;
+        }
+
+        /* SECTION */
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #F1F5F9;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: #1E293B;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.2s;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .card:hover {
+            border-color: rgba(245, 158, 11, 0.5);
+            transform: translateY(-4px);
+        }
+
+        .card-title {
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #F1F5F9;
+        }
+
+        .card-desc {
+            font-size: 13px;
+            color: #CBD5E1;
+            margin-bottom: 16px;
+        }
+
+        .card-btn {
+            background: linear-gradient(135deg, #F59E0B 0%, #EC4899 100%);
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.2s;
+        }
+
+        .card-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* BOTTOM NAV */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #0F172A;
+            border-top: 2px solid rgba(245, 158, 11, 0.3);
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0;
+            z-index: 50;
+        }
+
+        .nav-item {
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            color: #CBD5E1;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            color: #F59E0B;
+            background: rgba(245, 158, 11, 0.1);
+        }
+
+        .nav-icon {
+            font-size: 20px;
+        }
+
+        /* INFO BOX */
+        .info-box {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 20px;
+            font-size: 13px;
+            color: #CBD5E1;
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <div class="header">
+        <div class="header-left">
+            <a href="/auraboost-mvp/auraboost_homepage.html" class="logo-link">
+                <img src="/auraboost-mvp/auraboost_logo.png" alt="AuraBoost" class="logo-img">
+                <span class="logo-text">AuraBoost</span>
+            </a>
+        </div>
+        <div class="header-right">
+            <a href="/auraboost-mvp/auraboost_homepage.html" class="header-link">Home</a>
+            <a href="/auraboost-mvp/auraboost_creator_settings.html" class="header-link">Settings</a>
+            <button class="profile-btn" onclick="alert('👤 Profile settings coming soon!')">⚙️</button>
+        </div>
+    </div>
+
+    <!-- CONTAINER -->
+    <div class="container">
+        <h1 class="page-title">👋 Welcome to Your Dashboard</h1>
+
+        <!-- WELCOME BANNER -->
+        <div class="welcome-banner">
+            <div class="banner-emoji">🚀</div>
+            <h2 class="banner-title">Ready to Start Earning?</h2>
+            <p class="banner-subtitle">Create content, get ranked, earn money. You're 3 clicks away from your first post.</p>
+            <a href="/auraboost-mvp/fitness_log_workout.html" class="banner-cta">📤 Create Your First Post</a>
+        </div>
+
+        <!-- STATS -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">👁️</div>
+                <div class="stat-label">Views This Month</div>
+                <div class="stat-value">0</div>
+                <div class="stat-change">↑ Start posting to see stats</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">💰</div>
+                <div class="stat-label">Earnings</div>
+                <div class="stat-value">$0</div>
+                <div class="stat-change">↑ Refer creators to earn 30%</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">🏆</div>
+                <div class="stat-label">Current Rank</div>
+                <div class="stat-value">#—</div>
+                <div class="stat-change">↑ Post to climb leaderboard</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-label">Followers</div>
+                <div class="stat-value">0</div>
+                <div class="stat-change">↑ Share your content</div>
+            </div>
+        </div>
+
+        <!-- ACTION BUTTONS -->
+        <div class="section">
+            <h2 class="section-title">Quick Actions</h2>
+            <div class="action-grid">
+                <a href="/auraboost-mvp/fitness_log_workout.html" class="action-btn">
+                    <div class="action-icon">📤</div>
+                    <div class="action-title">Create Post</div>
+                    <div class="action-desc">Upload content & earn</div>
+                </a>
+
+                <a href="/auraboost-mvp/auraboost_step4_leaderboard.html" class="action-btn">
+                    <div class="action-icon">🏆</div>
+                    <div class="action-title">Leaderboard</div>
+                    <div class="action-desc">See top creators</div>
+                </a>
+
+                <a href="/auraboost-mvp/auraboost_step8_analytics.html" class="action-btn">
+                    <div class="action-icon">📊</div>
+                    <div class="action-title">Analytics</div>
+                    <div class="action-desc">Track your growth</div>
+                </a>
+
+                <a href="/auraboost-mvp/auraboost_creator_settings.html" class="action-btn">
+                    <div class="action-icon">⚙️</div>
+                    <div class="action-title">Settings</div>
+                    <div class="action-desc">Manage your profile</div>
+                </a>
+
+                <a href="/auraboost-mvp/auraboost_potential_airdrop_system.html" class="action-btn">
+                    <div class="action-icon">🪂</div>
+                    <div class="action-title">Airdrop</div>
+                    <div class="action-desc">Reserve your spot</div>
+                </a>
+
+                <a href="/auraboost-mvp/auraboost_ad_watermark_system.html" class="action-btn">
+                    <div class="action-icon">💡</div>
+                    <div class="action-title">Pro Features</div>
+                    <div class="action-desc">Remove watermarks</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- CONTENT TYPES -->
+        <div class="section">
+            <h2 class="section-title">Choose Your Creator Type</h2>
+            <div class="card-grid">
+                <a href="/auraboost-mvp/auraboost_onlyfans_creator_hub.html" class="card">
+                    <div class="card-title">🔥 Adult Creator</div>
+                    <div class="card-desc">OnlyFans creators earning $200-2K/month through exclusive content</div>
+                    <button class="card-btn" onclick="window.location.href='/auraboost-mvp/auraboost_onlyfans_creator_hub.html'">View Hub →</button>
+                </a>
+
+                <a href="/auraboost-mvp/auraboost_instagram_creator_hub.html" class="card">
+                    <div class="card-title">📸 Instagram Creator</div>
+                    <div class="card-desc">Influencers building personal brands and earning $300-3K/month</div>
+                    <button class="card-btn" onclick="window.location.href='/auraboost-mvp/auraboost_instagram_creator_hub.html'">View Hub →</button>
+                </a>
+
+                <a href="/auraboost-mvp/auraboost_tiktok_creator_hub.html" class="card">
+                    <div class="card-title">🎵 TikTok Creator</div>
+                    <div class="card-desc">Fast-growing creators monetizing viral content earning $400-4K/month</div>
+                    <button class="card-btn" onclick="window.location.href='/auraboost-mvp/auraboost_tiktok_creator_hub.html'">View Hub →</button>
+                </a>
+
+                <a href="/auraboost-mvp/auraboost_youtube_creator_hub.html" class="card">
+                    <div class="card-title">📺 YouTube Creator</div>
+                    <div class="card-desc">Video creators earning from subscribers and sponsorships $500-5K/month</div>
+                    <button class="card-btn" onclick="window.location.href='/auraboost-mvp/auraboost_youtube_creator_hub.html'">View Hub →</button>
+                </a>
+
+                <a href="/auraboost-mvp/auraboost_gaming_creator_hub.html" class="card">
+                    <div class="card-title">🎮 Gaming Creator</div>
+                    <div class="card-desc">Gamers competing on leaderboards and earning daily $600-6K/month</div>
+                    <button class="card-btn" onclick="window.location.href='/auraboost-mvp/auraboost_gaming_creator_hub.html'">View Hub →</button>
+                </a>
+
+                <a href="/auraboost-mvp/auraboost_streamer_creator_hub.html" class="card">
+                    <div class="card-title">💪 Fitness Creator</div>
+                    <div class="card-desc">Fitness coaches building communities and earning passive income $500-5K/month</div>
+                    <button class="card-btn" onclick="window.location.href='/auraboost-mvp/auraboost_streamer_creator_hub.html'">View Hub →</button>
+                </a>
+            </div>
+        </div>
+
+        <!-- INFO -->
+        <div class="info-box">
+            💡 <strong>Pro Tip:</strong> New creators earn faster by using multiple content types. Mix fitness, gaming, and lifestyle content to reach more audiences and maximize earnings!
+        </div>
+    </div>
+
+    <!-- BOTTOM NAV -->
+    <div class="bottom-nav">
+        <a href="/auraboost-mvp/auraboost_mobile_homepage.html" class="nav-item active">
+            <span class="nav-icon">🏠</span>
+            <span>Home</span>
+        </a>
+        <a href="/auraboost-mvp/fitness_log_workout.html" class="nav-item">
+            <span class="nav-icon">📤</span>
+            <span>Create</span>
+        </a>
+        <a href="/auraboost-mvp/auraboost_step4_leaderboard.html" class="nav-item">
+            <span class="nav-icon">🏆</span>
+            <span>Rank</span>
+        </a>
+        <a href="/auraboost-mvp/auraboost_step8_analytics.html" class="nav-item">
+            <span class="nav-icon">💰</span>
+            <span>Earn</span>
+        </a>
+        <a href="/auraboost-mvp/auraboost_creator_settings.html" class="nav-item">
+            <span class="nav-icon">⚙️</span>
+            <span>Settings</span>
+        </a>
+    </div>
+</body>
+</html>

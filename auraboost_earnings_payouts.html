@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraBoost - Creator Earnings & Payouts</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #0F172A;
+            color: #F1F5F9;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
+            padding: 24px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #F1F5F9;
+        }
+
+        .back-btn {
+            background-color: rgba(241, 245, 249, 0.2);
+            color: #F1F5F9;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .main-content {
+            padding: 24px 20px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-subtitle {
+            color: #CBD5E1;
+            margin-bottom: 24px;
+            font-size: 14px;
+        }
+
+        /* EARNINGS OVERVIEW */
+        .earnings-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .earning-card {
+            background-color: #1E293B;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .earning-label {
+            font-size: 11px;
+            color: #CBD5E1;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .earning-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #667EEA;
+            margin-bottom: 8px;
+        }
+
+        .earning-description {
+            font-size: 10px;
+            color: #6B7280;
+        }
+
+        /* SECTION */
+        .section {
+            background-color: #1E293B;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 16px;
+            color: #F1F5F9;
+        }
+
+        /* STRIPE CONNECT */
+        .stripe-banner {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border: 2px solid #667EEA;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .stripe-banner-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #667EEA;
+            margin-bottom: 8px;
+        }
+
+        .stripe-banner-text {
+            font-size: 12px;
+            color: #CBD5E1;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .connect-btn {
+            background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
+            color: #F1F5F9;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .connect-btn:hover {
+            opacity: 0.9;
+        }
+
+        .connect-btn.connected {
+            background-color: rgba(16, 185, 129, 0.2);
+            color: #10B981;
+        }
+
+        /* PAYOUT METHODS */
+        .payout-method {
+            background-color: #0F172A;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .method-info {
+            flex: 1;
+        }
+
+        .method-name {
+            font-size: 13px;
+            font-weight: bold;
+            color: #F1F5F9;
+            margin-bottom: 4px;
+        }
+
+        .method-detail {
+            font-size: 11px;
+            color: #CBD5E1;
+        }
+
+        .method-badge {
+            display: inline-block;
+            background-color: rgba(16, 185, 129, 0.2);
+            color: #10B981;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 700;
+            margin-left: 12px;
+        }
+
+        /* FORM */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 12px;
+            color: #CBD5E1;
+            margin-bottom: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            background-color: #0F172A;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 6px;
+            color: #F1F5F9;
+            font-size: 12px;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667EEA;
+            box-shadow: 0 0 8px rgba(102, 126, 234, 0.2);
+        }
+
+        #card-element {
+            padding: 12px;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 6px;
+            background-color: #0F172A;
+        }
+
+        /* PAYMENT HISTORY */
+        .payment-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .payment-table thead {
+            background-color: rgba(102, 126, 234, 0.1);
+            border-bottom: 2px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .payment-table th {
+            padding: 12px;
+            text-align: left;
+            font-size: 11px;
+            font-weight: 700;
+            color: #CBD5E1;
+            text-transform: uppercase;
+        }
+
+        .payment-table td {
+            padding: 12px;
+            border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+            font-size: 12px;
+            color: #CBD5E1;
+        }
+
+        .payment-status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .status-completed {
+            background-color: rgba(16, 185, 129, 0.2);
+            color: #10B981;
+        }
+
+        .status-pending {
+            background-color: rgba(245, 158, 11, 0.2);
+            color: #F59E0B;
+        }
+
+        .status-failed {
+            background-color: rgba(239, 68, 68, 0.2);
+            color: #FCA5A5;
+        }
+
+        .amount-positive {
+            color: #10B981;
+            font-weight: 700;
+        }
+
+        .amount-negative {
+            color: #FCA5A5;
+        }
+
+        /* INFO BOX */
+        .info-box {
+            background-color: rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+            font-size: 12px;
+            line-height: 1.6;
+            color: #CBD5E1;
+        }
+
+        .info-box strong {
+            color: #667EEA;
+        }
+
+        /* BUTTONS */
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
+            color: #F1F5F9;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background-color: rgba(102, 126, 234, 0.2);
+            color: #667EEA;
+            border: 1px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(102, 126, 234, 0.3);
+        }
+
+        /* TABS */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(102, 126, 234, 0.2);
+            padding-bottom: 16px;
+        }
+
+        .tab-btn {
+            padding: 10px 16px;
+            background-color: transparent;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 6px;
+            color: #CBD5E1;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background-color: #667EEA;
+            color: #F1F5F9;
+            border-color: #667EEA;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .error-message {
+            background-color: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #FECACA;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            font-size: 12px;
+        }
+
+        .success-message {
+            background-color: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #A7F3D0;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            font-size: 12px;
+        }
+
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 24px;
+            }
+
+            .payout-method {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-left">
+            <h1 class="header-title">💰 Earnings & Payouts</h1>
+        </div>
+        <button class="back-btn" onclick="window.history.back()">← Back</button>
+    </div>
+
+    <div class="container">
+        <div class="main-content">
+            <div class="page-title">Creator Earnings Dashboard</div>
+            <p class="page-subtitle">View earnings, connect Stripe, and manage payouts</p>
+
+            <!-- EARNINGS OVERVIEW -->
+            <div class="earnings-overview">
+                <div class="earning-card">
+                    <div class="earning-label">This Month</div>
+                    <div class="earning-value">$1,245.50</div>
+                    <div class="earning-description">Pending payout</div>
+                </div>
+                <div class="earning-card">
+                    <div class="earning-label">Last Payout</div>
+                    <div class="earning-value">$2,340.00</div>
+                    <div class="earning-description">Jan 15, 2026</div>
+                </div>
+                <div class="earning-card">
+                    <div class="earning-label">Total Earned</div>
+                    <div class="earning-value">$18,540.25</div>
+                    <div class="earning-description">All time</div>
+                </div>
+                <div class="earning-card">
+                    <div class="earning-label">Referral Subs</div>
+                    <div class="earning-value">547</div>
+                    <div class="earning-description">Active subscribers</div>
+                </div>
+            </div>
+
+            <!-- STRIPE CONNECT SECTION -->
+            <div class="section">
+                <div class="section-title">🔗 Connect Stripe Account</div>
+                
+                <div class="stripe-banner">
+                    <div class="stripe-banner-title">Secure Payments Powered by Stripe</div>
+                    <div class="stripe-banner-text">
+                        AuraBoost uses Stripe to handle all payments securely. Your earnings are transferred directly to your bank account monthly. We are PCI-DSS compliant and your financial data is encrypted end-to-end.
+                    </div>
+                    <div style="margin-bottom: 12px; font-size: 11px; color: #CBD5E1;">
+                        <strong>Bank Transfer Details:</strong><br>
+                        • Monthly payouts (5-7 business days)<br>
+                        • Minimum threshold: $25<br>
+                        • No fees from AuraBoost<br>
+                        • Stripe fees: ~2.2% (industry standard)
+                    </div>
+                    <button class="connect-btn connected" id="stripeConnectBtn" onclick="connectStripe()">
+                        ✓ Stripe Connected: stripe_pro_account_123
+                    </button>
+                </div>
+
+                <div class="info-box">
+                    💡 <strong>How Stripe Integration Works:</strong> When creators subscribe to AuraBoost via your referral link, we collect their subscription payment. 30% of that goes to you. Every Sunday, we calculate your earnings from the past week and on Monday morning, Stripe transfers your payout directly to your connected bank account.
+                </div>
+            </div>
+
+            <!-- TABS -->
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('payout-methods')">Payout Methods</button>
+                <button class="tab-btn" onclick="switchTab('payment-history')">Payment History</button>
+                <button class="tab-btn" onclick="switchTab('stripe-details')">Stripe Setup</button>
+            </div>
+
+            <!-- PAYOUT METHODS TAB -->
+            <div id="payout-methods" class="tab-content active">
+                <div class="section">
+                    <div class="section-title">Configured Payout Methods</div>
+
+                    <div class="payout-method">
+                        <div class="method-info">
+                            <div class="method-name">💳 Bank Account</div>
+                            <div class="method-detail">
+                                Wells Fargo Checking • ••••2847
+                            </div>
+                        </div>
+                        <div class="method-badge">PRIMARY</div>
+                    </div>
+
+                    <div class="payout-method">
+                        <div class="method-info">
+                            <div class="method-name">📱 PayPal</div>
+                            <div class="method-detail">
+                                <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f093829591849f82b09588919d809c95de939f9d">[email&#160;protected]</a> • Not connected
+                            </div>
+                        </div>
+                        <button class="btn btn-secondary" onclick="connectPayPal()">Connect PayPal</button>
+                    </div>
+
+                    <div class="info-box" style="margin-top: 20px;">
+                        🔐 <strong>Security:</strong> We never store full bank account numbers. Stripe securely handles all banking information. You can update your payout method anytime in your Stripe dashboard.
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAYMENT HISTORY TAB -->
+            <div id="payment-history" class="tab-content">
+                <div class="section">
+                    <div class="section-title">Recent Payouts</div>
+
+                    <table class="payment-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Referrals</th>
+                                <th>Amount</th>
+                                <th>Commission</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Jan 15, 2026</td>
+                                <td>78</td>
+                                <td><span class="amount-positive">+$2,340.00</span></td>
+                                <td>30% × 78 subs</td>
+                                <td><span class="payment-status status-completed">Completed</span></td>
+                            </tr>
+                            <tr>
+                                <td>Jan 08, 2026</td>
+                                <td>56</td>
+                                <td><span class="amount-positive">+$1,680.00</span></td>
+                                <td>30% × 56 subs</td>
+                                <td><span class="payment-status status-completed">Completed</span></td>
+                            </tr>
+                            <tr>
+                                <td>Jan 01, 2026</td>
+                                <td>92</td>
+                                <td><span class="amount-positive">+$2,760.00</span></td>
+                                <td>30% × 92 subs</td>
+                                <td><span class="payment-status status-completed">Completed</span></td>
+                            </tr>
+                            <tr>
+                                <td>Dec 25, 2025</td>
+                                <td>45</td>
+                                <td><span class="amount-positive">+$1,350.00</span></td>
+                                <td>30% × 45 subs</td>
+                                <td><span class="payment-status status-completed">Completed</span></td>
+                            </tr>
+                            <tr>
+                                <td>Dec 18, 2025</td>
+                                <td>102</td>
+                                <td><span class="amount-positive">+$3,060.00</span></td>
+                                <td>30% × 102 subs</td>
+                                <td><span class="payment-status status-completed">Completed</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="info-box" style="margin-top: 20px;">
+                        📊 <strong>Payout Schedule:</strong> Payouts calculated every Monday based on verified referrals from the previous 7 days. Stripe transfers funds 5-7 business days after processing.
+                    </div>
+                </div>
+            </div>
+
+            <!-- STRIPE SETUP TAB -->
+            <div id="stripe-details" class="tab-content">
+                <div class="section">
+                    <div class="section-title">Stripe Setup Instructions</div>
+
+                    <div class="info-box">
+                        🔐 <strong>AuraBoost Payment Architecture:</strong>
+                        <br><br>
+                        1. Creator connects Stripe account via OAuth<br>
+                        2. Customer subscribes to AuraBoost ($9.99/month)<br>
+                        3. Stripe processes payment securely<br>
+                        4. AuraBoost takes 70% commission ($7.00)<br>
+                        5. Creator receives 30% ($2.99)<br>
+                        6. Earnings accumulated weekly<br>
+                        7. Payout initiated Monday, arrives Wed-Fri<br>
+                    </div>
+
+                    <div style="margin-top: 20px; padding: 16px; background-color: #0F172A; border: 1px solid rgba(102, 126, 234, 0.2); border-radius: 12px;">
+                        <div style="font-size: 13px; font-weight: bold; color: #F1F5F9; margin-bottom: 12px;">
+                            Integration Details
+                        </div>
+                        <div style="font-size: 11px; color: #CBD5E1; line-height: 1.8;">
+                            <div style="margin-bottom: 8px;"><strong>API Endpoint:</strong> https://api.stripe.com/v1/payouts</div>
+                            <div style="margin-bottom: 8px;"><strong>Payout Frequency:</strong> Weekly (Mondays)</div>
+                            <div style="margin-bottom: 8px;"><strong>Settlement Time:</strong> 5-7 business days</div>
+                            <div style="margin-bottom: 8px;"><strong>Fee Structure:</strong> No AuraBoost fee (Stripe handles)</div>
+                            <div style="margin-bottom: 8px;"><strong>Minimum:</strong> $25 threshold</div>
+                            <div style="margin-bottom: 8px;"><strong>Tax Reporting:</strong> 1099 issued annually</div>
+                            <div><strong>Security:</strong> PCI-DSS Level 1 compliant</div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 20px; padding: 16px; background-color: #0F172A; border: 1px solid rgba(102, 126, 234, 0.2); border-radius: 12px;">
+                        <div style="font-size: 13px; font-weight: bold; color: #F1F5F9; margin-bottom: 12px;">
+                            Creator Referral Flow
+                        </div>
+                        <div style="font-size: 11px; color: #CBD5E1; line-height: 1.8;">
+                            1. Creator posts content to AuraBoost<br>
+                            2. Unique referral link generated<br>
+                            3. New user clicks link & subscribes<br>
+                            4. Stripe charges $9.99/month (recurring)<br>
+                            5. Creator automatically credited 30%<br>
+                            6. Weekly payout via Stripe Connect<br>
+                            7. Funds appear in creator's bank 5-7 days later
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- REQUEST PAYOUT SECTION -->
+            <div class="section">
+                <div class="section-title">Request Early Payout</div>
+
+                <div class="info-box">
+                    💰 <strong>Minimum Balance:</strong> You need at least $25 to request a payout. Current balance: $1,245.50
+                </div>
+
+                <form id="payoutForm" onsubmit="requestPayout(event)">
+                    <div class="form-group">
+                        <label class="form-label">Amount to Withdraw</label>
+                        <div style="display: flex; gap: 12px;">
+                            <input type="number" class="form-input" id="payoutAmount" placeholder="Enter amount" min="25" max="1245.50" step="0.01" required style="flex: 1;">
+                            <button type="button" class="btn btn-secondary" onclick="setMaxPayout()">Max</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Payout Method</label>
+                        <select class="form-input" id="payoutMethod" required>
+                            <option value="bank">💳 Wells Fargo Bank (••••2847)</option>
+                            <option value="paypal">📱 PayPal (Not configured)</option>
+                        </select>
+                    </div>
+
+                    <div id="payoutError" class="error-message" style="display: none;"></div>
+                    <div id="payoutSuccess" class="success-message" style="display: none;"></div>
+
+                    <button type="submit" class="btn btn-primary">Request Payout</button>
+                </form>
+
+                <div class="info-box" style="margin-top: 20px;">
+                    📌 <strong>Note:</strong> Payouts are processed automatically every Monday. You can request early withdrawal if you have $25+. Early payouts may take 7-10 business days.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        // Initialize Stripe
+        const stripe = Stripe('pk_live_YOUR_STRIPE_PUBLIC_KEY');
+
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+
+        function connectStripe() {
+            alert('🔗 Redirecting to Stripe Connect...\n\nYou will be taken to Stripe to authorize AuraBoost to process payouts to your bank account.\n\nThis is a secure OAuth connection.');
+            // In production: window.location.href = '/auraboost-mvp/https://connect.stripe.com/oauth/authorize?...';
+        }
+
+        function connectPayPal() {
+            alert('🔗 Connecting to PayPal...\n\nYou will be redirected to PayPal to authorize payouts to your account.');
+        }
+
+        function setMaxPayout() {
+            document.getElementById('payoutAmount').value = '1245.50';
+        }
+
+        function requestPayout(event) {
+            event.preventDefault();
+            
+            const amount = parseFloat(document.getElementById('payoutAmount').value);
+            const method = document.getElementById('payoutMethod').value;
+            const errorEl = document.getElementById('payoutError');
+            const successEl = document.getElementById('payoutSuccess');
+
+            errorEl.style.display = 'none';
+            successEl.style.display = 'none';
+
+            if (amount < 25) {
+                errorEl.textContent = '❌ Minimum payout is $25';
+                errorEl.style.display = 'block';
+                return;
+            }
+
+            if (amount > 1245.50) {
+                errorEl.textContent = '❌ Amount exceeds available balance';
+                errorEl.style.display = 'block';
+                return;
+            }
+
+            if (method === 'paypal') {
+                errorEl.textContent = '❌ PayPal is not yet configured. Please connect it first.';
+                errorEl.style.display = 'block';
+                return;
+            }
+
+            // Simulate API call
+            setTimeout(() => {
+                successEl.innerHTML = `
+                    ✅ <strong>Payout Requested!</strong><br>
+                    Amount: $${amount.toFixed(2)}<br>
+                    Method: Wells Fargo Bank<br>
+                    Reference: PAY_${Date.now()}<br>
+                    Expected arrival: 5-7 business days
+                `;
+                succ

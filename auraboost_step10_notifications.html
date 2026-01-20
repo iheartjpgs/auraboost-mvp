@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraBoost - Notifications</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #0F172A;
+            color: #F1F5F9;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background-color: #1E293B;
+            border-bottom: 1px solid #F59E0B;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-small {
+            width: 32px;
+            height: 32px;
+        }
+
+        .header-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #F59E0B;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .bell-icon {
+            font-size: 24px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: #EF4444;
+            color: #F1F5F9;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .back-btn {
+            background-color: #F59E0B;
+            color: #0F172A;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .main-content {
+            padding: 24px 20px;
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .page-subtitle {
+            color: #CBD5E1;
+            margin-bottom: 24px;
+        }
+
+        /* FILTER TABS */
+        .filter-tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid rgba(245, 158, 11, 0.2);
+            padding-bottom: 16px;
+            overflow-x: auto;
+        }
+
+        .filter-tab {
+            padding: 8px 16px;
+            border: none;
+            background-color: transparent;
+            color: #CBD5E1;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            position: relative;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .filter-tab.active {
+            color: #F59E0B;
+        }
+
+        .filter-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -16px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: #F59E0B;
+        }
+
+        .filter-tab:hover {
+            color: #F59E0B;
+        }
+
+        /* NOTIFICATION ITEM */
+        .notification-item {
+            background-color: #1E293B;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: grid;
+            grid-template-columns: 50px 1fr auto;
+            gap: 16px;
+            align-items: flex-start;
+            transition: all 0.2s;
+        }
+
+        .notification-item:hover {
+            border-color: #F59E0B;
+            background-color: rgba(245, 158, 11, 0.05);
+        }
+
+        .notification-item.unread {
+            background-color: rgba(245, 158, 11, 0.1);
+            border-color: #F59E0B;
+        }
+
+        .notification-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #F59E0B, #FCD34D);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #0F172A;
+            flex-shrink: 0;
+        }
+
+        .notification-content {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .notification-title {
+            font-weight: 600;
+            color: #F1F5F9;
+            font-size: 14px;
+        }
+
+        .notification-message {
+            color: #CBD5E1;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .notification-time {
+            color: #64748B;
+            font-size: 11px;
+        }
+
+        .notification-action {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            background-color: #1E293B;
+            color: #F59E0B;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .btn-small:hover {
+            background-color: rgba(245, 158, 11, 0.1);
+            border-color: #F59E0B;
+        }
+
+        .btn-small.primary {
+            background-color: #F59E0B;
+            color: #0F172A;
+            border-color: #F59E0B;
+        }
+
+        .btn-small.primary:hover {
+            opacity: 0.9;
+        }
+
+        /* NOTIFICATION TYPES */
+        .notification-item.challenge {
+            border-left: 3px solid #10B981;
+        }
+
+        .notification-item.follow {
+            border-left: 3px solid #3B82F6;
+        }
+
+        .notification-item.earning {
+            border-left: 3px solid #F59E0B;
+        }
+
+        .notification-item.achievement {
+            border-left: 3px solid #8B5CF6;
+        }
+
+        .notification-item.system {
+            border-left: 3px solid #64748B;
+        }
+
+        /* EMPTY STATE */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        .empty-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #F1F5F9;
+            margin-bottom: 8px;
+        }
+
+        .empty-text {
+            color: #CBD5E1;
+            font-size: 14px;
+        }
+
+        /* NOTIFICATION DROPDOWN */
+        .notification-dropdown {
+            position: fixed;
+            top: 60px;
+            right: 20px;
+            background-color: #1E293B;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 12px;
+            width: 380px;
+            max-height: 500px;
+            overflow-y: auto;
+            z-index: 1001;
+            display: none;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        .notification-dropdown.active {
+            display: block;
+        }
+
+        .dropdown-header {
+            padding: 16px;
+            border-bottom: 1px solid rgba(245, 158, 11, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background-color: #1E293B;
+        }
+
+        .dropdown-header-title {
+            font-weight: 600;
+            color: #F1F5F9;
+        }
+
+        .mark-read-btn {
+            background: none;
+            border: none;
+            color: #F59E0B;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .dropdown-item {
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(245, 158, 11, 0.1);
+            display: grid;
+            grid-template-columns: 40px 1fr;
+            gap: 12px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .dropdown-item:hover {
+            background-color: rgba(245, 158, 11, 0.05);
+        }
+
+        .dropdown-item.unread {
+            background-color: rgba(245, 158, 11, 0.1);
+        }
+
+        .dropdown-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #F59E0B, #FCD34D);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: #0F172A;
+            flex-shrink: 0;
+        }
+
+        .dropdown-content {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .dropdown-title {
+            font-weight: 600;
+            color: #F1F5F9;
+            font-size: 12px;
+        }
+
+        .dropdown-message {
+            color: #CBD5E1;
+            font-size: 11px;
+        }
+
+        .dropdown-time {
+            color: #64748B;
+            font-size: 10px;
+            margin-top: 2px;
+        }
+
+        /* SETTINGS */
+        .settings-section {
+            background-color: #1E293B;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 16px;
+            color: #F1F5F9;
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(245, 158, 11, 0.1);
+        }
+
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+
+        .setting-label {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .setting-title {
+            font-weight: 600;
+            color: #F1F5F9;
+            font-size: 13px;
+        }
+
+        .setting-description {
+            color: #CBD5E1;
+            font-size: 11px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 44px;
+            height: 24px;
+            background-color: #0F172A;
+            border-radius: 12px;
+            cursor: pointer;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            transition: all 0.3s;
+        }
+
+        .toggle-switch.enabled {
+            background-color: #10B981;
+            border-color: #10B981;
+        }
+
+        .toggle-knob {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #F1F5F9;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: all 0.3s;
+        }
+
+        .toggle-switch.enabled .toggle-knob {
+            left: 22px;
+        }
+
+        /* INFO BOX */
+        .info-box {
+            background-color: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #CBD5E1;
+        }
+
+        @media (max-width: 600px) {
+            .notification-dropdown {
+                width: calc(100vw - 40px);
+            }
+
+            .notification-item {
+                grid-template-columns: 40px 1fr;
+            }
+
+            .notification-action {
+                grid-column: 1 / -1;
+                margin-top: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-left">
+            <svg class="logo-small" viewBox="0 0 400 400" fill="none">
+                <circle cx="200" cy="200" r="160" stroke="#F59E0B" stroke-width="28" />
+                <circle cx="200" cy="200" r="110" stroke="#FCD34D" stroke-width="24" />
+                <circle cx="200" cy="200" r="60" stroke="#F59E0B" stroke-width="20" />
+                <circle cx="200" cy="200" r="25" fill="#F59E0B" />
+            </svg>
+            <h1 class="header-title">AuraBoost</h1>
+        </div>
+        <div class="header-right">
+            <div class="bell-icon" onclick="toggleNotificationDropdown()">
+                🔔
+                <div class="notification-badge" id="notificationBadge">5</div>
+            </div>
+            <button class="back-btn" onclick="window.history.back()">← Back</button>
+        </div>
+    </div>
+
+    <!-- NOTIFICATION DROPDOWN -->
+    <div id="notificationDropdown" class="notification-dropdown">
+        <div class="dropdown-header">
+            <div class="dropdown-header-title">Notifications</div>
+            <button class="mark-read-btn" onclick="markAllRead()">Mark all read</button>
+        </div>
+
+        <div class="dropdown-item unread">
+            <div class="dropdown-icon">⚡</div>
+            <div class="dropdown-content">
+                <div class="dropdown-title">Challenge: Beat @xo_fitness!</div>
+                <div class="dropdown-message">7-day aura challenge starts now</div>
+                <div class="dropdown-time">Just now</div>
+            </div>
+        </div>
+
+        <div class="dropdown-item unread">
+            <div class="dropdown-icon">👥</div>
+            <div class="dropdown-content">
+                <div class="dropdown-title">@gainz_queen started following you</div>
+                <div class="dropdown-message">She has a 298-day streak!</div>
+                <div class="dropdown-time">2 minutes ago</div>
+            </div>
+        </div>
+
+        <div class="dropdown-item unread">
+            <div class="dropdown-icon">💰</div>
+            <div class="dropdown-content">
+                <div class="dropdown-title">New referral: @john_fitness</div>
+                <div class="dropdown-message">You earned $14.97 this month</div>
+                <div class="dropdown-time">15 minutes ago</div>
+            </div>
+        </div>
+
+        <div class="dropdown-item">
+            <div class="dropdown-icon">🏅</div>
+            <div class="dropdown-content">
+                <div class="dropdown-title">Achievement Unlocked: Day 30!</div>
+                <div class="dropdown-message">You've been on a 30-day streak 🎉</div>
+                <div class="dropdown-time">1 hour ago</div>
+            </div>
+        </div>
+
+        <div class="dropdown-item">
+            <div class="dropdown-icon">📢</div>
+            <div class="dropdown-content">
+                <div class="dropdown-title">New feature: Boost videos!</div>
+                <div class="dropdown-message">Start creating shareable videos</div>
+                <div class="dropdown-time">3 hours ago</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="main-content">
+            <div class="page-title">🔔 Notifications</div>
+            <p class="page-subtitle">Stay updated on challenges, followers, earnings, and achievements</p>
+
+            <div class="info-box">
+                💡 <strong>Pro tip:</strong> Customize your notification settings below to get alerts exactly how you want them. You can adjust frequency, types, and delivery methods.
+            </div>
+
+            <!-- FILTER TABS -->
+            <div class="filter-tabs">
+                <button class="filter-tab active" onclick="filterNotifications(this, 'all')">All (5)</button>
+                <button class="filter-tab" onclick="filterNotifications(this, 'challenge')">⚡ Challenges (1)</button>
+                <button class="filter-tab" onclick="filterNotifications(this, 'follow')">👥 Follows (1)</button>
+                <button class="filter-tab" onclick="filterNotifications(this, 'earning')">💰 Earnings (1)</button>
+                <button class="filter-tab" onclick="filterNotifications(this, 'achievement')">🏅 Achievements (1)</button>
+                <button class="filter-tab" onclick="filterNotifications(this, 'system')">📢 System (1)</button>
+            </div>
+
+            <!-- NOTIFICATIONS LIST -->
+            <div id="notificationsList">
+                <!-- CHALLENGE NOTIFICATION -->
+                <div class="notification-item unread challenge" data-type="challenge">
+                    <div class="notification-icon">⚡</div>
+                    <div class="notification-content">
+                        <div class="notification-title">Challenge: Beat @xo_fitness!</div>
+                        <div class="notification-message">@xo_fitness challenged you to a 7-day aura battle. She has 365 days straight, you have 47. Can you win this week?</div>
+                        <div class="notification-time">Just now</div>
+                    </div>
+                    <div class="notification-action">
+                        <button class="btn-small primary" onclick="acceptChallenge()">Accept</button>
+                        <button class="btn-small" onclick="declineChallenge()">Decline</button>
+                    </div>
+                </div>
+
+                <!-- FOLLOW NOTIFICATION -->
+                <div class="notification-item unread follow" data-type="follow">
+                    <div class="notification-icon">👥</div>
+                    <div class="notification-content">
+                        <div class="notification-title">@gainz_queen started following you</div>
+                        <div class="notification-message">She has a 298-day streak and 2,230 aura points. Consider following her back!</div>
+                        <div class="notification-time">2 minutes ago</div>
+                    </div>
+                    <div class="notification-action">
+                        <button class="btn-small primary" onclick="followBack()">Follow Back</button>
+                        <button class="btn-small" onclick="viewProfile()">View Profile</button>
+                    </div>
+                </div>
+
+                <!-- EARNING NOTIFICATION -->
+                <div class="notification-item unread earning" data-type="earning">
+                    <div class="notification-icon">💰</div>
+                    <div class="notification-content">
+                        <div class="notification-title">New Referral Earned!</div>
+                        <div class="notification-message">@john_fitness just subscribed through your link. You earned $14.97! (Total this month: $340)</div>
+                        <div class="notification-time">15 minutes ago</div>
+                    </div>
+                    <div class="notification-action">
+                        <button class="btn-small" onclick="viewAnalytics()">View Analytics</button>
+                    </div>
+                </div>
+
+                <!-- ACHIEVEMENT NOTIFICATION -->
+                <div class="notification-item achievement" data-type="achievement">
+                    <div class="notification-icon">🏅</div>
+                    <div class="notification-content">
+                        <div class="notification-title">Achievement Unlocked: Day 30!</div>
+                        <div class="notification-message">You've hit 30 days straight! You're officially a fitness machine. Only 30 more days to the Day 60 badge!</div>
+                        <div class="notification-time">1 hour ago</div>
+                    </div>
+                    <div class="notification-action">
+                        <button class="btn-small primary" onclick="shareAchievement()">Share</button>
+                    </div>
+                </div>
+
+                <!-- SYSTEM NOTIFICATION -->
+                <div class="notification-item system" data-type="system">
+                    <div class="notification-icon">📢</div>
+                    <div class="notification-content">
+                        <div class="notification-title">New Feature Available: Boost Videos!</div>
+                        <div class="notification-message">We just launched boost videos! Create 18-second clips of your workouts and share across all platforms. Learn more →</div>
+                        <div class="notification-time">3 hours ago</div>
+                    </div>
+                    <div class="notification-action">
+                        <button class="btn-small primary" onclick="learnMore()">Learn More</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NOTIFICATION SETTINGS -->
+            <div class="settings-section">
+                <div class="section-title">⚙️ Notification Settings</div>
+
+                <div class="setting-item">
+                    <div class="setting-label">
+                        <div class="setting-title">Push Notifications</div>
+                        <div class="setting-description">Get real-time alerts on your device</div>
+                    </div>
+                    <div class="toggle-switch enabled" onclick="toggleSetting(this)">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-label">
+                        <div class="setting-title">Challenge Notifications</div>
+                        <div class="setting-description">When someone challenges you</div>
+                    </div>
+                    <div class="toggle-switch enabled" onclick="toggleSetting(this)">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-label">
+                        <div class="setting-title">Follow Notifications</div>
+                        <div class="setting-description">When someone follows you</div>
+                    </div>
+                    <div class="toggle-switch enabled" onclick="toggleSetting(this)">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-label">
+                        <div class="setting-title">Earnings Notifications</div>
+                        <div class="setting-description">When you earn from referrals</div>
+                    </div>
+                    <div class="toggle-switch enabled" onclick="toggleSetting(this)">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-label">
+                        <div class="setting-title">Achievement Notifications</div>
+                        <div class="setting-description">When you unlock badges & milestones</div>
+                    </div>
+                    <div class="toggle-switch enabled" onclick="toggleSetting(this)">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-label">
+                        <div class="setting-title">System Notifications</div>
+                        <div class="setting-description">New features, updates, maintenance</div>
+                    </div>
+                    <div class="toggle-switch enabled" onclick="toggleSetting(this)">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-label">
+                        <div class="setting-title">Email Digest</div>
+                        <div class="setting-description">Daily email summary of activity</div>
+                    </div>
+                    <div class="toggle-switch" onclick="toggleSetting(this)">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-label">
+                        <div class="setting-title">SMS Alerts</div>
+                        <div class="setting-description">Text alerts for major earnings</div>
+                    </div>
+                    <div class="toggle-switch" onclick="toggleSetting(this)">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleNotificationDropdown() {
+            const dropdown = document.getElementById('notificationDropdown');
+            dropdown.classList.toggle('active');
+        }
+
+        function filterNotifications(element, type) {
+            document.querySelectorAll('.filter-tab').forEach(tab => tab.classList.remove('active'));
+            element.classList.add('active');
+
+            const notifications = document.querySelectorAll('.notification-item');
+            notifications.forEach(notif => {
+                if (type === 'all' || notif.dataset.type === type) {
+                    notif.style.display = 'grid';
+                } else {
+                    notif.style.display = 'none';
+                }
+            });
+        }
+
+        function markAllRead() {
+            document.querySelectorAll('.dropdown-item.unread').forEach(item => {
+                item.classList.remove('unread');
+            });
+            document.querySelectorAll('.notification-item.unread').forEach(item => {
+                item.classList.remove('unread');
+            });
+            document.getElementById('notificationBadge').style.display = 'none';
+            alert('✓ All notifications marked as read');
+        }
+
+        function toggleSetting(element) {
+            element.classList.toggle('enabled');
+        }
+
+        function acceptChallenge() {
+            alert('✅ Challenge accepted!\n\nYou\'re now competing with @xo_fitness for the next 7 days 🔥\n\nCheck the leaderboard to track your progress!');
+        }
+
+        function declineChallenge() {
+            alert('Challenge declined. You can always change your mind later!');
+        }
+
+        function followBack() {
+            alert('✓ You\'re now following @gainz_queen!\n\nYou\'ll see her activity in your feed now.');
+        }
+
+        function viewProfile() {
+            alert('Opening @gainz_queen\'s profile...\n\nIn real app, this shows their full profile.');
+        }
+
+        function viewAnalytics() {
+            alert('Opening Analytics Dashboard...\n\nYou can see detailed stats about your referrals here.');
+        }
+
+        function shareAchievement() {
+            alert('🎉 Sharing your achievement!\n\nIn real app, this opens social media share dialog.\n\n📱 Your followers will see your Day 30 badge!');
+        }
+
+        function learnMore() {
+            alert('📺 Loading feature tutorial...\n\nThis would show a video walkthrough of the new Boost Video feature.');
+        }
+
+        function goBack() {
+            alert('Going back...\n\nIn real app, this navigates back to dashboard.');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('notificationDropdown');
+            const bell = document.querySelector('.bell-icon');
+            
+            if (!dropdown.contains(event.target) && !bell.contains(event.target)) {
+                dropdown.classList.remove('active');
+            }
+        });
+
+        // Simulate real-time notifications
+        function simulateNotification() {
+            const types = ['challenge', 'follow', 'earning', 'achievement'];
+            const messages = [
+                { icon: '⚡', title: 'New Challenge', msg: '@crypto_jock challenged you!' },
+                { icon: '👥', title: 'New Follower', msg: '@muscle_maven started following you' },
+                { icon: '💰', title: 'Earnings!', msg: 'You earned $29.97 from referrals' },
+                { icon: '🏅', title: 'Milestone!', msg: 'You unlocked the Streak Master badge!' }
+            ];
+
+            setInterval(() => {
+                const msg = messages[Math.floor(Math.random() * messages.length)];
+                console.log(`🔔 ${msg.title}: ${msg.msg}`);
+            }, 30000);
+        }
+
+        simulateNotification();
+    </script>
+</body>
+</html>

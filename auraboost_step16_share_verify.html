@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraBoost - Share & Verify for Aura Points</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #0F172A;
+            color: #F1F5F9;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #EC4899 0%, #8B5CF6 100%);
+            padding: 24px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-small {
+            width: 32px;
+            height: 32px;
+        }
+
+        .header-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #F1F5F9;
+        }
+
+        .main-content {
+            padding: 24px 20px;
+        }
+
+        /* PROGRESS INDICATOR */
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 32px;
+            position: relative;
+        }
+
+        .progress-steps::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: rgba(236, 72, 153, 0.2);
+            z-index: 0;
+        }
+
+        .step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background-color: #1E293B;
+            border: 2px solid rgba(236, 72, 153, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 8px;
+            font-weight: bold;
+            color: #CBD5E1;
+        }
+
+        .step.completed .step-number {
+            background-color: #10B981;
+            border-color: #10B981;
+            color: #F1F5F9;
+        }
+
+        .step.completed .step-number::after {
+            content: '✓';
+            position: absolute;
+        }
+
+        .step.active .step-number {
+            background-color: #EC4899;
+            border-color: #EC4899;
+            color: #F1F5F9;
+            box-shadow: 0 0 12px rgba(236, 72, 153, 0.4);
+        }
+
+        .step-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: #CBD5E1;
+        }
+
+        .step.active .step-label {
+            color: #EC4899;
+        }
+
+        /* SECTIONS */
+        .section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #F1F5F9;
+        }
+
+        .section-subtitle {
+            font-size: 13px;
+            color: #CBD5E1;
+            margin-bottom: 24px;
+        }
+
+        /* UPLOAD SECTION */
+        .upload-preview {
+            background-color: #1E293B;
+            border: 1px solid rgba(236, 72, 153, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .preview-image {
+            width: 100%;
+            max-width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, #EC4899, #8B5CF6);
+            border-radius: 8px;
+            margin: 0 auto 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+        }
+
+        .preview-info {
+            font-size: 12px;
+            color: #CBD5E1;
+            text-align: left;
+            background-color: #0F172A;
+            border-radius: 6px;
+            padding: 12px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(236, 72, 153, 0.1);
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        /* SHARE PLATFORMS */
+        .platforms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .platform-card {
+            background-color: #1E293B;
+            border: 2px solid rgba(236, 72, 853, 0.2);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .platform-card:hover {
+            border-color: #EC4899;
+            background-color: rgba(236, 72, 853, 0.05);
+        }
+
+        .platform-card.selected {
+            background-color: #EC4899;
+            border-color: #EC4899;
+            color: #F1F5F9;
+        }
+
+        .platform-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .platform-name {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* URL VERIFICATION */
+        .verification-box {
+            background-color: #1E293B;
+            border: 2px solid rgba(236, 72, 853, 0.2);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .verification-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            color: #F1F5F9;
+        }
+
+        .verification-description {
+            font-size: 12px;
+            color: #CBD5E1;
+            margin-bottom: 16px;
+            line-height: 1.6;
+        }
+
+        .url-input-group {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .url-input {
+            flex: 1;
+            padding: 12px;
+            background-color: #0F172A;
+            border: 1px solid rgba(236, 72, 853, 0.3);
+            border-radius: 6px;
+            color: #F1F5F9;
+            font-size: 12px;
+        }
+
+        .url-input::placeholder {
+            color: #64748B;
+        }
+
+        .paste-btn {
+            background-color: #EC4899;
+            color: #F1F5F9;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .paste-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* SCREENSHOT UPLOAD */
+        .screenshot-section {
+            background-color: #0F172A;
+            border: 2px dashed rgba(236, 72, 853, 0.3);
+            border-radius: 8px;
+            padding: 24px;
+            text-align: center;
+            margin-bottom: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .screenshot-section:hover {
+            border-color: #EC4899;
+            background-color: rgba(236, 72, 853, 0.05);
+        }
+
+        .screenshot-icon {
+            font-size: 36px;
+            margin-bottom: 12px;
+        }
+
+        .screenshot-text {
+            font-size: 12px;
+            color: #CBD5E1;
+            margin-bottom: 8px;
+        }
+
+        .screenshot-hint {
+            font-size: 11px;
+            color: #64748B;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .screenshot-preview {
+            margin-top: 12px;
+            padding: 12px;
+            background-color: #1E293B;
+            border-radius: 6px;
+            font-size: 11px;
+            color: #10B981;
+        }
+
+        /* VERIFICATION STATUS */
+        .verification-status {
+            background-color: #1E293B;
+            border-left: 3px solid #EC4899;
+            border-radius: 6px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+
+        .status-title {
+            font-size: 12px;
+            font-weight: bold;
+            color: #EC4899;
+            margin-bottom: 8px;
+        }
+
+        .status-message {
+            font-size: 12px;
+            color: #CBD5E1;
+        }
+
+        .status-icon {
+            display: inline-block;
+            margin-right: 8px;
+            font-size: 16px;
+        }
+
+        .status-check {
+            display: flex;
+            align-items: center;
+            padding: 8px 0;
+            font-size: 12px;
+        }
+
+        .status-check.pending {
+            color: #F59E0B;
+        }
+
+        .status-check.verified {
+            color: #10B981;
+        }
+
+        .check-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 8px;
+            font-size: 12px;
+        }
+
+        .status-check.pending .check-icon {
+            background-color: rgba(245, 158, 11, 0.2);
+            color: #F59E0B;
+        }
+
+        .status-check.verified .check-icon {
+            background-color: rgba(16, 185, 129, 0.2);
+            color: #10B981;
+        }
+
+        /* AURA REWARD */
+        .aura-reward {
+            background: linear-gradient(135deg, #EC4899 0%, #F472B6 100%);
+            border-radius: 12px;
+            padding: 32px 24px;
+            text-align: center;
+            margin-bottom: 24px;
+            color: #F1F5F9;
+            display: none;
+        }
+
+        .aura-reward.show {
+            display: block;
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .aura-icon {
+            font-size: 56px;
+            margin-bottom: 12px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .aura-amount {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .aura-label {
+            font-size: 13px;
+            opacity: 0.95;
+        }
+
+        /* BUTTONS */
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background-color: #EC4899;
+            color: #F1F5F9;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background-color: #1E293B;
+            color: #EC4899;
+            border: 1px solid #EC4899;
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(236, 72, 853, 0.1);
+        }
+
+        /* INFO BOX */
+        .info-box {
+            background-color: rgba(236, 72, 853, 0.1);
+            border: 1px solid rgba(236, 72, 853, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+            font-size: 12px;
+            line-height: 1.6;
+            color: #CBD5E1;
+        }
+
+        @media (max-width: 768px) {
+            .platforms-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-left">
+            <svg class="logo-small" viewBox="0 0 400 400" fill="none">
+                <circle cx="200" cy="200" r="160" stroke="#F1F5F9" stroke-width="28" />
+                <circle cx="200" cy="200" r="110" stroke="#F472B6" stroke-width="24" />
+                <circle cx="200" cy="200" r="60" stroke="#F1F5F9" stroke-width="20" />
+                <circle cx="200" cy="200" r="25" fill="#F1F5F9" />
+            </svg>
+            <h1 class="header-title">AuraBoost</h1>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="main-content">
+            <!-- PROGRESS STEPS -->
+            <div class="progress-steps">
+                <div class="step completed">
+                    <div class="step-number">1</div>
+                    <div class="step-label">Upload</div>
+                </div>
+                <div class="step active">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Share</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Verify</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-label">Claim Aura</div>
+                </div>
+            </div>
+
+            <!-- SECTION 1: UPLOAD PREVIEW -->
+            <div class="section active" id="section1">
+                <div class="section-title">📸 Content Uploaded!</div>
+                <div class="section-subtitle">Your photo has been analyzed. Now share it to claim your aura points.</div>
+
+                <div class="upload-preview">
+                    <div class="preview-image">🔥</div>
+                    <div class="preview-info">
+                        <div class="info-row">
+                            <span>Content Type:</span>
+                            <strong>Sexy / OnlyFans</strong>
+                        </div>
+                        <div class="info-row">
+                            <span>Sex Appeal Score:</span>
+                            <strong style="color: #EC4899;">9.1/10</strong>
+                        </div>
+                        <div class="info-row">
+                            <span>Potential Aura:</span>
+                            <strong style="color: #F59E0B;">+550</strong>
+                        </div>
+                        <div class="info-row">
+                            <span>Status:</span>
+                            <strong style="color: #F59E0B;">⏳ Pending Verification</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    💡 <strong>How to Claim Your Points:</strong> Share this post to at least ONE social platform (X, Instagram, TikTok, OnlyFans, etc). Paste the URL + screenshot proof below. Our AI will verify it was posted, then +550 aura points are instantly added to your account.
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="nextStep(2)">Continue to Share →</button>
+                </div>
+            </div>
+
+            <!-- SECTION 2: SHARE PLATFORMS -->
+            <div class="section" id="section2">
+                <div class="section-title">🌐 Share to Claim Aura</div>
+                <div class="section-subtitle">Post your content to at least ONE platform. Then verify the URL.</div>
+
+                <div class="platforms-grid">
+                    <div class="platform-card" onclick="selectPlatform(this, 'twitter')">
+                        <div class="platform-icon">𝕏</div>
+                        <div class="platform-name">Twitter/X</div>
+                    </div>
+                    <div class="platform-card" onclick="selectPlatform(this, 'instagram')">
+                        <div class="platform-icon">📷</div>
+                        <div class="platform-name">Instagram</div>
+                    </div>
+                    <div class="platform-card" onclick="selectPlatform(this, 'tiktok')">
+                        <div class="platform-icon">🎵</div>
+                        <div class="platform-name">TikTok</div>
+                    </div>
+                    <div class="platform-card" onclick="selectPlatform(this, 'onlyfans')">
+                        <div class="platform-icon">🔞</div>
+                        <div class="platform-name">OnlyFans</div>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    ⚠️ <strong>Important:</strong> The post must be PUBLIC and contain the image you just uploaded. We'll verify it using AI image recognition to match it against what you uploaded.
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-secondary" onclick="nextStep(1)">← Back</button>
+                    <button class="btn btn-primary" onclick="nextStep(3)">Continue to Verification →</button>
+                </div>
+            </div>
+
+            <!-- SECTION 3: VERIFICATION -->
+            <div class="section" id="section3">
+                <div class="section-title">✅ Verify Your Share</div>
+                <div class="section-subtitle">Paste the post URL and screenshot proof so we can verify it's live.</div>
+
+                <div class="verification-box">
+                    <div class="verification-title">📍 Step 1: Paste Post URL</div>
+                    <div class="verification-description">
+                        Copy the direct link to your post from the platform you chose. Example: twitter.com/yourname/status/123456789
+                    </div>
+                    
+                    <div class="url-input-group">
+                        <input type="text" id="postUrl" class="url-input" placeholder="https://twitter.com/yourname/status/1234567890...">
+                        <button class="paste-btn" onclick="pasteFromClipboard()">📋 Paste</button>
+                    </div>
+
+                    <div id="urlStatus" style="display: none; font-size: 12px; color: #10B981; margin-bottom: 16px;">
+                        ✓ URL detected: <span id="urlPreview"></span>
+                    </div>
+                </div>
+
+                <div class="verification-box">
+                    <div class="verification-title">📸 Step 2: Upload Screenshot Proof</div>
+                    <div class="verification-description">
+                        Take a screenshot showing your post is live on the platform. Make sure the URL is visible in the screenshot.
+                    </div>
+                    
+                    <div class="screenshot-section" onclick="document.getElementById('screenshotInput').click()">
+                        <div class="screenshot-icon">📸</div>
+                        <div class="screenshot-text">Click to upload screenshot</div>
+                        <div class="screenshot-hint">or drag and drop</div>
+                    </div>
+
+                    <input type="file" id="screenshotInput" class="file-input" onchange="handleScreenshot(event)">
+                    <div id="screenshotPreview"></div>
+                </div>
+
+                <div class="verification-status">
+                    <div class="status-title">🔍 Verification Checklist</div>
+                    <div class="status-check pending" id="check1">
+                        <div class="check-icon">◐</div>
+                        <span>Post URL detected</span>
+                    </div>
+                    <div class="status-check pending" id="check2">
+                        <div class="check-icon">◐</div>
+                        <span>Screenshot uploaded</span>
+                    </div>
+                    <div class="status-check pending" id="check3">
+                        <div class="check-icon">◐</div>
+                        <span>Image match verified (AI)</span>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-secondary" onclick="nextStep(2)">← Back</button>
+                    <button class="btn btn-primary" id="verifyBtn" onclick="submitVerification()" disabled>Submit for Verification →</button>
+                </div>
+            </div>
+
+            <!-- SECTION 4: SUCCESS & AURA CLAIM -->
+            <div class="section" id="section4">
+                <div class="aura-reward show">
+                    <div class="aura-icon">✨</div>
+                    <div class="aura-amount">+550</div>
+                    <div class="aura-label">Aura Points Claimed!</div>
+                </div>
+
+                <div class="verification-status" style="border-left-color: #10B981; background-color: rgba(16, 185, 129, 0.1);">
+                    <div class="status-title" style="color: #10B981;">✓ Verification Complete</div>
+                    <div class="status-check verified">
+                        <div class="check-icon">✓</div>
+                        <span>Post URL verified on platform</span>
+                    </div>
+                    <div class="status-check verified">
+                        <div class="check-icon">✓</div>
+                        <span>Screenshot validated</span>
+                    </div>
+                    <div class="status-check verified">
+                        <div class="check-icon">✓</div>
+                        <span>Image match confirmed (99% match)</span>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    🎉 <strong>Success!</strong> Your 550 aura points have been added to your account. You're now #246 on the global leaderboard. Share more content to climb higher and earn more!
+                </div>
+
+                <div style="background-color: #1E293B; border: 1px solid rgba(236, 72, 853, 0.2); border-radius: 12px; padding: 20px; margin-bottom: 24px;">
+                    <div style="font-size: 12px; font-weight: bold; color: #F1F5F9; margin-bottom: 12px;">📊 Your Stats</div>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; font-size: 12px;">
+                        <div>
+                            <div style="color: #CBD5E1; margin-bottom: 4px;">Total Aura</div>
+                            <div style="color: #EC4899; font-weight: bold;">2,000</div>
+                        </div>
+                        <div>
+                            <div style="color: #CBD5E1; margin-bottom: 4px;">Global Rank</div>
+                            <div style="color: #EC4899; font-weight: bold;">#246</div>
+                        </div>
+                        <div>
+                            <div style="color: #CBD5E1; margin-bottom: 4px;">This Month</div>
+                            <div style="color: #EC4899; font-weight: bold;">+1,550</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-secondary" onclick="shareSuccess()">📱 Share Your Win</button>
+                    <button class="btn btn-primary" onclick="uploadAgain()">🚀 Upload Another Post</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedPlatform = null;
+        let urlEntered = false;
+        let screenshotUploaded = false;
+
+        function nextStep(step) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById('section' + step).classList.add('active');
+            
+            // Update progress
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active', 'completed'));
+            for (let i = 1; i < step; i++) {
+                document.querySelectorAll('.step')[i-1].classList.add('completed');
+            }
+            document.querySelectorAll('.step')[step-1].classList.add('active');
+
+            window.scrollTo(0, 0);
+        }
+
+        function selectPlatform(element, platform) {
+            document.querySelectorAll('.platform-card').forEach(card => card.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedPlatform = platform;
+        }
+
+        function pasteFromClipboard() {
+            navigator.clipboard.readText().then(text => {
+                document.getElementById('postUrl').value = text;
+                validateUrl(text);
+            }).catch(err => {
+                alert('Please manually paste the URL');
+            });
+        }
+
+        function validateUrl(url) {
+            if (url.includes('twitter.com') || url.includes('x.com') || url.includes('instagram.com') || url.includes('tiktok.com') || url.includes('onlyfans.com')) {
+                urlEntered = true;
+                document.getElementById('urlStatus').style.display = 'block';
+                document.getElementById('urlPreview').textContent = url.substring(0, 50) + '...';
+                document.getElementById('check1').classList.add('verified');
+                checkVerifyButton();
+            }
+        }
+
+        function handleScreenshot(event) {
+            const file = event.target.files[0];
+            if (file) {
+                screenshotUploaded = true;
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    document.getElementById('screenshotPreview').innerHTML = `
+                        <div class="screenshot-preview">
+                            ✓ Screenshot uploaded: ${file.name}<br>
+                            File size: ${(file.size / 1024).toFixed(2)} KB<br>
+                            <em style="color: #64748B;">AI will now analyze and match image...</em>
+                        </div>
+                    `;
+                    document.getElementById('check2').classList.add('verified');
+                    // Simulate AI verification
+                    setTimeout(() => {
+                        document.getElementById('check3').classList.add('verified');
+                        document.getElementById('check3').innerHTML = `
+                            <div class="check-icon">✓</div>
+                            <span>Image match verified (99% match)</span>
+                        `;
+                        checkVerifyButton();
+                    }, 1500);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function checkVerifyButton() {
+            if (urlEntered && screenshotUploaded) {
+                document.getElementById('verifyBtn').disabled = false;
+            }
+        }
+
+        function submitVerification() {
+            document.getElementById('verifyBtn').disabled = true;
+            document.getElementById('verifyBtn').textContent = '🔄 Verifying...';
+
+            // Simulate backend verification
+            setTimeout(() => {
+                nextStep(4);
+            }, 2000);
+        }
+
+        function shareSuccess() {
+            alert('🎉 Share Your Win!\n\nWould open social sharing:\n- "Just earned 550 aura points on AuraBoost! #OnlyFans #Creator"\n- Links to your referral code');
+        }
+
+        function uploadAgain() {
+            alert('🚀 Upload Another Post\n\nRedirecting to upload screen...');
+            // In real app: window.location.href = '/auraboost-mvp//upload';
+        }
+
+        function handleUrl(url) {
+            document.getElementById('postUrl').value = url;
+            validateUrl(url);
+        }
+
+        // Demo mode - pre-fill
+        document.addEventListener('DOMContentLoaded', () => {
+            // Optional: auto-validate for demo
+        });
+    </script>
+</body>
+</html>

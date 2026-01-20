@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraBoost for TikTok Creators</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #0F172A;
+            color: #F1F5F9;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #000000 0%, #25F4EE 100%);
+            padding: 24px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-small {
+            width: 32px;
+            height: 32px;
+        }
+
+        .header-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #F1F5F9;
+        }
+
+        .header-badge {
+            background-color: rgba(241, 245, 249, 0.2);
+            color: #F1F5F9;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .back-btn {
+            background-color: rgba(241, 245, 249, 0.2);
+            color: #F1F5F9;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .main-content {
+            padding: 24px 20px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .page-subtitle {
+            color: #CBD5E1;
+            margin-bottom: 24px;
+            font-size: 14px;
+        }
+
+        /* VALUE PROP BANNER */
+        .value-prop-banner {
+            background: linear-gradient(135deg, #25F4EE 0%, #FE2C55 100%);
+            border-radius: 12px;
+            padding: 32px 24px;
+            margin-bottom: 24px;
+            color: #0F172A;
+        }
+
+        .vp-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 16px;
+        }
+
+        .vp-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+        }
+
+        .vp-item {
+            background-color: rgba(0, 0, 0, 0.15);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .vp-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .vp-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            opacity: 0.9;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .vp-value {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        /* SECTION */
+        .section {
+            background-color: #1E293B;
+            border: 1px solid rgba(37, 244, 238, 0.2);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 16px;
+            color: #F1F5F9;
+        }
+
+        /* VIRAL ADVANTAGE */
+        .viral-banner {
+            background: linear-gradient(135deg, rgba(254, 44, 85, 0.2) 0%, rgba(37, 244, 238, 0.2) 100%);
+            border: 2px solid #25F4EE;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .viral-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #25F4EE;
+            margin-bottom: 8px;
+        }
+
+        .viral-text {
+            font-size: 12px;
+            color: #CBD5E1;
+            line-height: 1.6;
+        }
+
+        /* EARNINGS CALCULATOR */
+        .calc-row {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 16px;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(37, 244, 238, 0.1);
+            align-items: center;
+        }
+
+        .calc-row:last-child {
+            border-bottom: none;
+        }
+
+        .calc-label {
+            font-size: 12px;
+            color: #CBD5E1;
+        }
+
+        .calc-input {
+            padding: 8px 12px;
+            background-color: #0F172A;
+            border: 1px solid rgba(37, 244, 238, 0.3);
+            border-radius: 6px;
+            color: #F1F5F9;
+            font-size: 12px;
+            width: 100px;
+            text-align: right;
+        }
+
+        .calc-value {
+            font-size: 14px;
+            font-weight: bold;
+            color: #25F4EE;
+        }
+
+        .calc-total {
+            background-color: rgba(37, 244, 238, 0.1);
+            border-left: 3px solid #25F4EE;
+            border-radius: 6px;
+            padding: 16px;
+            margin-top: 16px;
+            font-size: 14px;
+        }
+
+        .calc-total-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #25F4EE;
+            margin-top: 8px;
+        }
+
+        /* CONTENT TYPES */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+        }
+
+        .content-card {
+            background-color: #0F172A;
+            border: 1px solid rgba(37, 244, 238, 0.2);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .content-card:hover {
+            border-color: #25F4EE;
+            background-color: rgba(37, 244, 238, 0.05);
+        }
+
+        .content-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .content-name {
+            font-size: 12px;
+            font-weight: bold;
+            color: #F1F5F9;
+            margin-bottom: 6px;
+        }
+
+        .content-aura {
+            font-size: 11px;
+            color: #25F4EE;
+            font-weight: 600;
+        }
+
+        /* TIPS GRID */
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+        }
+
+        .tip-card {
+            background-color: #0F172A;
+            border: 1px solid rgba(37, 244, 238, 0.2);
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .tip-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .tip-title {
+            font-size: 12px;
+            font-weight: bold;
+            color: #F1F5F9;
+            margin-bottom: 6px;
+        }
+
+        .tip-text {
+            font-size: 11px;
+            color: #CBD5E1;
+            line-height: 1.5;
+        }
+
+        /* EXAMPLES */
+        .example-card {
+            background-color: #0F172A;
+            border: 1px solid rgba(37, 244, 238, 0.2);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .example-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .example-name {
+            font-weight: bold;
+            color: #25F4EE;
+        }
+
+        .example-stat {
+            font-size: 11px;
+            color: #CBD5E1;
+        }
+
+        .example-detail {
+            font-size: 11px;
+            color: #CBD5E1;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+
+        .example-earnings {
+            background-color: rgba(37, 244, 238, 0.1);
+            border-left: 3px solid #25F4EE;
+            border-radius: 4px;
+            padding: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #25F4EE;
+        }
+
+        /* INFO BOX */
+        .info-box {
+            background-color: rgba(37, 244, 238, 0.1);
+            border: 1px solid rgba(37, 244, 238, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+            font-size: 12px;
+            line-height: 1.6;
+            color: #CBD5E1;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #25F4EE 0%, #FE2C55 100%);
+            color: #0F172A;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+            margin-top: 16px;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            .vp-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .content-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-left">
+            <svg class="logo-small" viewBox="0 0 400 400" fill="none">
+                <circle cx="200" cy="200" r="160" stroke="#F1F5F9" stroke-width="28" />
+                <circle cx="200" cy="200" r="110" stroke="#25F4EE" stroke-width="24" />
+                <circle cx="200" cy="200" r="60" stroke="#F1F5F9" stroke-width="20" />
+                <circle cx="200" cy="200" r="25" fill="#F1F5F9" />
+            </svg>
+            <h1 class="header-title">AuraBoost</h1>
+            <div class="header-badge">FOR TIKTOK CREATORS</div>
+        </div>
+        <button class="back-btn" onclick="window.history.back()">← Back</button>
+    </div>
+
+    <div class="container">
+        <div class="main-content">
+            <div class="page-title">🎵 AuraBoost for TikTok Creators</div>
+            <p class="page-subtitle">TikTok creators have the BIGGEST earning potential on AuraBoost. Here's why.</p>
+
+            <!-- VALUE PROP BANNER -->
+            <div class="value-prop-banner">
+                <div class="vp-title">Why TikTok Creators Dominate AuraBoost</div>
+                <div class="vp-grid">
+                    <div class="vp-item">
+                        <div class="vp-icon">🚀</div>
+                        <div class="vp-label">Viral Reach</div>
+                        <div class="vp-value">10-50M Views</div>
+                    </div>
+                    <div class="vp-item">
+                        <div class="vp-icon">👥</div>
+                        <div class="vp-label">Audience Size</div>
+                        <div class="vp-value">100K-10M</div>
+                    </div>
+                    <div class="vp-item">
+                        <div class="vp-icon">💰</div>
+                        <div class="vp-label">Monthly Revenue</div>
+                        <div class="vp-value">$2K-50K</div>
+                    </div>
+                    <div class="vp-item">
+                        <div class="vp-icon">⚡</div>
+                        <div class="vp-label">Growth Speed</div>
+                        <div class="vp-value">EXPONENTIAL</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                💡 <strong>The TikTok Advantage:</strong> TikTok algorithm is POWERFUL. A single viral video gets millions of views. Post that video to AuraBoost and you get thousands of new followers per day. Most viral TikTok creators can hit top 10 on AuraBoost leaderboard within weeks. This is the fastest path to unlock the Affiliate Badge and 3X earnings.
+
+            <!-- VERIFICATION & TRUST SECTION -->
+            <div class="section">
+                <div class="section-title">✅ How Verification Works (Anti-Fraud Protection)</div>
+                
+                <div style="padding: 16px; background: linear-gradient(135deg, rgba(37, 244, 238, 0.15) 0%, rgba(254, 44, 85, 0.1) 100%); border: 1px solid rgba(37, 244, 238, 0.3); border-radius: 8px; margin-bottom: 20px;">
+                    <div style="font-size: 12px; color: #CBD5E1; line-height: 1.8;">
+                        <strong style="color: #25F4EE;">We verify EVERY post to prevent gaming & protect your earnings.</strong><br>
+                        No fake shares. No gaming the system. Your commission is based on REAL posts on REAL platforms.
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 16px;">
+                    <!-- Step 1 -->
+                    <div style="background-color: #0F172A; border: 1px solid rgba(37, 244, 238, 0.2); border-radius: 12px; padding: 16px; text-align: center;">
+                        <div style="font-size: 28px; margin-bottom: 8px;">1️⃣</div>
+                        <div style="font-size: 12px; font-weight: bold; color: #F1F5F9; margin-bottom: 8px;">You Upload</div>
+                        <div style="font-size: 11px; color: #CBD5E1; line-height: 1.5;">
+                            Post your viral video to TikTok. AI analyzes attractiveness & engagement potential.
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div style="background-color: #0F172A; border: 1px solid rgba(37, 244, 238, 0.2); border-radius: 12px; padding: 16px; text-align: center;">
+                        <div style="font-size: 28px; margin-bottom: 8px;">2️⃣</div>
+                        <div style="font-size: 12px; font-weight: bold; color: #F1F5F9; margin-bottom: 8px;">You Share URL</div>
+                        <div style="font-size: 11px; color: #CBD5E1; line-height: 1.5;">
+                            Paste the direct link to your TikTok video (tiktok.com/@yourname/video/123...)
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div style="background-color: #0F172A; border: 1px solid rgba(37, 244, 238, 0.2); border-radius: 12px; padding: 16px; text-align: center;">
+                        <div style="font-size: 28px; margin-bottom: 8px;">3️⃣</div>
+                        <div style="font-size: 12px; font-weight: bold; color: #F1F5F9; margin-bottom: 8px;">You Upload Screenshot</div>
+                        <div style="font-size: 11px; color: #CBD5E1; line-height: 1.5;">
+                            Screenshot showing your video is live on TikTok (with URL visible in screenshot)
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div style="background-color: #0F172A; border: 1px solid rgba(37, 244, 238, 0.2); border-radius: 12px; padding: 16px; text-align: center;">
+                        <div style="font-size: 28px; margin-bottom: 8px;">4️⃣</div>
+                        <div style="font-size: 12px; font-weight: bold; color: #F1F5F9; margin-bottom: 8px;">We Verify & Pay</div>
+                        <div style="font-size: 11px; color: #CBD5E1; line-height: 1.5;">
+                            AI video matching confirms post is real. Aura points awarded instantly.
+                        </div>
+                    </div>
+                </div>
+
+                <div style="padding: 16px; background-color: rgba(37, 244, 238, 0.1); border-left: 3px solid #25F4EE; border-radius: 6px; font-size: 11px; color: #CBD5E1;">
+                    <strong style="color: #25F4EE;">Why this matters:</strong> We prevent fake posts & gaming. Every referral you make is real. Every commission you earn is legitimate. No wasted effort on posts that won't be verified. Transparent, honest system.
+                </div>
+            </div>
+            </div>
+
+            <!-- VIRAL ADVANTAGE -->
+            <div class="section">
+                <div class="section-title">🔥 The Viral Advantage</div>
+                
+                <div class="viral-banner">
+                    <div class="viral-title">Why TikTok Content Converts Better</div>
+                    <div class="viral-text">
+                        TikTok's algorithm is designed for virality. A single video can get 1M+ views in 24 hours. Those viewers discover you on TikTok, then when you post to AuraBoost they already know you = higher conversion to subscription. Plus, TikTok creators are used to platform hopping (YouTube, Instagram, Twitch). They understand audience ownership.
+                    </div>
+                </div>
+
+                <div style="padding: 12px; background-color: #0F172A; border-radius: 6px; font-size: 11px; color: #CBD5E1; line-height: 1.6;">
+                    <strong>Real Example:</strong> A TikTok creator posts a trending dance. Gets 2M views. 0.5% click referral link = 10K clicks. 2% subscribe (high because TikTok followers = loyal audience) = 200 subs × $3.00 = $600 from ONE VIDEO.
+                </div>
+            </div>
+
+            <!-- EARNINGS CALCULATOR -->
+            <div class="section">
+                <div class="section-title">💰 Your Earnings Potential</div>
+                
+                <div class="calc-row">
+                    <div class="calc-label">TikTok followers (current)</div>
+                    <input type="number" class="calc-input" id="tikFollowers" value="500000" onkeyup="calculateEarnings()">
+                </div>
+
+                <div class="calc-row">
+                    <div class="calc-label">Posts per month to AuraBoost</div>
+                    <input type="number" class="calc-input" id="postsPerMonth" value="25" onkeyup="calculateEarnings()">
+                </div>
+
+                <div class="calc-row">
+                    <div class="calc-label">Average views per TikTok</div>
+                    <div class="calc-value">500K - 5M</div>
+                </div>
+
+                <div class="calc-row">
+                    <div class="calc-label">Expected new referrals/month (conservative)</div>
+                    <input type="number" class="calc-input" id="newReferrals" value="75" onkeyup="calculateEarnings()">
+                </div>
+
+                <div class="calc-total">
+                    <div>Additional Monthly Revenue from AuraBoost</div>
+                    <div class="calc-total-value" id="monthlyEarning">$225</div>
+                    <div style="font-size: 11px; color: #CBD5E1; margin-top: 8px;">That's $2,700/year from TikTok reposts!</div>
+                </div>
+
+                <div class="calc-total" style="background-color: rgba(37, 244, 238, 0.15); border-color: #25F4EE; margin-top: 12px;">
+                    <div>WITH Affiliate Badge (3X multiplier)</div>
+                    <div class="calc-total-value" id="monthlyEarningBadge" style="color: #25F4EE;">$675</div>
+                    <div style="font-size: 11px; color: #CBD5E1; margin-top: 8px;">That's $8,100/year. EVERY YEAR. Passive.</div>
+                </div>
+            </div>
+
+            <!-- TIKTOK CONTENT TYPES THAT CONVERT -->
+            <div class="section">
+                <div class="section-title">🔥 TikTok Content That EXPLODES on AuraBoost</div>
+                
+                <div class="content-grid">
+                    <div class="content-card">
+                        <div class="content-icon">💃</div>
+                        <div class="content-name">Dances/Trends</div>
+                        <div class="content-aura">+500-600</div>
+                    </div>
+                    <div class="content-card">
+                        <div class="content-icon">😂</div>
+                        <div class="content-name">Comedy/POV</div>
+                        <div class="content-aura">+450-550</div>
+                    </div>
+                    <div class="content-card">
+                        <div class="content-icon">🔥</div>
+                        <div class="content-name">Sexy/NSFW</div>
+                        <div class="content-aura">+400-600</div>
+                    </div>
+                    <div class="content-card">
+                        <div class="content-icon">💪</div>
+                        <div class="content-name">Fitness/Gym</div>
+                        <div class="content-aura">+380-500</div>
+                    </div>
+                    <div class="content-card">
+                        <div class="content-icon">👗</div>
+                        <div class="content-name">Fashion/OOTD</div>
+                        <div class="content-aura">+380-480</div>
+                    </div>
+                    <div class="content-card">
+                        <div class="content-icon">🌟</div>
+                        <div class="content-name">Lifestyle</div>
+                        <div class="content-aura">+340-460</div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 16px; padding: 12px; background-color: #0F172A; border-radius: 6px; font-size: 11px; color: #CBD5E1;">
+                    💡 <strong>Pro tip:</strong> TikTok creators with 100K+ followers are GOLD. Your viral videos = instant AuraBoost followers. You can hit #1 faster than any other platform.
+                </div>
+            </div>
+
+            <!-- TIKTOK-SPECIFIC STRATEGY -->
+            <div class="section">
+                <div class="section-title">🎯 TikTok Creator Power Strategy</div>
+                
+                <div class="tips-grid">
+                    <div class="tip-card">
+                        <div class="tip-icon">⚡</div>
+                        <div class="tip-title">Post FAST</div>
+                        <div class="tip-text">Post to AuraBoost the SAME DAY as TikTok. Timing matters. If your TikTok is viral, ride that wave on AuraBoost immediately.</div>
+                    </div>
+
+                    <div class="tip-card">
+                        <div class="tip-icon">🎥</div>
+                        <div class="tip-title">Long-Form Videos</div>
+                        <div class="tip-text">TikTok now allows 10-min videos. Upload those to AuraBoost. Longer videos = more sex appeal scoring opportunity.</div>
+                    </div>
+
+                    <div class="tip-card">
+                        <div class="tip-icon">🔗</div>
+                        <div class="tip-title">Bio Link</div>
+                        <div class="tip-text">Add AuraBoost link to TikTok bio. "Make money with me on AuraBoost" - drives direct traffic from your viral followers.</div>
+                    </div>
+
+                    <div class="tip-card">
+                        <div class="tip-icon">📊</div>
+                        <div class="tip-title">Track Viral Videos</div>
+                        <div class="tip-text">Your most viral TikToks = highest AuraBoost earnings. Track which videos drive most referrals. Replicate.</div>
+                    </div>
+
+                    <div class="tip-card">
+                        <div class="tip-icon">🎯</div>
+                        <div class="tip-title">Get Badge FAST</div>
+                        <div class="tip-text">Large TikTok creators can unlock Affiliate Badge in 1-2 weeks. You're already top creators - AuraBoost just accelerates it.</div>
+                    </div>
+
+                    <div class="tip-card">
+                        <div class="tip-icon">🏆</div>
+                        <div class="tip-title">Become #1</div>
+                        <div class="tip-text">TikTok creators have the biggest advantage. You can realistically become #1 on AuraBoost leaderboard within months.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TIKTOK CREATOR EXAMPLES -->
+            <div class="section">
+                <div class="section-title">💼 Real TikTok Creator Examples</div>
+
+                <div class="example-card">
+                    <div class="example-header">
+                        <div class="example-name">@dance_viral</div>
+                        <div class="example-stat">2.3M TikTok followers • Rank #2 on AuraBoost</div>
+                    </div>
+                    <div class="example-detail">
+                        Dance trend creator. Posts 20 trending dances per month to AuraBoost. Average 2M views per TikTok. Conservative 0.1% AuraBoost conversion = 2K clicks per video × 2% subscribe = 40 subs per video. 20 videos × 40 subs = 800 subs/month.
+                    </div>
+                    <div class="example-earnings">
+                        💰 $2,400/month = $28,800/year (AND growing faster every month)
+                    </div>
+                </div>
+
+                <div class="example-card">
+                    <div class="example-header">
+                        <div class="example-name">@comedy_king</div>
+                        <div class="example-stat">4.8M TikTok followers • Rank #5 on AuraBoost 💎 Badge</div>
+                    </div>
+                    <div class="example-detail">
+                        Comedy creator with Affiliate Badge. Posts 15 comedy POVs per month. Gets 30-50 AuraBoost referrals per post because his followers LOVE him. With 3X badge multiplier on his 45 subs/month average.
+                    </div>
+                    <div class="example-earnings">
+                        💰 $13,500/month = $162,000/year (with 3X badge multiplier)
+                    </div>
+                </div>
+
+                <div class="example-card">
+                    <div class="example-header">
+                        <div class="example-name">@sexy_trends</div>
+                        <div class="example-stat">8.1M TikTok followers • Rank #1 on AuraBoost 💎 Badge</div>
+                    </div>
+                    <div class="example-detail">
+                        Top TikTok creator with Affiliate Badge. Posts 25+ times per month. Average 5M views per video. Her content scores 9.0+ sex appeal consistently. Gets 100-150 referrals per post. She's literally making more on AuraBoost than TikTok creator fund.
+                    </div>
+                    <div class="example-earnings">
+                        💰 $31,500/month = $378,000/year (passive income from TikTok followers + badge multiplier)
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA -->
+            <div style="text-align: center; padding: 32px 0;">
+                <button class="btn" onclick="startEarning()" style="max-width: 300px;">
+                    🚀 Start Earning Now
+                </button>
+                <div style="margin-top: 16px; font-size: 12px; color: #CBD5E1;">
+                    You're already creating viral content.<br>
+                    Why not monetize it on AuraBoost too?<br>
+                    <strong>Realistic: $1K-30K/month depending on follower count.</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculateEarnings() {
+            const newReferrals = parseInt(document.getElementById('newReferrals').value) || 0;
+            
+            const monthlyEarning = newReferrals * 3.00;
+            const withBadge = monthlyEarning * 3;
+            
+            document.getElementById('monthlyEarning').textContent = '$' + monthlyEarning.toFixed(2);
+            document.getElementById('monthlyEarningBadge').textContent = '$' + withBadge.toFixed(2);
+        }
+
+        function startEarning() {
+            alert('🚀 Let\'s go!\n\nSteps:\n1. Post your viral TikToks to AuraBoost\n2. Get AI attractiveness/sex appeal scored\n3. Climb the leaderboard FAST\n4. Gain massive new followers\n5. They subscribe\n6. Get 30% per subscription\n7. Unlock badge for 3X earnings\n\nTikTok creators make the most on AuraBoost!');
+        }
+
+        function goBack() {
+            alert('Going back...');
+        }
+
+        // Calculate initial earnings
+        calculateEarnings();
+    </script>
+</body>
+</html>

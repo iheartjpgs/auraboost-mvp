@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraBoost - Creator Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #0F172A;
+            color: #F1F5F9;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* HEADER */
+        .header {
+            background: linear-gradient(135deg, #F59E0B 0%, #EC4899 100%);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo:hover {
+            opacity: 0.8;
+        }
+
+        .logo-img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 24px;
+        }
+
+        .header-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            transition: opacity 0.2s;
+        }
+
+        .header-link:hover {
+            opacity: 0.8;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero-video-container {
+            width: 100%;
+            max-width: 500px;
+            height: 560px;
+            margin: 0 auto 40px;
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(236, 72, 153, 0.1));
+            border-radius: 16px;
+            border: 2px solid rgba(245, 158, 11, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-video-inner {
+            font-size: 80px;
+            animation: bounce 1s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .play-button {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: rgba(245, 158, 11, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.2s;
+            top: 20px;
+            right: 20px;
+        }
+
+        .play-button:hover {
+            background: #F59E0B;
+            transform: scale(1.1);
+        }
+
+        .video-label {
+            font-size: 14px;
+            color: #CBD5E1;
+            position: absolute;
+            bottom: 20px;
+        }
+
+        .hero-title {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #F59E0B 0%, #EC4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 20px;
+            color: #CBD5E1;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-cta {
+            background: linear-gradient(135deg, #F59E0B 0%, #EC4899 100%);
+            color: white;
+            border: none;
+            padding: 16px 48px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .hero-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(245, 158, 11, 0.3);
+        }
+
+        /* WHY SECTION */
+        .why-section {
+            padding: 80px 20px;
+            background: #0F172A;
+        }
+
+        .section-title {
+            font-size: 36px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 60px;
+            color: #F1F5F9;
+        }
+
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .why-card {
+            background: #1E293B;
+            padding: 40px;
+            border-radius: 12px;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            transition: all 0.2s;
+        }
+
+        .why-card:hover {
+            border-color: rgba(245, 158, 11, 0.5);
+            transform: translateY(-4px);
+        }
+
+        .why-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .why-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #F1F5F9;
+        }
+
+        .why-desc {
+            font-size: 14px;
+            color: #CBD5E1;
+            line-height: 1.6;
+        }
+
+        /* HUBS SECTION */
+        .hubs-section {
+            padding: 80px 20px;
+            background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+        }
+
+        .hubs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hub-card {
+            background: #0F172A;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 12px;
+            padding: 30px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .hub-card:hover {
+            border-color: #F59E0B;
+            box-shadow: 0 8px 24px rgba(245, 158, 11, 0.2);
+            transform: translateY(-4px);
+        }
+
+        .hub-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .hub-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #F1F5F9;
+        }
+
+        .hub-earning {
+            font-size: 14px;
+            color: #10B981;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .hub-desc {
+            font-size: 13px;
+            color: #CBD5E1;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .hub-btn {
+            background: linear-gradient(135deg, #F59E0B 0%, #EC4899 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.2s;
+        }
+
+        .hub-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* HOW IT WORKS */
+        .how-section {
+            padding: 80px 20px;
+            background: #0F172A;
+        }
+
+        .how-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .how-text h3 {
+            font-size: 14px;
+            color: #F59E0B;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .how-text h2 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 40px;
+            color: #F1F5F9;
+        }
+
+        .how-step {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #F59E0B 0%, #EC4899 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .step-text .step-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #F1F5F9;
+        }
+
+        .step-text .step-desc {
+            font-size: 13px;
+            color: #CBD5E1;
+            line-height: 1.5;
+        }
+
+        .how-video {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(236, 72, 153, 0.1));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            border: 2px solid rgba(245, 158, 11, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .how-content {
+                grid-template-columns: 1fr;
+            }
+
+            .how-video {
+                height: 300px;
+            }
+
+            .hero-title {
+                font-size: 32px;
+            }
+
+            .section-title {
+                font-size: 24px;
+            }
+        }
+
+        /* TESTIMONIALS */
+        .testimonials-section {
+            padding: 80px 20px;
+            background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .testimonial-card {
+            background: #0F172A;
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .testimonial-stars {
+            color: #F59E0B;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .testimonial-text {
+            font-size: 14px;
+            color: #CBD5E1;
+            margin-bottom: 20px;
+            font-style: italic;
+            line-height: 1.6;
+        }
+
+        .testimonial-author {
+            font-weight: 600;
+            color: #F1F5F9;
+            margin-bottom: 4px;
+        }
+
+        .testimonial-earning {
+            font-size: 13px;
+            color: #10B981;
+            font-weight: 600;
+        }
+
+        /* FINAL CTA */
+        .final-cta {
+            padding: 80px 20px;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(236, 72, 153, 0.1));
+            border-top: 2px solid rgba(245, 158, 11, 0.3);
+            border-bottom: 2px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .final-title {
+            font-size: 40px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #F1F5F9;
+        }
+
+        .final-subtitle {
+            font-size: 16px;
+            color: #CBD5E1;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .final-cta-btn {
+            background: linear-gradient(135deg, #F59E0B 0%, #EC4899 100%);
+            color: white;
+            border: none;
+            padding: 18px 60px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .final-cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(245, 158, 11, 0.3);
+        }
+
+        /* FOOTER */
+        .footer {
+            padding: 40px 20px;
+            background: #0F172A;
+            border-top: 1px solid rgba(245, 158, 11, 0.2);
+            text-align: center;
+        }
+
+        .footer-text {
+            font-size: 13px;
+            color: #CBD5E1;
+        }
+
+        .footer-link {
+            color: #F59E0B;
+            text-decoration: none;
+            margin: 0 12px;
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <div class="header">
+        <div class="header-content">
+            <a href="/auraboost-mvp/auraboost_homepage.html" class="logo">
+                <img src="/auraboost-mvp/auraboost_logo.png" alt="AuraBoost" class="logo-img">
+                <span>AuraBoost</span>
+            </a>
+            <div class="header-nav">
+                <a href="/auraboost-mvp/auraboost_homepage.html" class="header-link">Home</a>
+                <a href="/auraboost-mvp/auraboost_creator_hubs_landing.html" class="header-link">Creators</a>
+                <a href="/auraboost-mvp/auraboost_age_verification.html" class="header-link">Sign In</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-video-container">
+                <div class="play-button" onclick="alert('🎬 Product Video Demo:\n\nBeauty Creator: Selfie → Filter → Post → Earn\nFitness Creator: Log workout → Filter → Rank → Earn\nGaming Creator: Gameplay clip → Filter → Compete → Earn')">▶</div>
+                <div class="hero-video-inner">✨</div>
+                <div class="video-label">0:30</div>
+            </div>
+            <h1 class="hero-title">Turn Your Influence Into Income</h1>
+            <p class="hero-subtitle">Create, share, and earn. Join 500+ creators already making money on AuraBoost.</p>
+            <button class="hero-cta" onclick="window.location.href='/auraboost-mvp/auraboost_age_verification.html'">🚀 Start Earning Now</button>
+        </div>
+    </section>
+
+    <!-- WHY LOVE AURASCAN -->
+    <section class="why-section">
+        <h2 class="section-title">Why Creators Love AuraBoost</h2>
+        <div class="why-grid">
+            <div class="why-card">
+                <div class="why-icon">🎯</div>
+                <div class="why-title">AI-Powered Discovery</div>
+                <div class="why-desc">Your best content gets ranked and promoted. Higher rank = more visibility = more followers.</div>
+            </div>
+            <div class="why-card">
+                <div class="why-icon">💰</div>
+                <div class="why-title">Earn While You Sleep</div>
+                <div class="why-desc">30% commission on every referral. Most creators earn $500-5K/month. Top creators earn $20K+.</div>
+            </div>
+            <div class="why-card">
+                <div class="why-icon">🔥</div>
+                <div class="why-title">Go Viral Instantly</div>
+                <div class="why-desc">13 Snapchat-style filters boost engagement 3x. Share to 6 platforms at once. Reach thousands daily.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CREATOR HUBS -->
+    <section class="hubs-section">
+        <h2 class="section-title">Choose Your Creator Hub</h2>
+        <div class="hubs-grid">
+            <div class="hub-card" onclick="window.location.href='/auraboost-mvp/auraboost_onlyfans_creator_hub.html'">
+                <div class="hub-icon">🔥</div>
+                <div class="hub-title">Adult Creators</div>
+                <div class="hub-earning">$200 - $2K+/month</div>
+                <div class="hub-desc">OnlyFans creators earning through exclusive content, tips, and referrals.</div>
+                <button class="hub-btn">View Hub →</button>
+            </div>
+
+            <div class="hub-card" onclick="window.location.href='/auraboost-mvp/auraboost_instagram_creator_hub.html'">
+                <div class="hub-icon">📸</div>
+                <div class="hub-title">Instagram Creators</div>
+                <div class="hub-earning">$300 - $3K+/month</div>
+                <div class="hub-desc">Influencers and content creators building personal brands.</div>
+                <button class="hub-btn">View Hub →</button>
+            </div>
+
+            <div class="hub-card" onclick="window.location.href='/auraboost-mvp/auraboost_tiktok_creator_hub.html'">
+                <div class="hub-icon">🎵</div>
+                <div class="hub-title">TikTok Creators</div>
+                <div class="hub-earning">$400 - $4K+/month</div>
+                <div class="hub-desc">Fast-growing creators monetizing viral content and trends.</div>
+                <button class="hub-btn">View Hub →</button>
+            </div>
+
+            <div class="hub-card" onclick="window.location.href='/auraboost-mvp/auraboost_youtube_creator_hub.html'">
+                <div class="hub-icon">📺</div>
+                <div class="hub-title">YouTube Creators</div>
+                <div class="hub-earning">$500 - $5K+/month</div>
+                <div class="hub-desc">Video creators earning from subscribers, sponsorships, and referrals.</div>
+                <button class="hub-btn">View Hub →</button>
+            </div>
+
+            <div class="hub-card" onclick="window.location.href='/auraboost-mvp/auraboost_gaming_creator_hub.html'">
+                <div class="hub-icon">🎮</div>
+                <div class="hub-title">Gaming Creators</div>
+                <div class="hub-earning">$600 - $6K+/month</div>
+                <div class="hub-desc">Gamers and streamers competing on leaderboards and earning daily.</div>
+                <button class="hub-btn">View Hub →</button>
+            </div>
+
+            <div class="hub-card" onclick="window.location.href='/auraboost-mvp/auraboost_streamer_creator_hub.html'">
+                <div class="hub-icon">💪</div>
+                <div class="hub-title">Fitness Creators</div>
+                <div class="hub-earning">$500 - $5K+/month</div>
+                <div class="hub-desc">Fitness coaches and trainers building communities and earning passive income.</div>
+                <button class="hub-btn">View Hub →</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="how-section">
+        <div class="how-content">
+            <div class="how-text">
+                <h3>Getting Started</h3>
+                <h2>How It Works in 3 Steps</h2>
+                <div class="how-step">
+                    <div class="step-number">1</div>
+                    <div class="step-text">
+                        <div class="step-title">Create</div>
+                        <div class="step-desc">Upload your best content (photos, videos, or clips) to AuraBoost.</div>
+                    </div>
+                </div>
+                <div class="how-step">
+                    <div class="step-number">2</div>
+                    <div class="step-text">
+                        <div class="step-title">Share</div>
+                        <div class="step-desc">Apply filters, add captions, and share to 6 platforms simultaneously.</div>
+                    </div>
+                </div>
+                <div class="how-step">
+                    <div class="step-number">3</div>
+                    <div class="step-text">
+                        <div class="step-title">Earn</div>
+                        <div class="step-desc">Get paid 30% on every subscription referral. Earn $500-20K+ monthly.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="how-video">🚀</div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="testimonials-section">
+        <h2 class="section-title">Real Creators, Real Results</h2>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                <div class="testimonial-text">"AuraBoost helped me monetize my content when other platforms said no. Now I'm earning $2.5K/month consistently!"</div>
+                <div class="testimonial-author">Jessica M. - Adult Content Creator</div>
+                <div class="testimonial-earning">$2,500/month</div>
+            </div>
+
+            <div class="testimonial-card">
+                <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                <div class="testimonial-text">"The filters and leaderboards make it so fun. I went from 500 followers to 5K in 3 months and tripled my income!"</div>
+                <div class="testimonial-author">Alex K. - Fitness Coach</div>
+                <div class="testimonial-earning">$4,200/month</div>
+            </div>
+
+            <div class="testimonial-card">
+                <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                <div class="testimonial-text">"Finally a platform that pays creators fairly. The 30% commission is life-changing for my family."</div>
+                <div class="testimonial-author">Marcus T. - Gaming Streamer</div>
+                <div class="testimonial-earning">$5,800/month</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FINAL CTA -->
+    <section class="final-cta">
+        <h2 class="final-title">Ready to Start Earning?</h2>
+        <p class="final-subtitle">Join creators making real money on AuraBoost. Free to start, earn from day one.</p>
+        <button class="final-cta-btn" onclick="window.location.href='/auraboost-mvp/auraboost_age_verification.html'">🚀 Sign Up Now - It's Free</button>
+    </section>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        <div class="footer-text">
+            © 2025 AuraBoost. All rights reserved. |
+            <a href="/auraboost-mvp/auraboost_legal_terms.html" class="footer-link">Terms</a>
+            <a href="/auraboost-mvp/auraboost_legal_terms.html" class="footer-link">Privacy</a>
+        </div>
+    </div>
+</body>
+</html>

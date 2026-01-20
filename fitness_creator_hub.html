@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraBoost - Fitness Creator Hub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #0F172A;
+            color: #F1F5F9;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding-bottom: 80px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            padding: 24px 20px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+        }
+
+        .header-icon {
+            font-size: 40px;
+            margin-bottom: 8px;
+        }
+
+        .header-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #F1F5F9;
+            margin-bottom: 4px;
+        }
+
+        .header-subtitle {
+            font-size: 12px;
+            color: rgba(241, 245, 249, 0.8);
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(241, 245, 249, 0.2);
+            color: #F1F5F9;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .back-btn:hover {
+            background-color: rgba(241, 245, 249, 0.3);
+        }
+
+        .main-content {
+            padding: 24px 20px;
+        }
+
+        /* HERO SECTION */
+        .hero-section {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.05) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .hero-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .hero-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #10B981;
+            margin-bottom: 8px;
+        }
+
+        .hero-text {
+            font-size: 13px;
+            color: #CBD5E1;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .hero-stat {
+            display: inline-block;
+            background-color: rgba(16, 185, 129, 0.2);
+            padding: 8px 16px;
+            border-radius: 6px;
+            margin: 0 4px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #10B981;
+        }
+
+        /* EARNING CALCULATOR */
+        .section {
+            background-color: #1E293B;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 14px;
+            color: #10B981;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title-icon {
+            font-size: 18px;
+        }
+
+        /* CALCULATOR */
+        .calculator {
+            display: grid;
+            gap: 16px;
+        }
+
+        .calc-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .calc-label {
+            font-size: 12px;
+            color: #CBD5E1;
+            font-weight: 600;
+        }
+
+        .calc-input {
+            padding: 10px 12px;
+            background-color: #0F172A;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 6px;
+            color: #F1F5F9;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .calc-input:focus {
+            outline: none;
+            border-color: #10B981;
+            box-shadow: 0 0 8px rgba(16, 185, 129, 0.2);
+        }
+
+        .calc-result {
+            grid-column: 1 / -1;
+            background-color: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .calc-result-label {
+            font-size: 11px;
+            color: #CBD5E1;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .calc-result-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #10B981;
+        }
+
+        .calc-result-note {
+            font-size: 10px;
+            color: #7DD3C0;
+            margin-top: 8px;
+        }
+
+        /* EARNING TIERS */
+        .tiers-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .tier-card {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 10px;
+            padding: 16px;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .tier-card:hover {
+            border-color: rgba(16, 185, 129, 0.6);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .tier-icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .tier-label {
+            font-size: 11px;
+            color: #CBD5E1;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .tier-creators {
+            font-size: 12px;
+            color: #7DD3C0;
+            margin-bottom: 8px;
+        }
+
+        .tier-earning {
+            font-size: 13px;
+            font-weight: bold;
+            color: #10B981;
+        }
+
+        /* CATEGORIES */
+        .categories-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .category-card {
+            background-color: #0F172A;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 10px;
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .category-card:hover {
+            border-color: rgba(16, 185, 129, 0.5);
+            background-color: rgba(16, 185, 129, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .category-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .category-name {
+            font-size: 12px;
+            font-weight: 700;
+            color: #10B981;
+            margin-bottom: 6px;
+        }
+
+        .category-desc {
+            font-size: 10px;
+            color: #CBD5E1;
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+
+        .category-earning {
+            font-size: 11px;
+            color: #7DD3C0;
+            font-weight: 700;
+        }
+
+        /* STRATEGY SECTION */
+        .strategy-item {
+            background-color: #0F172A;
+            border-left: 3px solid #10B981;
+            padding: 16px;
+            margin-bottom: 12px;
+            border-radius: 6px;
+        }
+
+        .strategy-number {
+            display: inline-block;
+            background-color: rgba(16, 185, 129, 0.2);
+            color: #10B981;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 12px;
+            margin-right: 12px;
+            margin-bottom: 8px;
+        }
+
+        .strategy-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #10B981;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+        }
+
+        .strategy-desc {
+            font-size: 12px;
+            color: #CBD5E1;
+            line-height: 1.5;
+        }
+
+        /* TIPS SECTION */
+        .tips-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .tip-card {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 8px;
+            padding: 14px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .tip-icon {
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .tip-content {
+            flex: 1;
+        }
+
+        .tip-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: #10B981;
+            margin-bottom: 4px;
+        }
+
+        .tip-desc {
+            font-size: 11px;
+            color: #CBD5E1;
+            line-height: 1.5;
+        }
+
+        /* CTA BUTTON */
+        .cta-button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 16px;
+        }
+
+        .cta-button:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .cta-button:active {
+            transform: translateY(0);
+        }
+
+        .info-box {
+            background-color: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 8px;
+            padding: 14px;
+            margin-bottom: 20px;
+            font-size: 12px;
+            line-height: 1.6;
+            color: #CBD5E1;
+        }
+
+        .info-box strong {
+            color: #10B981;
+        }
+
+        @media (max-width: 600px) {
+            .tiers-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .categories-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <button class="back-btn" onclick="window.history.back()">← Back</button>
+        <div class="header-icon">💪</div>
+        <div class="header-title">Fitness Creator Hub</div>
+        <div class="header-subtitle">Earn money sharing your fitness journey</div>
+    </div>
+
+    <div class="container">
+        <div class="main-content">
+            <!-- HERO SECTION -->
+            <div class="hero-section">
+                <div class="hero-icon">🎯</div>
+                <div class="hero-title">You're in the Right Place</div>
+                <div class="hero-text">
+                    Fitness creators are earning serious money on AuraBoost. Get ranked by AI, build your audience, and earn 30% commission on every referral.
+                </div>
+                <div>
+                    <span class="hero-stat">500+ Creators</span>
+                    <span class="hero-stat">$500K+ Earned</span>
+                </div>
+            </div>
+
+            <!-- EARNING CALCULATOR -->
+            <div class="section">
+                <div class="section-title">
+                    <span class="section-title-icon">💰</span>
+                    Earning Calculator
+                </div>
+                <div class="calculator">
+                    <div class="calc-row">
+                        <div>
+                            <div class="calc-label">Your followers</div>
+                            <input type="number" class="calc-input" id="followers" value="100" min="1" oninput="calculateEarnings()">
+                        </div>
+                        <div>
+                            <div class="calc-label">Conversion rate</div>
+                            <select class="calc-input" id="conversionRate" onchange="calculateEarnings()">
+                                <option value="0.05">5%</option>
+                                <option value="0.10" selected>10%</option>
+                                <option value="0.15">15%</option>
+                                <option value="0.20">20%</option>
+                                <option value="0.25">25%</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="calc-row">
+                        <div>
+                            <div class="calc-label">Subscription price</div>
+                            <select class="calc-input" id="subPrice" onchange="calculateEarnings()">
+                                <option value="4.99">$4.99/mo</option>
+                                <option value="9.99" selected>$9.99/mo</option>
+                                <option value="14.99">$14.99/mo</option>
+                            </select>
+                        </div>
+                        <div>
+                            <div class="calc-label">Commission</div>
+                            <div class="calc-input" style="background-color: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); color: #10B981; font-weight: 700;">
+                                30%
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="calc-result">
+                        <div class="calc-result-label">Monthly Earnings</div>
+                        <div class="calc-result-value" id="monthlyEarnings">$29.70</div>
+                        <div class="calc-result-note">Based on your settings above</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EARNING TIERS -->
+            <div class="section">
+                <div class="section-title">
+                    <span class="section-title-icon">📊</span>
+                    Typical Earnings by Followers
+                </div>
+                <div class="tiers-grid">
+                    <div class="tier-card">
+                        <div class="tier-icon">📱</div>
+                        <div class="tier-label">Nano</div>
+                        <div class="tier-creators">1K-10K</div>
+                        <div class="tier-earning">$50-$500/mo</div>
+                    </div>
+                    <div class="tier-card">
+                        <div class="tier-icon">📈</div>
+                        <div class="tier-label">Micro</div>
+                        <div class="tier-creators">10K-100K</div>
+                        <div class="tier-earning">$500-$5K/mo</div>
+                    </div>
+                    <div class="tier-card">
+                        <div class="tier-icon">🌟</div>
+                        <div class="tier-label">Macro</div>
+                        <div class="tier-creators">100K+</div>
+                        <div class="tier-earning">$5K-$50K+/mo</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FITNESS CATEGORIES -->
+            <div class="section">
+                <div class="section-title">
+                    <span class="section-title-icon">🏋️</span>
+                    Fitness Creator Categories
+                </div>
+                <div class="categories-grid">
+                    <div class="category-card">
+                        <div class="category-icon">🏋️</div>
+                        <div class="category-name">Personal Trainers</div>
+                        <div class="category-desc">Share workout routines & coaching</div>
+                        <div class="category-earning">$100-$1K/mo</div>
+                    </div>
+                    <div class="category-card">
+                        <div class="category-icon">💪</div>
+                        <div class="category-name">Bodybuilders</div>
+                        <div class="category-desc">Transformation & physique tips</div>
+                        <div class="category-earning">$200-$2K/mo</div>
+                    </div>
+                    <div class="category-card">
+                        <div class="category-icon">🧘</div>
+                        <div class="category-name">Yoga Instructors</div>
+                        <div class="category-desc">Classes & wellness content</div>
+                        <div class="category-earning">$100-$800/mo</div>
+                    </div>
+                    <div class="category-card">
+                        <div class="category-icon">🍎</div>
+                        <div class="category-name">Nutritionists</div>
+                        <div class="category-desc">Meal plans & nutrition advice</div>
+                        <div class="category-earning">$150-$1K/mo</div>
+                    </div>
+                    <div class="category-card">
+                        <div class="category-icon">🏃</div>
+                        <div class="category-name">Fitness Coaches</div>
+                        <div class="category-desc">Training programs & motivation</div>
+                        <div class="category-earning">$200-$1.5K/mo</div>
+                    </div>
+                    <div class="category-card">
+                        <div class="category-icon">📈</div>
+                        <div class="category-name">Transformation</div>
+                        <div class="category-desc">Before/after & progress stories</div>
+                        <div class="category-earning">$500-$5K+/mo</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- INFO BOX -->
+            <div class="info-box">
+                💡 <strong>Pro Tip:</strong> The fastest growing fitness creators are those who share consistent, authentic content with clear CTAs (calls-to-action) pointing to their AuraBoost referral link. Transformation content gets the highest engagement!
+            </div>
+
+            <!-- STRATEGY SECTION -->
+            <div class="section">
+                <div class="section-title">
+                    <span class="section-title-icon">🎯</span>
+                    How to Maximize Earnings
+                </div>
+
+                <div class="strategy-item">
+                    <div class="strategy-number">1</div>
+                    <div class="strategy-title">💬 Add Your Referral Link to Bio</div>
+                    <div class="strategy-desc">
+                        Put your AuraBoost referral link in your Instagram, TikTok, or YouTube bio. Every click counts.
+                    </div>
+                </div>
+
+                <div class="strategy-item">
+                    <div class="strategy-number">2</div>
+                    <div class="strategy-title">📱 Share Consistently</div>
+                    <div class="strategy-desc">
+                        Log workouts daily. Share progress pics & videos with our Snapchat-style filters. Consistency = higher rank = more visibility = more followers.
+                    </div>
+                </div>
+
+                <div class="strategy-item">
+                    <div class="strategy-number">3</div>
+                    <div class="strategy-title">🎬 Use Video Filters</div>
+                    <div class="strategy-desc">
+                        Our video filters make your content 3x more engaging. Use them in every post. Fun filters = more shares = more reach.
+                    </div>
+                </div>
+
+                <div class="strategy-item">
+                    <div class="strategy-number">4</div>
+                    <div class="strategy-title">🔥 Go Viral with Transformations</div>
+                    <div class="strategy-desc">
+                        Document your fitness journey. Before/afters get 10x more engagement. People want to see real results.
+                    </div>
+                </div>
+
+                <div class="strategy-item">
+                    <div class="strategy-number">5</div>
+                    <div class="strategy-title">💎 Build Your Audience</div>
+                    <div class="strategy-desc">
+                        Every 100 followers = ~$30-50/mo in commissions. Focus on audience growth first, earnings follow.
+                    </div>
+                </div>
+            </div>
+
+            <!-- TIPS SECTION -->
+            <div class="section">
+                <div class="section-title">
+                    <span class="section-title-icon">💡</span>
+                    Creator Tips
+                </div>
+
+                <div class="tips-grid">
+                    <div class="tip-card">
+                        <div class="tip-icon">📸</div>
+                        <div class="tip-content">
+                            <div class="tip-title">Best Performing Content</div>
+                            <div class="tip-desc">Workout videos (45s-60s), transformation progress, quick tips, motivational quotes, and before/afters</div>
+                        </div>
+                    </div>
+
+                    <div class="tip-card">
+                        <div class="tip-icon">⏰</div>
+                        <div class="tip-content">
+                            <div class="tip-title">Best Posting Times</div>
+                            <div class="tip-desc">6-9 AM, 12-1 PM, 5-7 PM. Post when your audience is most active.</div>
+                        </div>
+                    </div>
+
+                    <div class="tip-card">
+                        <div class="tip-icon">🎯</div>
+                        <div class="tip-content">
+                            <div class="tip-title">Call-to-Action</div>
+                            <div class="tip-desc">Always include a CTA. "Join AuraBoost" "Track with me" "Get your aura ranked" works great.</div>
+                        </div>
+                    </div>
+
+                    <div class="tip-card">
+                        <div class="tip-icon">🏆</div>
+                        <div class="tip-content">
+                            <div class="tip-title">Leverage Leaderboards</div>
+                            <div class="tip-desc">Mention your rank. "I'm #47 on the fitness leaderboard" builds credibility and FOMO.</div>
+                        </div>
+                    </div>
+
+                    <div class="tip-card">
+                        <div class="tip-icon">🤝</div>
+                        <div class="tip-content">
+                            <div class="tip-title">Collaborate</div>
+                            <div class="tip-desc">Team up with other fitness creators. Cross-promote. Both of you grow faster.</div>
+                        </div>
+                    </div>
+
+                    <div class="tip-card">
+                        <div class="tip-icon">📊</div>
+                        <div class="tip-content">
+                            <div class="tip-title">Track Your Metrics</div>
+                            <div class="tip-desc">Monitor clicks, conversions, and earnings. See what works. Double down on it.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA BUTTON -->
+            <button class="cta-button" onclick="startEarning()">
+                🚀 Start Earning Now
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function calculateEarnings() {
+            const followers = parseInt(document.getElementById('followers').value) || 0;
+            const conversionRate = parseFloat(document.getElementById('conversionRate').value);
+            const subPrice = parseFloat(document.getElementById('subPrice').value);
+            const commission = 0.30;
+
+            const conversions = followers * conversionRate;
+            const monthlyEarnings = conversions * subPrice * commission;
+
+            document.getElementById('monthlyEarnings').textContent = '$' + monthlyEarnings.toFixed(2);
+        }
+
+        function startEarning() {
+            alert('🚀 Great choice!\n\nYou would be taken to the sign-up or onboarding flow.\n\nIn a real app, this would redirect to:\nauraboost_fitness_signup.html or dashboard\n\nBut first, you\'d have already logged in via the main platform.');
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+
+        // Initialize
+        calculateEarnings();
+    </script>
+</body>
+</html>

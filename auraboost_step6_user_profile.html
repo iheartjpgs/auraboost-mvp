@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraBoost - User Profile</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #0F172A;
+            color: #F1F5F9;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background-color: #1E293B;
+            border-bottom: 1px solid #F59E0B;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: bold;
+            color: #F59E0B;
+        }
+
+        .header-bottom {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .username {
+            color: #CBD5E1;
+            font-size: 14px;
+        }
+
+        .back-btn {
+            background-color: #F59E0B;
+            color: #0F172A;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .main-content {
+            padding: 24px 20px;
+        }
+
+        /* PROFILE HEADER */
+        .profile-header {
+            background: linear-gradient(135deg, #1E293B 0%, rgba(245, 158, 11, 0.1) 100%);
+            border: 2px solid #F59E0B;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #F59E0B, #FCD34D);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 56px;
+            color: #0F172A;
+            margin: 0 auto 16px;
+            border: 4px solid #F59E0B;
+        }
+
+        .profile-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #F1F5F9;
+            margin-bottom: 4px;
+        }
+
+        .profile-handle {
+            font-size: 16px;
+            color: #CBD5E1;
+            margin-bottom: 12px;
+        }
+
+        .profile-badges {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .profile-badge {
+            display: inline-block;
+            background-color: rgba(245, 158, 11, 0.2);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            color: #FCD34D;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .profile-bio {
+            color: #CBD5E1;
+            margin-bottom: 16px;
+            font-size: 14px;
+        }
+
+        .profile-location {
+            color: #64748B;
+            font-size: 12px;
+            margin-bottom: 16px;
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background-color: #F59E0B;
+            color: #0F172A;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+
+        .btn-secondary {
+            background-color: #1E293B;
+            color: #F1F5F9;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(245, 158, 11, 0.1);
+            border-color: #F59E0B;
+        }
+
+        /* STATS GRID */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background-color: #1E293B;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #CBD5E1;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #F59E0B;
+            margin-bottom: 4px;
+        }
+
+        .stat-subtext {
+            font-size: 12px;
+            color: #CBD5E1;
+        }
+
+        /* SECTION TITLE */
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #F1F5F9;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* ABOUT SECTION */
+        .about-section {
+            background-color: #1E293B;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .about-item {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .about-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .about-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .about-content {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .about-label {
+            font-size: 12px;
+            color: #CBD5E1;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .about-value {
+            font-size: 14px;
+            color: #F1F5F9;
+        }
+
+        /* ACHIEVEMENTS */
+        .achievements-section {
+            margin-bottom: 24px;
+        }
+
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 12px;
+        }
+
+        .achievement-item {
+            background-color: #1E293B;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .achievement-item:hover {
+            border-color: #F59E0B;
+            background-color: rgba(245, 158, 11, 0.05);
+        }
+
+        .achievement-item.locked {
+            opacity: 0.4;
+        }
+
+        .achievement-emoji {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .achievement-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: #F1F5F9;
+            margin-bottom: 4px;
+        }
+
+        .achievement-status {
+            font-size: 10px;
+            color: #CBD5E1;
+        }
+
+        .achievement-date {
+            font-size: 9px;
+            color: #64748B;
+            margin-top: 4px;
+        }
+
+        /* RECENT VIDEOS */
+        .videos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .video-card {
+            background-color: #1E293B;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .video-card:hover {
+            border-color: #F59E0B;
+            transform: translateY(-4px);
+        }
+
+        .video-thumbnail {
+            width: 100%;
+            aspect-ratio: 9/16;
+            background: linear-gradient(135deg, #1E293B, #0F172A);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            position: relative;
+        }
+
+        .video-play-icon {
+            font-size: 32px;
+            opacity: 0.7;
+        }
+
+        .video-info {
+            padding: 8px;
+        }
+
+        .video-date {
+            font-size: 10px;
+            color: #CBD5E1;
+        }
+
+        .video-views {
+            font-size: 12px;
+            font-weight: 600;
+            color: #F59E0B;
+            margin-top: 4px;
+        }
+
+        /* FOLLOW/FRIENDS */
+        .follow-section {
+            background-color: #1E293B;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .follow-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+        }
+
+        .follow-user {
+            background-color: #0F172A;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .follow-user:hover {
+            border-color: #F59E0B;
+            background-color: rgba(245, 158, 11, 0.05);
+        }
+
+        .follow-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #F59E0B, #FCD34D);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #0F172A;
+            margin: 0 auto 8px;
+        }
+
+        .follow-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: #F1F5F9;
+        }
+
+        .follow-streak {
+            font-size: 10px;
+            color: #CBD5E1;
+            margin-top: 4px;
+        }
+
+        /* TABS */
+        .tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid rgba(245, 158, 11, 0.2);
+            padding-bottom: 16px;
+        }
+
+        .tab {
+            padding: 8px 16px;
+            border: none;
+            background-color: transparent;
+            color: #CBD5E1;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            position: relative;
+            transition: all 0.2s;
+        }
+
+        .tab.active {
+            color: #F59E0B;
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -16px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: #F59E0B;
+        }
+
+        .info-banner {
+            background-color: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #CBD5E1;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-top">
+            <svg width="40" height="40" viewBox="0 0 400 400" fill="none">
+                <circle cx="200" cy="200" r="160" stroke="#F59E0B" stroke-width="28" />
+                <circle cx="200" cy="200" r="110" stroke="#FCD34D" stroke-width="24" />
+                <circle cx="200" cy="200" r="60" stroke="#F59E0B" stroke-width="20" />
+                <circle cx="200" cy="200" r="25" fill="#F59E0B" />
+            </svg>
+            <h1>AuraBoost</h1>
+        </div>
+        <div class="header-bottom">
+            <span class="username">@testuser</span>
+            <button class="back-btn" onclick="goToDashboard()">← Back</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="main-content">
+            <!-- PROFILE HEADER -->
+            <div class="profile-header">
+                <div class="profile-avatar">T</div>
+                <div class="profile-name">@testuser</div>
+                <div class="profile-handle">testuser</div>
+                <div class="profile-badges">
+                    <div class="profile-badge">🔥 47-Day Streak</div>
+                    <div class="profile-badge">⚡ Streak Master</div>
+                </div>
+                <div class="profile-bio">"Committed to the gym life. Tracking my aura daily. Let's grow together!"</div>
+                <div class="profile-location">📍 New York, NY • Gold's Gym</div>
+                <div class="profile-actions">
+                    <button class="btn btn-primary" onclick="alert('Following @testuser')">Follow</button>
+                    <button class="btn btn-secondary" onclick="alert('Challenge sent to @testuser')">Challenge</button>
+                    <button class="btn btn-secondary" onclick="alert('Sharing @testuser profile')">Share</button>
+                </div>
+            </div>
+
+            <!-- MAIN STATS -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Aura Score</div>
+                    <div class="stat-value">187</div>
+                    <div class="stat-subtext">#247 global</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label">Current Streak</div>
+                    <div class="stat-value">47d</div>
+                    <div class="stat-subtext">🔥 active</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label">Followers</div>
+                    <div class="stat-value">152</div>
+                    <div class="stat-subtext">growing</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label">Total Workouts</div>
+                    <div class="stat-value">89</div>
+                    <div class="stat-subtext">all time</div>
+                </div>
+            </div>
+
+            <!-- ABOUT SECTION -->
+            <div class="about-section">
+                <div class="section-title">📊 About</div>
+                <div class="about-item">
+                    <div class="about-icon">📅</div>
+                    <div class="about-content">
+                        <div class="about-label">Member Since</div>
+                        <div class="about-value">November 2024</div>
+                    </div>
+                </div>
+                <div class="about-item">
+                    <div class="about-icon">⚡</div>
+                    <div class="about-content">
+                        <div class="about-label">Best Streak</div>
+                        <div class="about-value">47 days (current)</div>
+                    </div>
+                </div>
+                <div class="about-item">
+                    <div class="about-icon">💪</div>
+                    <div class="about-content">
+                        <div class="about-label">Avg Per Week</div>
+                        <div class="about-value">7.4 workouts</div>
+                    </div>
+                </div>
+                <div class="about-item">
+                    <div class="about-icon">🎯</div>
+                    <div class="about-content">
+                        <div class="about-label">Next Goal</div>
+                        <div class="about-value">Day 60 Badge (13 days away)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ACHIEVEMENTS -->
+            <div class="achievements-section">
+                <div class="section-title">🏅 Achievements</div>
+                <div class="achievements-grid">
+                    <div class="achievement-item">
+                        <div class="achievement-emoji">🏅</div>
+                        <div class="achievement-name">Day 7</div>
+                        <div class="achievement-status">Earned</div>
+                        <div class="achievement-date">Nov 8, 2024</div>
+                    </div>
+
+                    <div class="achievement-item">
+                        <div class="achievement-emoji">🥈</div>
+                        <div class="achievement-name">Day 30</div>
+                        <div class="achievement-status">Earned</div>
+                        <div class="achievement-date">Dec 1, 2024</div>
+                    </div>
+
+                    <div class="achievement-item">
+                        <div class="achievement-emoji">🥇</div>
+                        <div class="achievement-name">Day 60</div>
+                        <div class="achievement-status">13 days left</div>
+                        <div class="achievement-date">-</div>
+                    </div>
+
+                    <div class="achievement-item">
+                        <div class="achievement-emoji">⚡</div>
+                        <div class="achievement-name">Streak Master</div>
+                        <div class="achievement-status">Earned</div>
+                        <div class="achievement-date">Jan 12, 2026</div>
+                    </div>
+
+                    <div class="achievement-item locked">
+                        <div class="achievement-emoji">💎</div>
+                        <div class="achievement-name">Legend</div>
+                        <div class="achievement-status">100+ days</div>
+                        <div class="achievement-date">-</div>
+                    </div>
+
+                    <div class="achievement-item locked">
+                        <div class="achievement-emoji">🌟</div>
+                        <div class="achievement-name">Viral</div>
+                        <div class="achievement-status">1K views</div>
+                        <div class="achievement-date">-</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TABS -->
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab(this)">Recent Videos</button>
+                <button class="tab" onclick="switchTab(this)">Followers</button>
+                <button class="tab" onclick="switchTab(this)">Following</button>
+            </div>
+
+            <!-- RECENT VIDEOS -->
+            <div class="videos-grid">
+                <div class="video-card" onclick="alert('Playing video...')">
+                    <div class="video-thumbnail">
+                        <div class="video-play-icon">▶️</div>
+                    </div>
+                    <div class="video-info">
+                        <div class="video-date">Jan 18, 2026</div>
+                        <div class="video-views">2.3K views</div>
+                    </div>
+                </div>
+
+                <div class="video-card" onclick="alert('Playing video...')">
+                    <div class="video-thumbnail">
+                        <div class="video-play-icon">▶️</div>
+                    </div>
+                    <div class="video-info">
+                        <div class="video-date">Jan 15, 2026</div>
+                        <div class="video-views">1.8K views</div>
+                    </div>
+                </div>
+
+                <div class="video-card" onclick="alert('Playing video...')">
+                    <div class="video-thumbnail">
+                        <div class="video-play-icon">▶️</div>
+                    </div>
+                    <div class="video-info">
+                        <div class="video-date">Jan 12, 2026</div>
+                        <div class="video-views">945 views</div>
+                    </div>
+                </div>
+
+                <div class="video-card" onclick="alert('Playing video...')">
+                    <div class="video-thumbnail">
+                        <div class="video-play-icon">▶️</div>
+                    </div>
+                    <div class="video-info">
+                        <div class="video-date">Jan 9, 2026</div>
+                        <div class="video-views">567 views</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FOLLOWERS -->
+            <div class="follow-section">
+                <div class="section-title">👥 Followers (152)</div>
+                <div class="follow-grid">
+                    <div class="follow-user" onclick="alert('Viewing @xo_fitness profile')">
+                        <div class="follow-avatar">X</div>
+                        <div class="follow-name">@xo_fitness</div>
+                        <div class="follow-streak">365 day streak</div>
+                    </div>
+
+                    <div class="follow-user" onclick="alert('Viewing @gainz_queen profile')">
+                        <div class="follow-avatar">G</div>
+                        <div class="follow-name">@gainz_queen</div>
+                        <div class="follow-streak">298 day streak</div>
+                    </div>
+
+                    <div class="follow-user" onclick="alert('Viewing @crypto_jock profile')">
+                        <div class="follow-avatar">C</div>
+                        <div class="follow-name">@crypto_jock</div>
+                        <div class="follow-streak">256 day streak</div>
+                    </div>
+
+                    <div class="follow-user" onclick="alert('Viewing @fitlife_guru profile')">
+                        <div class="follow-avatar">F</div>
+                        <div class="follow-name">@fitlife_guru</div>
+                        <div class="follow-streak">198 day streak</div>
+                    </div>
+
+                    <div class="follow-user" onclick="alert('Viewing more followers...')">
+                        <div class="follow-avatar" style="background: rgba(245, 158, 11, 0.3);">+148</div>
+                        <div class="follow-name">View All</div>
+                        <div class="follow-streak">followers</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-banner">
+                💡 <strong>Pro tip:</strong> Share your profile link on social media to get more followers and challenges! The more engaged you are, the higher you'll climb the leaderboard.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(element) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            element.classList.add('active');
+            alert('Switching to: ' + element.textContent);
+        }
+
+        function goToDashboard() {
+            alert('Going back to dashboard...\n\nIn real app, this navigates back.');
+        }
+    </script>
+</body>
+</html>

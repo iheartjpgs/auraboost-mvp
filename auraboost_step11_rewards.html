@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraBoost - Rewards & Connected Accounts</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #0F172A;
+            color: #F1F5F9;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background-color: #1E293B;
+            border-bottom: 1px solid #F59E0B;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-small {
+            width: 32px;
+            height: 32px;
+        }
+
+        .header-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #F59E0B;
+        }
+
+        .back-btn {
+            background-color: #F59E0B;
+            color: #0F172A;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .main-content {
+            padding: 24px 20px;
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .page-subtitle {
+            color: #CBD5E1;
+            margin-bottom: 24px;
+        }
+
+        /* SOLANA WALLET SECTION */
+        .solana-section {
+            background: linear-gradient(135deg, #14F195 0%, #00D4FF 100%);
+            border-radius: 12px;
+            padding: 32px 24px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .solana-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .solana-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #0F172A;
+            margin-bottom: 8px;
+        }
+
+        .solana-subtitle {
+            font-size: 14px;
+            color: rgba(15, 23, 42, 0.8);
+            margin-bottom: 16px;
+        }
+
+        .solana-description {
+            font-size: 13px;
+            color: rgba(15, 23, 42, 0.75);
+            margin-bottom: 20px;
+            line-height: 1.6;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .wallet-input-group {
+            display: flex;
+            gap: 8px;
+            max-width: 550px;
+            margin: 0 auto 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .wallet-input {
+            flex: 1;
+            min-width: 300px;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 6px;
+            background-color: rgba(255, 255, 255, 0.95);
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: #0F172A;
+        }
+
+        .wallet-input::placeholder {
+            color: rgba(15, 23, 42, 0.5);
+        }
+
+        .btn-submit-wallet {
+            background-color: #0F172A;
+            color: #14F195;
+            border: 2px solid #0F172A;
+            padding: 12px 28px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-submit-wallet:hover {
+            background-color: #14F195;
+            color: #0F172A;
+            transform: scale(1.05);
+        }
+
+        .wallet-hint {
+            font-size: 11px;
+            color: rgba(15, 23, 42, 0.7);
+            margin-top: 12px;
+        }
+
+        .wallet-saved {
+            background-color: rgba(15, 23, 42, 0.3);
+            border-radius: 6px;
+            padding: 12px 16px;
+            font-size: 11px;
+            color: #0F172A;
+            margin-top: 12px;
+            font-weight: 600;
+        }
+
+        /* AIRDROP CTA */
+        .airdrop-banner {
+            background: linear-gradient(135deg, rgba(20, 241, 149, 0.2) 0%, rgba(0, 212, 255, 0.2) 100%);
+            border: 2px solid #14F195;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .airdrop-badge {
+            display: inline-block;
+            background-color: #14F195;
+            color: #0F172A;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .airdrop-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #14F195;
+            margin-bottom: 8px;
+        }
+
+        .airdrop-text {
+            font-size: 13px;
+            color: #CBD5E1;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .airdrop-highlight {
+            background-color: rgba(20, 241, 149, 0.2);
+            border-left: 3px solid #14F195;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            color: #F1F5F9;
+            font-weight: 600;
+        }
+
+        /* SOCIAL CONNECTIONS SECTION */
+        .social-section {
+            background-color: #1E293B;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #F1F5F9;
+        }
+
+        .section-subtitle {
+            font-size: 12px;
+            color: #CBD5E1;
+            margin-bottom: 24px;
+        }
+
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .social-card {
+            background-color: #0F172A;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .social-card:hover {
+            border-color: #F59E0B;
+            background-color: rgba(245, 158, 11, 0.05);
+        }
+
+        .social-card.connected {
+            border-color: #10B981;
+            background-color: rgba(16, 185, 129, 0.1);
+        }
+
+        .social-icon {
+            font-size: 36px;
+            margin-bottom: 12px;
+        }
+
+        .social-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: #F1F5F9;
+            margin-bottom: 8px;
+        }
+
+        .social-username {
+            font-size: 10px;
+            color: #CBD5E1;
+            margin-bottom: 12px;
+            font-family: monospace;
+        }
+
+        .connect-btn {
+            width: 100%;
+            padding: 8px;
+            background-color: #F59E0B;
+            color: #0F172A;
+            border: none;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .connect-btn:hover {
+            opacity: 0.9;
+        }
+
+        .connect-btn.connected {
+            background-color: #10B981;
+            color: #F1F5F9;
+        }
+
+        /* REWARDS TRACKER */
+        .rewards-tracker {
+            background: linear-gradient(135deg, #F59E0B 0%, #FCD34D 100%);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+            color: #0F172A;
+        }
+
+        .rewards-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 16px;
+        }
+
+        .reward-item {
+            background-color: rgba(0, 0, 0, 0.1);
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+        }
+
+        .reward-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .reward-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .reward-amount {
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .reward-status {
+            font-size: 10px;
+            padding: 4px 8px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .reward-status.unlocked {
+            background-color: #10B981;
+            color: #F1F5F9;
+        }
+
+        /* SUPER BOOST BADGE */
+        .super-boost-card {
+            background: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+            text-align: center;
+            color: #F1F5F9;
+        }
+
+        .boost-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .boost-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .boost-description {
+            font-size: 12px;
+            line-height: 1.5;
+            margin-bottom: 16px;
+            opacity: 0.95;
+        }
+
+        .boost-progress {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            height: 8px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        .boost-progress-fill {
+            background-color: #FCD34D;
+            height: 100%;
+            width: 40%;
+            transition: width 0.3s;
+        }
+
+        .boost-count {
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .info-box {
+            background-color: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #CBD5E1;
+        }
+
+        .btn {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background-color: #F59E0B;
+            color: #0F172A;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+
+        @media (max-width: 600px) {
+            .wallet-input-group {
+                flex-direction: column;
+            }
+
+            .wallet-input {
+                min-width: auto;
+            }
+
+            .social-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-left">
+            <svg class="logo-small" viewBox="0 0 400 400" fill="none">
+                <circle cx="200" cy="200" r="160" stroke="#F59E0B" stroke-width="28" />
+                <circle cx="200" cy="200" r="110" stroke="#FCD34D" stroke-width="24" />
+                <circle cx="200" cy="200" r="60" stroke="#F59E0B" stroke-width="20" />
+                <circle cx="200" cy="200" r="25" fill="#F59E0B" />
+            </svg>
+            <h1 class="header-title">AuraBoost</h1>
+        </div>
+        <button class="back-btn" onclick="window.history.back()">← Back</button>
+    </div>
+
+    <div class="container">
+        <div class="main-content">
+            <div class="page-title">🚀 Rewards & Connected Accounts</div>
+            <p class="page-subtitle">Connect your accounts to earn massive boosts and unlock airdrop eligibility</p>
+
+            <!-- SOLANA WALLET ADDRESS CAPTURE -->
+            <div class="solana-section">
+                <div class="solana-icon">◎</div>
+                <div class="solana-title">Solana Wallet Address</div>
+                <div class="solana-subtitle">Where we'll send your airdrop</div>
+                <div class="solana-description">
+                    Save your Solana wallet address to become eligible for future AuraBoost airdrops. 
+                    We're airdropping $AURA tokens to our most active community members! 🎁
+                </div>
+                
+                <div class="wallet-input-group">
+                    <input type="text" id="walletInput" class="wallet-input" placeholder="e.g., 9B5X6wWJV7eKZS8nT2pQ1mL4yRsH8aB5cDfG3eJ6kM9n" value="">
+                    <button class="btn-submit-wallet" onclick="saveWallet()">Save Wallet</button>
+                </div>
+                
+                <div class="wallet-hint">💡 Your wallet address is never shared. Only used for airdrop distribution.</div>
+                <div id="walletStatus"></div>
+            </div>
+
+            <!-- AIRDROP CTA BANNER -->
+            <div class="airdrop-banner">
+                <div class="airdrop-badge">✨ AIRDROP ELIGIBLE ✨</div>
+                <div class="airdrop-title">$AURA Token Airdrop</div>
+                <div class="airdrop-text">
+                    We're launching $AURA tokens! Connect your accounts and build your profile to maximize your airdrop amount.
+                </div>
+                <div class="airdrop-highlight">
+                    🔥 Connect all 5 social platforms + save wallet = 10X airdrop multiplier!
+                </div>
+            </div>
+
+            <!-- SOCIAL CONNECTIONS -->
+            <div class="social-section">
+                <div class="section-title">🌐 Connected Social Accounts</div>
+                <div class="section-subtitle">Connect your accounts to boost your profile and unlock Super Boost rewards (+500 aura points each!)</div>
+
+                <div class="social-grid">
+                    <!-- TWITTER -->
+                    <div class="social-card" id="twitterCard">
+                        <div class="social-icon">𝕏</div>
+                        <div class="social-name">Twitter/X</div>
+                        <div class="social-username" id="twitterHandle"></div>
+                        <button class="connect-btn" id="twitterBtn" onclick="connectPlatform('twitter')">Connect</button>
+                    </div>
+
+                    <!-- INSTAGRAM -->
+                    <div class="social-card" id="instagramCard">
+                        <div class="social-icon">📷</div>
+                        <div class="social-name">Instagram</div>
+                        <div class="social-username" id="instagramHandle"></div>
+                        <button class="connect-btn" id="instagramBtn" onclick="connectPlatform('instagram')">Connect</button>
+                    </div>
+
+                    <!-- TIKTOK -->
+                    <div class="social-card" id="tiktokCard">
+                        <div class="social-icon">🎵</div>
+                        <div class="social-name">TikTok</div>
+                        <div class="social-username" id="tiktokHandle"></div>
+                        <button class="connect-btn" id="tiktokBtn" onclick="connectPlatform('tiktok')">Connect</button>
+                    </div>
+
+                    <!-- FACEBOOK -->
+                    <div class="social-card" id="facebookCard">
+                        <div class="social-icon">f</div>
+                        <div class="social-name">Facebook</div>
+                        <div class="social-username" id="facebookHandle"></div>
+                        <button class="connect-btn" id="facebookBtn" onclick="connectPlatform('facebook')">Connect</button>
+                    </div>
+
+                    <!-- ONLYFANS -->
+                    <div class="social-card" id="onlyfansCard">
+                        <div class="social-icon">🔞</div>
+                        <div class="social-name">OnlyFans</div>
+                        <div class="social-username" id="onlyfansHandle"></div>
+                        <button class="connect-btn" id="onlyfansBtn" onclick="connectPlatform('onlyfans')">Connect</button>
+                    </div>
+
+                    <!-- GAMER ID -->
+                    <div class="social-card" id="gamerCard">
+                        <div class="social-icon">🎮</div>
+                        <div class="social-name">Gamer ID</div>
+                        <div class="social-username" id="gamerHandle"></div>
+                        <button class="connect-btn" id="gamerBtn" onclick="connectPlatform('gamer')">Connect</button>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    💡 We support Fortnite, Epic Games, PlayStation 5, Xbox, and Steam IDs. 
+                    Connecting your gaming account unlocks exclusive fitness challenges with your gaming friends!
+                </div>
+            </div>
+
+            <!-- SUPER BOOST REWARDS -->
+            <div class="rewards-tracker">
+                <div class="rewards-title">🚀 Super Boost Rewards Progress</div>
+                
+                <div class="reward-item">
+                    <div class="reward-label">
+                        <span>✓</span>
+                        <span>Save Solana Wallet</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span class="reward-amount">+500</span>
+                        <span class="reward-status unlocked">UNLOCKED</span>
+                    </div>
+                </div>
+
+                <div class="reward-item">
+                    <div class="reward-label">
+                        <span>○</span>
+                        <span>Connect Twitter/X</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span class="reward-amount">+500</span>
+                        <span class="reward-status" id="twitterReward">LOCKED</span>
+                    </div>
+                </div>
+
+                <div class="reward-item">
+                    <div class="reward-label">
+                        <span>○</span>
+                        <span>Connect Instagram</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span class="reward-amount">+500</span>
+                        <span class="reward-status" id="instagramReward">LOCKED</span>
+                    </div>
+                </div>
+
+                <div class="reward-item">
+                    <div class="reward-label">
+                        <span>○</span>
+                        <span>Connect TikTok</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span class="reward-amount">+500</span>
+                        <span class="reward-status" id="tiktokReward">LOCKED</span>
+                    </div>
+                </div>
+
+                <div class="reward-item">
+                    <div class="reward-label">
+                        <span>○</span>
+                        <span>Connect OnlyFans</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span class="reward-amount">+500</span>
+                        <span class="reward-status" id="onlyfansReward">LOCKED</span>
+                    </div>
+                </div>
+
+                <div class="reward-item">
+                    <div class="reward-label">
+                        <span>○</span>
+                        <span>Connect Gamer ID</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span class="reward-amount">+500</span>
+                        <span class="reward-status" id="gamerReward">LOCKED</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SUPER BOOST BADGE -->
+            <div class="super-boost-card">
+                <div class="boost-icon">💎</div>
+                <div class="boost-title">Super Boost: Affiliate Profile Badge</div>
+                <div class="boost-description">
+                    Connect all social platforms to unlock the exclusive Affiliate Profile Badge. 
+                    This significantly boosts your visibility on the leaderboard and increases creator earnings by 3X!
+                </div>
+                <div class="boost-progress">
+                    <div class="boost-progress-fill" id="boostProgress" style="width: 16%;"></div>
+                </div>
+                <div class="boost-count"><span id="connectedCount">1</span>/6 Connected • <span id="auraBoost">500</span>/3000 Aura Boost</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let connectedPlatforms = {};
+        let walletSaved = false;
+
+        // Platform user handles (mock)
+        const mockHandles = {
+            twitter: '@testuser_fitness',
+            instagram: '@testuser.gym',
+            tiktok: '@testuser_aura',
+            facebook: 'testuser.fitness',
+            onlyfans: 'testuser_pro',
+            gamer: 'TestUser#1234'
+        };
+
+        function saveWallet() {
+            const wallet = document.getElementById('walletInput').value.trim();
+            
+            if (!wallet) {
+                alert('Please enter a Solana wallet address');
+                return;
+            }
+
+            if (!/^[1-9A-HJ-NP-Z]{32,44}$/.test(wallet)) {
+                alert('⚠️ Invalid Solana address format. Solana addresses are 32-44 characters starting with a number or letter.');
+                return;
+            }
+
+            walletSaved = true;
+            document.getElementById('walletStatus').innerHTML = `
+                <div class="wallet-saved">
+                    ✓ Wallet saved: ${wallet.slice(0, 8)}...${wallet.slice(-8)}<br>
+                    You're eligible for the $AURA airdrop! 🎁
+                </div>
+            `;
+            updateBoostProgress();
+        }
+
+        function connectPlatform(platform) {
+            if (connectedPlatforms[platform]) {
+                disconnectPlatform(platform);
+                return;
+            }
+
+            // Simulate OAuth connection
+            alert(`🔗 Connecting to ${platform.toUpperCase()}...\n\nIn real app, this opens OAuth flow to:\n- Authenticate your account\n- Verify follower count\n- Enable one-click sharing\n\nConnecting as: ${mockHandles[platform]}`);
+
+            // Mark as connected
+            connectedPlatforms[platform] = true;
+            
+            // Update UI
+            updatePlatformUI(platform);
+            updateBoostProgress();
+            updateRewardStatus(platform);
+        }
+
+        function disconnectPlatform(platform) {
+            if (confirm(`Disconnect ${platform}? You'll lose the +500 Super Boost reward.`)) {
+                delete connectedPlatforms[platform];
+                updatePlatformUI(platform);
+                updateBoostProgress();
+                updateRewardStatus(platform);
+            }
+        }
+
+        function updatePlatformUI(platform) {
+            const card = document.getElementById(`${platform}Card`);
+            const btn = document.getElementById(`${platform}Btn`);
+            const handle = document.getElementById(`${platform}Handle`);
+
+            if (connectedPlatforms[platform]) {
+                card.classList.add('connected');
+                btn.classList.add('connected');
+                btn.textContent = '✓ Connected';
+                handle.textContent = mockHandles[platform];
+            } else {
+                card.classList.remove('connected');
+                btn.classList.remove('connected');
+                btn.textContent = 'Connect';
+                handle.textContent = '';
+            }
+        }
+
+        function updateRewardStatus(platform) {
+            const rewardId = `${platform}Reward`;
+            const status = document.getElementById(rewardId);
+            
+            if (connectedPlatforms[platform]) {
+                status.textContent = 'UNLOCKED';
+                status.classList.add('unlocked');
+            } else {
+                status.textContent = 'LOCKED';
+                status.classList.remove('unlocked');
+            }
+        }
+
+        function updateBoostProgress() {
+            let connected = walletSaved ? 1 : 0;
+            let totalBoost = walletSaved ? 500 : 0;
+
+            for (let platform in connectedPlatforms) {
+                if (connectedPlatforms[platform]) {
+                    connected++;
+                    totalBoost += 500;
+                }
+            }
+
+            const percentage = (connected / 6) * 100;
+            document.getElementById('boostProgress').style.width = percentage + '%';
+            document.getElementById('connectedCount').textContent = connected;
+            document.getElementById('auraBoost').textContent = totalBoost;
+
+            // Show badge unlock notification
+            if (connected === 6) {
+                setTimeout(() => {
+                    alert('🎉 CONGRATULATIONS!\n\n💎 You\'ve unlocked the Super Boost: Affiliate Profile Badge!\n\n✨ Your aura earning multiplier is now 3X!\n✨ You\'re eligible for the 10X airdrop multiplier!\n✨ You\'ve earned +3,000 Aura points!');
+                }, 300);
+            }
+        }
+
+        function goBack() {
+            alert('Going back...\n\nIn real app, this navigates back to dashboard.');
+        }
+
+        // Initialize wallet saved state
+        document.addEventListener('DOMContentLoaded', function() {
+            walletSaved = true;
+            updateBoostProgress();
+            document.getElementById('walletStatus').innerHTML = `
+                <div class="wallet-saved">
+                    ✓ Wallet saved: 9B5X6w...3eJ6kM9n<br>
+                    You're eligible for the $AURA airdrop! 🎁
+                </div>
+            `;
+        });
+    </script>
+</body>
+</html>

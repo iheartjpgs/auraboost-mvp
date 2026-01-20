@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraBoost for OnlyFans Creators</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #0F172A;
+            color: #F1F5F9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #EC4899 0%, #8B5CF6 100%);
+            padding: 24px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-small {
+            width: 32px;
+            height: 32px;
+        }
+
+        .header-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #F1F5F9;
+        }
+
+        .header-badge {
+            background-color: rgba(241, 245, 249, 0.2);
+            color: #F1F5F9;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .back-btn {
+            background-color: rgba(241, 245, 249, 0.2);
+            color: #F1F5F9;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .main-content {
+            padding: 24px 20px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .page-subtitle {
+            color: #CBD5E1;
+            margin-bottom: 24px;
+            font-size: 14px;
+        }
+
+        /* VALUE PROP BANNER */
+        .value-prop-banner {
+            background: linear-gradient(135deg, #EC4899 0%, #F472B6 100%);
+            border-radius: 12px;
+            padding: 32px 24px;
+            margin-bottom: 24px;
+            color: #F1F5F9;
+        }
+
+        .vp-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 16px;
+        }
+
+        .vp-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .vp-item {
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .vp-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .vp-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            opacity: 0.9;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .vp-value {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        /* EARNINGS CALCULATOR */
+        .earnings-calc {
+            background-color: #1E293B;
+            border: 2px solid #EC4899;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .calc-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #F1F5F9;
+        }
+
+        .calc-row {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 16px;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(236, 72, 153, 0.2);
+            align-items: center;
+        }
+
+        .calc-row:last-child {
+            border-bottom: none;
+        }
+
+        .calc-label {
+            font-size: 12px;
+            color: #CBD5E1;
+        }
+
+        .calc-input {
+            padding: 8px 12px;
+            background-color: #0F172A;
+            border: 1px solid rgba(236, 72, 153, 0.3);
+            border-radius: 6px;
+            color: #F1F5F9;
+            font-size: 12px;
+            width: 120px;
+            text-align: right;
+        }
+
+        .calc-value {
+            font-size: 14px;
+            font-weight: bold;
+            color: #EC4899;
+        }
+
+        .calc-total {
+            background-color: rgba(236, 72, 153, 0.1);
+            border-left: 3px solid #EC4899;
+            border-radius: 6px;
+            padding: 16px;
+            margin-top: 16px;
+            font-size: 14px;
+        }
+
+        .calc-total-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #EC4899;
+            margin-top: 8px;
+        }
+
+        /* UPLOAD SECTION */
+        .upload-section {
+            background-color: #1E293B;
+            border: 2px dashed #EC4899;
+            border-radius: 12px;
+            padding: 40px 24px;
+            text-align: center;
+            margin-bottom: 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .upload-section:hover {
+            background-color: rgba(236, 72, 153, 0.05);
+            border-color: #F472B6;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .upload-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #F1F5F9;
+            margin-bottom: 8px;
+        }
+
+        .upload-text {
+            color: #CBD5E1;
+            font-size: 13px;
+            margin-bottom: 16px;
+        }
+
+        .upload-btn {
+            background-color: #EC4899;
+            color: #F1F5F9;
+            padding: 12px 28px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .upload-btn:hover {
+            opacity: 0.9;
+            transform: scale(1.05);
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        /* FILTER/OVERLAY OPTIONS */
+        .filters-section {
+            background-color: #1E293B;
+            border: 1px solid rgba(236, 72, 153, 0.2);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 16px;
+            color: #F1F5F9;
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .filter-btn {
+            background-color: #0F172A;
+            border: 1px solid rgba(236, 72, 153, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #CBD5E1;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .filter-btn:hover {
+            border-color: #EC4899;
+            background-color: rgba(236, 72, 853, 0.05);
+            color: #EC4899;
+        }
+
+        .filter-btn.active {
+            background-color: #EC4899;
+            color: #F1F5F9;
+            border-color: #EC4899;
+        }
+
+        .filter-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .filter-name {
+            font-size: 11px;
+        }
+
+        /* SEX APPEAL SCORING */
+        .sex-appeal-section {
+            background: linear-gradient(135deg, rgba(236, 72, 153, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
+            border: 2px solid #EC4899;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .appeal-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 16px;
+            color: #F1F5F9;
+        }
+
+        .appeal-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+        }
+
+        .appeal-metric {
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .metric-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #CBD5E1;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .metric-bar {
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+            height: 8px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .metric-fill {
+            background-color: #EC4899;
+            height: 100%;
+            border-radius: 4px;
+        }
+
+        .metric-score {
+            font-size: 16px;
+            font-weight: bold;
+            color: #EC4899;
+        }
+
+        /* TIPS SECTION */
+        .tips-section {
+            background-color: #1E293B;
+            border: 1px solid rgba(236, 72, 853, 0.2);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+        }
+
+        .tip-card {
+            background-color: #0F172A;
+            border: 1px solid rgba(236, 72, 853, 0.2);
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .tip-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .tip-title {
+            font-size: 12px;
+            font-weight: bold;
+            color: #F1F5F9;
+            margin-bottom: 6px;
+        }
+
+        .tip-text {
+            font-size: 11px;
+            color: #CBD5E1;
+            line-height: 1.5;
+        }
+
+        /* REAL EXAMPLES */
+        .examples-section {
+            background-color: #1E293B;
+            border: 1px solid rgba(236, 72, 853, 0.2);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .example-card {
+            background-color: #0F172A;
+            border: 1px solid rgba(236, 72, 853, 0.2);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .example-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .example-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .example-name {
+            font-weight: bold;
+            color: #EC4899;
+        }
+
+        .example-stat {
+            font-size: 11px;
+            color: #CBD5E1;
+        }
+
+        .example-detail {
+            font-size: 11px;
+            color: #CBD5E1;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+
+        .example-earnings {
+            background-color: rgba(236, 72, 153, 0.1);
+            border-left: 3px solid #EC4899;
+            border-radius: 4px;
+            padding: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #EC4899;
+        }
+
+        /* INFO BOX */
+        .info-box {
+            background-color: rgba(236, 72, 853, 0.1);
+            border: 1px solid rgba(236, 72, 853, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+            font-size: 12px;
+            line-height: 1.6;
+            color: #CBD5E1;
+        }
+
+        .btn {
+            background-color: #EC4899;
+            color: #F1F5F9;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            .vp-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .appeal-metrics {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-left">
+            <svg class="logo-small" viewBox="0 0 400 400" fill="none">
+                <circle cx="200" cy="200" r="160" stroke="#F1F5F9" stroke-width="28" />
+                <circle cx="200" cy="200" r="110" stroke="#F472B6" stroke-width="24" />
+                <circle cx="200" cy="200" r="60" stroke="#F1F5F9" stroke-width="20" />
+                <circle cx="200" cy="200" r="25" fill="#F1F5F9" />
+            </svg>
+            <h1 class="header-title">AuraBoost</h1>
+            <div class="header-badge">FOR ONLYFANS CREATORS</div>
+        </div>
+        <button class="back-btn" onclick="window.history.back()">← Back</button>
+    </div>
+
+    <div class="container">
+        <div class="main-content">
+            <div class="page-title">🔥 AuraBoost for OnlyFans Creators</div>
+            <p class="page-subtitle">The ultimate flywheel: Post → Get Aura → Get Followers → Get Subscribers → Get Paid</p>
+
+            <!-- VALUE PROPOSITION -->
+            <div class="value-prop-banner">
+                <div class="vp-title">Why OnlyFans Creators Win With AuraBoost</div>
+                <div class="vp-grid">
+                    <div class="vp-item">
+                        <div class="vp-icon">📊</div>
+                        <div class="vp-label">Content Scoring</div>
+                        <div class="vp-value">+600 Max Aura</div>
+                    </div>
+                    <div class="vp-item">
+                        <div class="vp-icon">👥</div>
+                        <div class="vp-label">New Followers</div>
+                        <div class="vp-value">5-20X</div>
+                    </div>
+                    <div class="vp-item">
+                        <div class="vp-icon">💰</div>
+                        <div class="vp-label">Revenue Share</div>
+                        <div class="vp-value">30% Per Sub</div>
+                    </div>
+                    <div class="vp-item">
+                        <div class="vp-icon">⚡</div>
+                        <div class="vp-label">Badge Multiplier</div>
+                        <div class="vp-value">3X Income</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                💡 <strong>The OnlyFans Flywheel:</strong> You already create content for OnlyFans. Now post it to AuraBoost too. Get ranked by aura. Climb the leaderboard. Gain followers. Those followers visit your OnlyFans link. 30% of every subscription revenue is yours. The better your content scores, the more followers you get, the more you earn. Simple.
+
+            <!-- VERIFICATION & TRUST SECTION -->
+            <div class="section">
+                <div class="section-title">✅ How Verification Works (Anti-Fraud Protection)</div>
+                
+                <div style="padding: 16px; background: linear-gradient(135deg, rgba(236, 72, 153, 0.15) 0%, rgba(139, 92, 246, 0.1) 100%); border: 1px solid rgba(236, 72, 853, 0.3); border-radius: 8px; margin-bottom: 20px;">
+                    <div style="font-size: 12px; color: #CBD5E1; line-height: 1.8;">
+                        <strong style="color: #EC4899;">We verify EVERY post to prevent gaming & protect your earnings.</strong><br>
+                        No fake shares. No gaming the system. Your commission is based on REAL posts on REAL platforms.
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 16px;">
+                    <!-- Step 1 -->
+                    <div style="background-color: #0F172A; border: 1px solid rgba(236, 72, 853, 0.2); border-radius: 12px; padding: 16px; text-align: center;">
+                        <div style="font-size: 28px; margin-bottom: 8px;">1️⃣</div>
+                        <div style="font-size: 12px; font-weight: bold; color: #F1F5F9; margin-bottom: 8px;">You Upload</div>
+                        <div style="font-size: 11px; color: #CBD5E1; line-height: 1.5;">
+                            Post your content to AuraBoost. AI analyzes sex appeal & attractiveness.
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div style="background-color: #0F172A; border: 1px solid rgba(236, 72, 853, 0.2); border-radius: 12px; padding: 16px; text-align: center;">
+                        <div style="font-size: 28px; margin-bottom: 8px;">2️⃣</div>
+                        <div style="font-size: 12px; font-weight: bold; color: #F1F5F9; margin-bottom: 8px;">You Share URL</div>
+                        <div style="font-size: 11px; color: #CBD5E1; line-height: 1.5;">
+                            Paste the direct link to your OnlyFans post (onlyfans.com/yourname/posts/123...)
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div style="background-color: #0F172A; border: 1px solid rgba(236, 72, 853, 0.2); border-radius: 12px; padding: 16px; text-align: center;">
+                        <div style="font-size: 28px; margin-bottom: 8px;">3️⃣</div>
+                        <div style="font-size: 12px; font-weight: bold; color: #F1F5F9; margin-bottom: 8px;">You Upload Screenshot</div>
+                        <div style="font-size: 11px; color: #CBD5E1; line-height: 1.5;">
+                            Screenshot showing your post is live on OnlyFans (with URL visible in screenshot)
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div style="background-color: #0F172A; border: 1px solid rgba(236, 72, 853, 0.2); border-radius: 12px; padding: 16px; text-align: center;">
+                        <div style="font-size: 28px; margin-bottom: 8px;">4️⃣</div>
+                        <div style="font-size: 12px; font-weight: bold; color: #F1F5F9; margin-bottom: 8px;">We Verify & Pay</div>
+                        <div style="font-size: 11px; color: #CBD5E1; line-height: 1.5;">
+                            AI image matching confirms post is real. Aura points awarded instantly.
+                        </div>
+                    </div>
+                </div>
+
+                <div style="padding: 16px; background-color: rgba(236, 72, 853, 0.1); border-left: 3px solid #EC4899; border-radius: 6px; font-size: 11px; color: #CBD5E1;">
+                    <strong style="color: #EC4899;">Why this matters:</strong> We prevent fake posts & gaming. Every referral you make is real. Every commission you earn is legitimate. No wasted effort on posts that won't be verified. Transparent, honest system.
+                </div>
+            </div>
+            </div>
+
+            <!-- EARNINGS CALCULATOR -->
+            <div class="earnings-calc">
+                <div class="calc-title">💰 Your Earnings Potential</div>
+                
+                <div class="calc-row">
+                    <div class="calc-label">OnlyFans subscribers already have</div>
+                    <input type="number" class="calc-input" id="currentSubs" value="500" onkeyup="calculateEarnings()">
+                </div>
+
+                <div class="calc-row">
+                    <div class="calc-label">Average monthly price</div>
+                    <div class="calc-value">$9.99</div>
+                </div>
+
+                <div class="calc-row">
+                    <div class="calc-label">AuraBoost referral commission (30%)</div>
+                    <div class="calc-value">$3.00 per</div>
+                </div>
+
+                <div class="calc-row">
+                    <div class="calc-label">Expected new referrals/month (conservative)</div>
+                    <input type="number" class="calc-input" id="newReferrals" value="20" onkeyup="calculateEarnings()">
+                </div>
+
+                <div class="calc-total">
+                    <div>Additional Monthly Revenue from AuraBoost</div>
+                    <div class="calc-total-value" id="monthlyEarning">$60</div>
+                    <div style="font-size: 11px; color: #CBD5E1; margin-top: 8px;">That's $720/year JUST from new subscribers!</div>
+                </div>
+
+                <div class="calc-total" style="background-color: rgba(236, 72, 153, 0.15); border-color: #EC4899; margin-top: 12px;">
+                    <div>WITH Affiliate Badge (3X multiplier)</div>
+                    <div class="calc-total-value" id="monthlyEarningBadge" style="color: #EC4899;">$180</div>
+                    <div style="font-size: 11px; color: #CBD5E1; margin-top: 8px;">That's $2,160/year. Every year.</div>
+                </div>
+            </div>
+
+            <!-- UPLOAD SECTION -->
+            <div class="upload-section" onclick="document.getElementById('fileInput').click()">
+                <div class="upload-icon">📸</div>
+                <div class="upload-title">Upload Your Sexiest Content</div>
+                <div class="upload-text">Post your best OnlyFans teasers. Our AI will score the sex appeal. Higher scores = more visibility = more followers = more subs.</div>
+                <button class="upload-btn">Choose Photo or Video</button>
+            </div>
+
+            <input type="file" id="fileInput" class="file-input" onchange="handleUpload(event)">
+
+            <!-- NSFW FILTERS & OVERLAYS -->
+            <div class="filters-section">
+                <div class="section-title">🎨 Content Enhancement Tools</div>
+                
+                <div style="margin-bottom: 16px;">
+                    <div style="font-size: 12px; color: #CBD5E1; margin-bottom: 12px; font-weight: 600;">Smart NSFW Filters (Blur, Pixelate, Mosaic for teasers)</div>
+                    <div class="filter-grid">
+                        <div class="filter-btn" onclick="selectFilter(this, 'none')">
+                            <div class="filter-icon">👁️</div>
+                            <div class="filter-name">No Filter</div>
+                        </div>
+                        <div class="filter-btn" onclick="selectFilter(this, 'blur')">
+                            <div class="filter-icon">🌫️</div>
+                            <div class="filter-name">Blur</div>
+                        </div>
+                        <div class="filter-btn" onclick="selectFilter(this, 'pixelate')">
+                            <div class="filter-icon">📦</div>
+                            <div class="filter-name">Pixelate</div>
+                        </div>
+                        <div class="filter-btn" onclick="selectFilter(this, 'mosaic')">
+                            <div class="filter-icon">🟫</div>
+                            <div class="filter-name">Mosaic</div>
+                        </div>
+                        <div class="filter-btn" onclick="selectFilter(this, 'custom')">
+                            <div class="filter-icon">🎭</div>
+                            <div class="filter-name">Custom</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div style="font-size: 12px; color: #CBD5E1; margin-bottom: 12px; font-weight: 600;">Overlay Stickers & CTA</div>
+                    <div class="filter-grid">
+                        <div class="filter-btn" onclick="addOverlay('subscribe')">
+                            <div class="filter-icon">🔗</div>
+                            <div class="filter-name">Subscribe CTA</div>
+                        </div>
+                        <div class="filter-btn" onclick="addOverlay('emoji')">
+                            <div class="filter-icon">😈</div>
+                            <div class="filter-name">Emoji Pack</div>
+                        </div>
+                        <div class="filter-btn" onclick="addOverlay('timer')">
+                            <div class="filter-icon">⏰</div>
+                            <div class="filter-name">Sale Timer</div>
+                        </div>
+                        <div class="filter-btn" onclick="addOverlay('rating')">
+                            <div class="filter-icon">⭐</div>
+                            <div class="filter-name">Sex Appeal +</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SEX APPEAL SCORING -->
+            <div class="sex-appeal-section">
+                <div class="appeal-title">🔥 Facial Recognition Sex Appeal Analysis</div>
+                
+                <div class="appeal-metrics">
+                    <div class="appeal-metric">
+                        <div class="metric-label">Facial Attractiveness</div>
+                        <div class="metric-bar"><div class="metric-fill" style="width: 92%;"></div></div>
+                        <div class="metric-score">9.2/10</div>
+                    </div>
+
+                    <div class="appeal-metric">
+                        <div class="metric-label">Skin Quality</div>
+                        <div class="metric-bar"><div class="metric-fill" style="width: 88%;"></div></div>
+                        <div class="metric-score">8.8/10</div>
+                    </div>
+
+                    <div class="appeal-metric">
+                        <div class="metric-label">Eye Appeal</div>
+                        <div class="metric-bar"><div class="metric-fill" style="width: 95%;"></div></div>
+                        <div class="metric-score">9.5/10</div>
+                    </div>
+
+                    <div class="appeal-metric">
+                        <div class="metric-label">Body Composition</div>
+                        <div class="metric-bar"><div class="metric-fill" style="width: 89%;"></div></div>
+                        <div class="metric-score">8.9/10</div>
+                    </div>
+
+                    <div class="appeal-metric">
+                        <div class="metric-label">Confidence Aura</div>
+                        <div class="metric-bar"><div class="metric-fill" style="width: 91%;"></div></div>
+                        <div class="metric-score">9.1/10</div>
+                    </div>
+
+                    <div class="appeal-metric">
+                        <div class="metric-label">Overall Sex Appeal</div>
+                        <div class="metric-bar"><div class="metric-fill" style="width: 91%;"></div></div>
+                        <div class="metric-score">9.1/10</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TIPS & BEST PRACTICES -->
+            <div class="tips-section">
+                <div class="section-title">💡 OnlyFans Creator Pro Tips</div>
+                
+                <div class="tips-grid">
+                    <div class="tip-card">
+                        <div class="tip-icon">📸</div>
+                        <div class="tip-title">Content Strategy</div>
+                        <div class="tip-text">Post your BEST content to AuraBoost. This is your free marketing channel. Use lower-res/teaser versions with strategically placed overlays to drive traffic to your OnlyFans premium content.</div>
+                    </div>
+
+                    <div class="tip-card">
+                        <div class="tip-icon">⏱️</div>
+                        <div class="tip-title">Posting Schedule</div>
+                        <div class="tip-text">Post to AuraBoost 3-5 times per week. Consistency builds your aura score and keeps you on the leaderboard. Fresh content = fresh followers.</div>
+                    </div>
+
+                    <div class="tip-card">
+                        <div class="tip-icon">🏷️</div>
+                        <div class="tip-title">Caption Game</div>
+                        <div class="tip-text">Use captions to tease exclusive OnlyFans content. "Full video on my OF" or "Subscribe for uncensored version" drives conversions. Every post is a sales opportunity.</div>
+                    </div>
+
+                    <div class="tip-card">
+                        <div class="tip-icon">🎯</div>
+                        <div class="tip-title">Get the Badge</div>
+                        <div class="tip-text">The Affiliate Badge triples your earnings. Upload 6 different content types + your hottest NFT. 3X multiplier = $180/month vs $60/month. That's $1,440 extra per year.</div>
+                    </div>
+
+                    <div class="tip-card">
+                        <div class="tip-icon">📊</div>
+                        <div class="tip-title">Track What Works</div>
+                        <div class="tip-text">Check your analytics. See which content types get highest sex appeal scores. Replicate what works. Double down on your money-makers.</div>
+                    </div>
+
+                    <div class="tip-card">
+                        <div class="tip-icon">🌟</div>
+                        <div class="tip-title">Community Building</div>
+                        <div class="tip-text">Top creators have loyal followers. Engage with your AuraBoost followers. Respond to comments. Build your personal brand. Higher engagement = higher visibility = more referrals.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- REAL EXAMPLES -->
+            <div class="examples-section">
+                <div class="section-title">💼 Real OnlyFans Creator Examples</div>
+
+                <div class="example-card">
+                    <div class="example-header">
+                        <div class="example-name">@amber_creator</div>
+                        <div class="example-stat">Rank #12 • 8,450 Aura</div>
+                    </div>
+                    <div class="example-detail">
+                        Posts daily teaser content. Uses pixel/blur filters strategically. Gets 50-100 new followers per post. OnlyFans has 2,400 active subscribers. Conservative estimate = 40 AuraBoost referrals/month.
+                    </div>
+                    <div class="example-earnings">
+                        💰 $120/month from AuraBoost = $1,440/year (WITHOUT badge yet)
+                    </div>
+                </div>
+
+                <div class="example-card">
+                    <div class="example-header">
+                        <div class="example-name">@destiny_x</div>
+                        <div class="example-stat">Rank #5 • 12,200 Aura 💎 Badge</div>
+                    </div>
+                    <div class="example-detail">
+                        Has Affiliate Badge (3X multiplier). Posts 4x per week. Very high sex appeal scores (8.5-9.2 avg). Massive follower growth. Estimated 80 AuraBoost referrals/month WITH badge.
+                    </div>
+                    <div class="example-earnings">
+                        💰 $720/month from AuraBoost = $8,640/year (WITH 3X badge multiplier)
+                    </div>
+                </div>
+
+                <div class="example-card">
+                    <div class="example-header">
+                        <div class="example-name">@jessica_vip</div>
+                        <div class="example-stat">Rank #1 • 16,800 Aura 💎 Badge</div>
+                    </div>
+                    <div class="example-detail">
+                        Top creator on AuraBoost. Posts premium content daily. Perfect sex appeal scoring. Gets 200+ new followers per post. OnlyFans has 8,900 subscribers. Estimated 150 referrals/month WITH badge.
+                    </div>
+                    <div class="example-earnings">
+                        💰 $1,350/month from AuraBoost = $16,200/year (WITH 3X badge multiplier). PLUS her original OnlyFans income.
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA -->
+            <div style="text-align: center; padding: 32px 0;">
+                <button class="btn" style="padding: 16px 32px; font-size: 14px;" onclick="startEarning()">
+                    🚀 Start Earning Now
+                </button>
+                <div style="margin-top: 16px; font-size: 12px; color: #CBD5E1;">
+                    It takes 5 minutes to post. You already make OnlyFans content anyway.<br>
+                    Might as well get paid twice for it.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function handleUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                alert('✓ Upload received!\n\nAI is analyzing:\n- Facial attractiveness\n- Sex appeal factors\n- Body composition\n- Confidence level\n\nYour content will be scored and posted to leaderboard!');
+            }
+        }
+
+        function selectFilter(element, filterType) {
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+            console.log('Filter selected:', filterType);
+        }
+
+        function addOverlay(overlayType) {
+            alert(`Adding overlay: ${overlayType}\n\nThis will help drive traffic to your OnlyFans!`);
+        }
+
+        function calculateEarnings() {
+            const currentSubs = parseInt(document.getElementById('currentSubs').value) || 0;
+            const newReferrals = parseInt(document.getElementById('newReferrals').value) || 0;
+            
+            const monthlyEarning = newReferrals * 3.00;
+            const withBadge = monthlyEarning * 3;
+            
+            document.getElementById('monthlyEarning').textContent = '$' + monthlyEarning.toFixed(2);
+            document.getElementById('monthlyEarningBadge').textContent = '$' + withBadge.toFixed(2);
+        }
+
+        function startEarning() {
+            alert('🚀 Let\'s go!\n\nSteps:\n1. Upload your hottest content\n2. Get AI sex appeal score\n3. Climb the leaderboard\n4. Gain followers\n5. They visit your OnlyFans\n6. Get 30% of every subscription\n7. Get the badge to 3X it\n\nYou\'re welcome. 😈');
+        }
+
+        function goBack() {
+            alert('Going back...');
+        }
+
+        // Calculate initial earnings
+        calculateEarnings();
+    </script>
+</body>
+</html>

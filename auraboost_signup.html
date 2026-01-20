@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraBoost - Sign Up</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+            color: #F1F5F9;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .signup-container {
+            width: 100%;
+            max-width: 500px;
+            background-color: #1E293B;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+        }
+
+        .signup-header {
+            padding: 24px 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .signup-logo {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .signup-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .signup-subtitle {
+            font-size: 12px;
+            color: #CBD5E1;
+        }
+
+        .signup-content {
+            padding: 32px 24px;
+            min-height: 400px;
+        }
+
+        /* STEPS */
+        .progress-bar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 32px;
+        }
+
+        .progress-step {
+            flex: 1;
+            height: 4px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+
+        .progress-step.active {
+            background-color: #F59E0B;
+        }
+
+        .progress-step.completed {
+            background-color: #10B981;
+        }
+
+        /* FORM SECTIONS */
+        .form-section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .form-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            color: #CBD5E1;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: 12px 14px;
+            background-color: #0F172A;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #F1F5F9;
+            font-size: 13px;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: #F59E0B;
+            box-shadow: 0 0 12px rgba(245, 158, 11, 0.2);
+        }
+
+        .form-input::placeholder {
+            color: #64748B;
+        }
+
+        /* CATEGORY PICKER */
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .category-option {
+            position: relative;
+        }
+
+        .category-option input[type="radio"] {
+            display: none;
+        }
+
+        .category-card {
+            padding: 16px;
+            background-color: #0F172A;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .category-option input[type="radio"]:checked + .category-card {
+            border-color: #F59E0B;
+            background-color: rgba(245, 158, 11, 0.1);
+            box-shadow: 0 0 12px rgba(245, 158, 11, 0.2);
+        }
+
+        .category-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .category-name {
+            font-size: 12px;
+            font-weight: 700;
+            color: #F1F5F9;
+        }
+
+        /* INTERESTS */
+        .interest-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .interest-option {
+            position: relative;
+        }
+
+        .interest-option input[type="checkbox"] {
+            display: none;
+        }
+
+        .interest-card {
+            padding: 12px;
+            background-color: #0F172A;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 12px;
+        }
+
+        .interest-option input[type="checkbox"]:checked + .interest-card {
+            border-color: #10B981;
+            background-color: rgba(16, 185, 129, 0.1);
+        }
+
+        /* CHECKBOX */
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 16px;
+            padding: 12px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-top: 2px;
+            cursor: pointer;
+            accent-color: #F59E0B;
+            flex-shrink: 0;
+        }
+
+        .checkbox-label {
+            font-size: 12px;
+            color: #CBD5E1;
+            line-height: 1.5;
+        }
+
+        .checkbox-label a {
+            color: #F59E0B;
+            text-decoration: none;
+        }
+
+        .checkbox-label a:hover {
+            text-decoration: underline;
+        }
+
+        /* BUTTONS */
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-secondary {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #CBD5E1;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .btn-secondary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #F59E0B 0%, #EC4899 100%);
+            color: white;
+            grid-column: 1 / -1;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* INFO BOX */
+        .info-box {
+            background-color: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 20px;
+            font-size: 12px;
+            line-height: 1.5;
+            color: #CBD5E1;
+        }
+
+        .info-box strong {
+            color: #10B981;
+        }
+
+        /* SUCCESS SCREEN */
+        .success-screen {
+            display: none;
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        .success-screen.active {
+            display: block;
+        }
+
+        .success-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+            animation: bounce 0.6s ease;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .success-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #10B981;
+            margin-bottom: 12px;
+        }
+
+        .success-message {
+            font-size: 13px;
+            color: #CBD5E1;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .form-hint {
+            font-size: 12px;
+            color: #7DD3C0;
+            margin-top: 8px;
+        }
+
+        .login-link {
+            text-align: center;
+            font-size: 12px;
+            color: #CBD5E1;
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .login-link a {
+            color: #F59E0B;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 480px) {
+            .signup-container {
+                border-radius: 0;
+                box-shadow: none;
+            }
+
+            .category-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            body {
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div style="background: linear-gradient(135deg, #F59E0B 0%, #EC4899 100%); padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);"><a href="/auraboost-mvp/auraboost_homepage.html" style="display: flex; align-items: center; gap: 12px; color: white; text-decoration: none; cursor: pointer; font-weight: bold;"><img src="/auraboost-mvp/auraboost_logo.png" alt="AuraBoost" style="width: 40px; height: 40px; object-fit: contain;"><span>AuraBoost</span></a><div style="display: flex; gap: 20px;"><a href="/auraboost-mvp/auraboost_homepage.html" style="color: white; text-decoration: none;">Home</a></div></div>
+    <div class="signup-container">
+        <!-- HEADER -->
+        <div class="signup-header">
+            <div class="signup-logo" id="headerIcon">✨</div>
+            <div class="signup-title">Create Your Account</div>
+            <div class="signup-subtitle">Join creators earning on AuraBoost</div>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="signup-content">
+            <!-- PROGRESS BAR -->
+            <div class="progress-bar">
+                <div class="progress-step active" id="step1Progress"></div>
+                <div class="progress-step" id="step2Progress"></div>
+                <div class="progress-step" id="step3Progress"></div>
+                <div class="progress-step" id="step4Progress"></div>
+            </div>
+
+            <!-- STEP 1: CATEGORY SELECTION -->
+            <div class="form-section active" id="step1">
+                <div class="form-group">
+                    <label class="form-label">What's Your Creator Type?</label>
+                    <div class="category-grid">
+                        <label class="category-option">
+                            <input type="radio" name="category" value="beauty" onchange="updateCategory()">
+                            <div class="category-card">
+                                <div class="category-icon">💄</div>
+                                <div class="category-name">Beauty</div>
+                            </div>
+                        </label>
+                        <label class="category-option">
+                            <input type="radio" name="category" value="fitness" onchange="updateCategory()">
+                            <div class="category-card">
+                                <div class="category-icon">💪</div>
+                                <div class="category-name">Fitness</div>
+                            </div>
+                        </label>
+                        <label class="category-option">
+                            <input type="radio" name="category" value="gaming" onchange="updateCategory()">
+                            <div class="category-card">
+                                <div class="category-icon">🎮</div>
+                                <div class="category-name">Gaming</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                <div class="info-box">
+                    💡 <strong>Tip:</strong> You can create content in multiple categories later. Choose your primary focus for now.
+                </div>
+            </div>
+
+            <!-- STEP 2: BASIC INFO -->
+            <div class="form-section" id="step2">
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" class="form-input" id="email" placeholder="your@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Username</label>
+                    <input type="text" class="form-input" id="username" placeholder="@yourname" required>
+                    <div class="form-hint">3-20 characters, letters & numbers only</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-input" id="password" placeholder="••••••••" required>
+                    <div class="form-hint">Min 8 characters, 1 uppercase, 1 number</div>
+                </div>
+            </div>
+
+            <!-- STEP 3: AGE VERIFICATION -->
+            <div class="form-section" id="step3">
+                <div class="info-box">
+                    🔞 <strong>Age Verification Required</strong><br>
+                    AuraBoost is for creators 18+. This protects our community.
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Date of Birth</label>
+                    <input type="date" class="form-input" id="dob" required>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="ageConfirm" required>
+                    <label class="checkbox-label">I confirm I am 18 years or older</label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="termsAccept" required>
+                    <label class="checkbox-label">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+                </div>
+            </div>
+
+            <!-- STEP 4: CATEGORY INTERESTS -->
+            <div class="form-section" id="step4">
+                <div class="form-group">
+                    <label class="form-label">What Interests You Most?</label>
+                    <div class="interest-grid" id="interestGrid">
+                        <!-- Dynamically populated based on category -->
+                    </div>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="emailOptIn" checked>
+                    <label class="checkbox-label">Send me tips to grow on AuraBoost (emails only, can unsubscribe anytime)</label>
+                </div>
+            </div>
+
+            <!-- SUCCESS SCREEN -->
+            <div class="success-screen" id="successScreen">
+                <div class="success-icon">✅</div>
+                <div class="success-title">Welcome to AuraBoost!</div>
+                <div class="success-message" id="successMessage">
+                    Your account is ready. Let's get you started creating and earning!
+                </div>
+                <button class="btn btn-primary" onclick="goToDashboard()">🚀 Go to Dashboard</button>
+            </div>
+        </div>
+
+        <!-- BUTTONS -->
+        <div style="padding: 0 24px 24px;">
+            <div class="button-group" id="buttonGroup">
+                <button class="btn btn-secondary" id="backBtn" onclick="previousStep()" style="display: none;">← Back</button>
+                <button class="btn btn-primary" id="nextBtn" onclick="nextStep()">Next</button>
+            </div>
+            <div class="login-link" id="loginLink" style="display: none;">
+                Already have an account? <a href="#">Sign In</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        const totalSteps = 4;
+        
+        const categoryData = {
+            beauty: {
+                icon: '💄',
+                name: 'Beauty',
+                interests: ['Photography', 'Makeup', 'Fashion', 'Skincare', 'Modeling', 'Aesthetics']
+            },
+            fitness: {
+                icon: '💪',
+                name: 'Fitness',
+                interests: ['Workouts', 'Nutrition', 'Transformation', 'Coaching', 'Recovery', 'Motivation']
+            },
+            gaming: {
+                icon: '🎮',
+                name: 'Gaming',
+                interests: ['Competitive', 'Streaming', 'Esports', 'Casual', 'Speedrunning', 'Collaborations']
+            }
+        };
+
+        // Check for category in URL params
+        function getUrlCategory() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('category') || null;
+        }
+
+        // Initialize with URL category if present
+        window.addEventListener('load', function() {
+            const urlCategory = getUrlCategory();
+            if (urlCategory && categoryData[urlCategory]) {
+                document.querySelector(`input[value="${urlCategory}"]`).checked = true;
+                updateCategory();
+            }
+        });
+
+        function updateCategory() {
+            const category = document.querySelector('input[name="category"]:checked').value;
+            if (category) {
+                const data = categoryData[category];
+                updateHeader(data);
+                updateInterests(data.interests);
+            }
+        }
+
+        function updateHeader(data) {
+            document.getElementById('headerIcon').textContent = data.icon;
+        }
+
+        function updateInterests(interests) {
+            const grid = document.getElementById('interestGrid');
+            grid.innerHTML = interests.map(interest => `
+                <label class="interest-option">
+                    <input type="checkbox" name="interests" value="${interest}">
+                    <div class="interest-card">${interest}</div>
+                </label>
+            `).join('');
+        }
+
+        function nextStep() {
+            // Validate current step
+            if (!validateStep(currentStep)) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            if (currentStep < totalSteps) {
+                currentStep++;
+                updateDisplay();
+            } else {
+                completeSignup();
+            }
+        }
+
+        function previousStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                updateDisplay();
+            }
+        }
+
+        function validateStep(step) {
+            switch(step) {
+                case 1:
+                    return document.querySelector('input[name="category"]:checked') !== null;
+                case 2:
+                    const email = document.getElementById('email').value;
+                    const username = document.getElementById('username').value;
+                    const password = document.getElementById('password').value;
+                    return email && username && password && username.length >= 3 && password.length >= 8;
+                case 3:
+                    return document.getElementById('dob').value && 
+                           document.getElementById('ageConfirm').checked && 
+                           document.getElementById('termsAccept').checked;
+                case 4:
+                    return document.querySelectorAll('input[name="interests"]:checked').length > 0;
+                default:
+                    return true;
+            }
+        }
+
+        function updateDisplay() {
+            // Hide all sections
+            for (let i = 1; i <= totalSteps; i++) {
+                document.getElementById(`step${i}`).classList.remove('active');
+                document.getElementById(`step${i}Progress`).classList.remove('active');
+                document.getElementById(`step${i}Progress`).classList.remove('completed');
+            }
+
+            // Show current section and mark progress
+            document.getElementById(`step${currentStep}`).classList.add('active');
+            document.getElementById(`step${currentStep}Progress`).classList.add('active');
+
+            // Mark completed steps
+            for (let i = 1; i < currentStep; i++) {
+                document.getElementById(`step${i}Progress`).classList.add('completed');
+            }
+
+            // Update buttons
+            document.getElementById('backBtn').style.display = currentStep === 1 ? 'none' : 'block';
+            document.getElementById('nextBtn').textContent = currentStep === totalSteps ? 'Create Account' : 'Next';
+
+            // Scroll to top
+            document.querySelector('.signup-content').scrollTop = 0;
+
+            // Update category selection if on step 1
+            if (currentStep === 1) {
+                updateCategory();
+            }
+        }
+
+        function completeSignup() {
+            const category = document.querySelector('input[name="category"]:checked').value;
+            const email = document.getElementById('email').value;
+            const username = document.getElementById('username').value;
+
+            console.log({
+                category: category,
+                email: email,
+                username: username,
+                dob: document.getElementById('dob').value,
+                interests: Array.from(document.querySelectorAll('input[name="interests"]:checked')).map(el => el.value),
+                emailOptIn: document.getElementById('emailOptIn').checked
+            });
+
+            // Show success screen
+            document.getElementById(`step${currentStep}`).classList.remove('active');
+            document.getElementById(`step${currentStep}Progress`).classList.add('completed');
+            document.getElementById('successScreen').classList.add('active');
+            document.getElementById('buttonGroup').style.display = 'none';
+            document.getElementById('loginLink').style.display = 'block';
+
+            // Update success message
+            const data = categoryData[category];
+            document.getElementById('successMessage').innerHTML = `
+                Welcome to AuraBoost, <strong>${username}</strong>!<br><br>
+                You're all set as a ${data.name} creator. Let's start creating and earning!
+            `;
+        }
+
+        function goToDashboard() {
+            const category = document.querySelector('input[name="category"]:checked').value;
+            
+            // Route to appropriate dashboard/hub based on category
+            const dashboards = {
+                beauty: 'auraboost_mobile_homepage.html?category=beauty',
+                fitness: 'fitness_log_workout.html',
+                gaming: 'auraboost_mobile_homepage.html?category=gaming'
+            };
+
+            window.location.href = dashboards[category] || 'auraboost_mobile_homepage.html';
+        }
+
+        // Initialize
+        updateDisplay();
+    </script>
+</body>
+</html>

@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraBoost - Social Media Templates</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #0F172A;
+            color: #F1F5F9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background-color: #1E293B;
+            border-bottom: 1px solid #F59E0B;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-small {
+            width: 32px;
+            height: 32px;
+        }
+
+        .header-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #F59E0B;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .back-btn {
+            background-color: #F59E0B;
+            color: #0F172A;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .main-content {
+            padding: 24px 20px;
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .page-subtitle {
+            color: #CBD5E1;
+            margin-bottom: 24px;
+        }
+
+        /* PLATFORM TABS */
+        .platform-tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid rgba(245, 158, 11, 0.2);
+            padding-bottom: 16px;
+            overflow-x: auto;
+        }
+
+        .platform-tab {
+            padding: 8px 16px;
+            border: none;
+            background-color: transparent;
+            color: #CBD5E1;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            position: relative;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .platform-tab.active {
+            color: #F59E0B;
+        }
+
+        .platform-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -16px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: #F59E0B;
+        }
+
+        .platform-tab:hover {
+            color: #F59E0B;
+        }
+
+        /* TEMPLATE GRID */
+        .templates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .template-card {
+            background-color: #1E293B;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .template-card:hover {
+            border-color: #F59E0B;
+            box-shadow: 0 0 12px rgba(245, 158, 11, 0.2);
+            transform: translateY(-4px);
+        }
+
+        .template-header {
+            background: linear-gradient(135deg, #F59E0B, #FCD34D);
+            padding: 12px 16px;
+            color: #0F172A;
+            font-weight: 600;
+        }
+
+        .template-title {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .template-use-case {
+            font-size: 11px;
+            opacity: 0.8;
+        }
+
+        .template-body {
+            padding: 16px;
+        }
+
+        .template-caption {
+            background-color: #0F172A;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #F1F5F9;
+            font-family: 'Courier New', monospace;
+            max-height: 120px;
+            overflow-y: auto;
+        }
+
+        .template-hashtags {
+            background-color: rgba(245, 158, 11, 0.1);
+            border-radius: 6px;
+            padding: 8px;
+            margin-bottom: 12px;
+            font-size: 11px;
+            color: #FCD34D;
+            word-break: break-word;
+        }
+
+        .template-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 12px;
+            font-size: 11px;
+        }
+
+        .stat-badge {
+            background-color: rgba(245, 158, 11, 0.2);
+            border-radius: 4px;
+            padding: 6px;
+            text-align: center;
+            color: #FCD34D;
+            font-weight: 600;
+        }
+
+        .template-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .btn {
+            padding: 8px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-copy {
+            background-color: #1E293B;
+            color: #F1F5F9;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .btn-copy:hover {
+            background-color: rgba(245, 158, 11, 0.1);
+            border-color: #F59E0B;
+        }
+
+        .btn-use {
+            background-color: #F59E0B;
+            color: #0F172A;
+        }
+
+        .btn-use:hover {
+            opacity: 0.9;
+        }
+
+        /* CATEGORY FILTER */
+        .category-filter {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 6px 12px;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            background-color: #1E293B;
+            color: #CBD5E1;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-btn.active {
+            background-color: #F59E0B;
+            color: #0F172A;
+            border-color: #F59E0B;
+        }
+
+        .filter-btn:hover {
+            border-color: #F59E0B;
+            color: #F59E0B;
+        }
+
+        /* TIPS SECTION */
+        .tips-section {
+            background-color: #1E293B;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 16px;
+            color: #F1F5F9;
+        }
+
+        .tip-item {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(245, 158, 11, 0.1);
+        }
+
+        .tip-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .tip-icon {
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .tip-content {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .tip-title {
+            font-weight: 600;
+            color: #F1F5F9;
+            font-size: 13px;
+        }
+
+        .tip-text {
+            font-size: 12px;
+            color: #CBD5E1;
+            line-height: 1.5;
+        }
+
+        .info-box {
+            background-color: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #CBD5E1;
+        }
+
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: #1E293B;
+            border-radius: 12px;
+            padding: 24px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 16px;
+            color: #F1F5F9;
+        }
+
+        .modal-close {
+            float: right;
+            font-size: 20px;
+            cursor: pointer;
+            color: #CBD5E1;
+        }
+
+        .modal-textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 12px;
+            background-color: #0F172A;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 6px;
+            color: #F1F5F9;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            margin-bottom: 16px;
+            resize: vertical;
+        }
+
+        .modal-button {
+            width: 100%;
+            padding: 12px;
+            background-color: #F59E0B;
+            color: #0F172A;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 8px;
+        }
+
+        .modal-button:hover {
+            opacity: 0.9;
+        }
+
+        .modal-button.secondary {
+            background-color: #1E293B;
+            color: #F1F5F9;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .modal-button.secondary:hover {
+            background-color: rgba(245, 158, 11, 0.1);
+            border-color: #F59E0B;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-left">
+            <svg class="logo-small" viewBox="0 0 400 400" fill="none">
+                <circle cx="200" cy="200" r="160" stroke="#F59E0B" stroke-width="28" />
+                <circle cx="200" cy="200" r="110" stroke="#FCD34D" stroke-width="24" />
+                <circle cx="200" cy="200" r="60" stroke="#F59E0B" stroke-width="20" />
+                <circle cx="200" cy="200" r="25" fill="#F59E0B" />
+            </svg>
+            <h1 class="header-title">AuraBoost</h1>
+        </div>
+        <div class="header-right">
+            <button class="back-btn" onclick="window.history.back()">← Back</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="main-content">
+            <div class="page-title">📱 Social Media Templates</div>
+            <p class="page-subtitle">Pre-made captions to boost your referrals. Just copy, customize, and share!</p>
+
+            <div class="info-box">
+                💡 <strong>Pro tip:</strong> Each template is optimized for maximum engagement on that platform. Customize with your own details and share your referral link to get more followers signed up!
+            </div>
+
+            <!-- PLATFORM TABS -->
+            <div class="platform-tabs">
+                <button class="platform-tab active" onclick="switchPlatform(this, 'twitter')">𝕏 Twitter/X</button>
+                <button class="platform-tab" onclick="switchPlatform(this, 'instagram')">📷 Instagram</button>
+                <button class="platform-tab" onclick="switchPlatform(this, 'tiktok')">🎵 TikTok</button>
+                <button class="platform-tab" onclick="switchPlatform(this, 'discord')">💬 Discord</button>
+                <button class="platform-tab" onclick="switchPlatform(this, 'threads')">📝 Threads</button>
+            </div>
+
+            <!-- CATEGORY FILTER -->
+            <div class="category-filter">
+                <button class="filter-btn active" onclick="filterCategory(this, 'all')">All</button>
+                <button class="filter-btn" onclick="filterCategory(this, 'motivational')">💪 Motivational</button>
+                <button class="filter-btn" onclick="filterCategory(this, 'conversion')">🎯 Conversion</button>
+                <button class="filter-btn" onclick="filterCategory(this, 'viral')">🔥 Viral</button>
+                <button class="filter-btn" onclick="filterCategory(this, 'testimonial')">⭐ Testimonial</button>
+            </div>
+
+            <!-- TEMPLATES GRID -->
+            <div class="templates-grid">
+                <!-- TWITTER TEMPLATES -->
+                <div class="template-card" data-platform="twitter" data-category="motivational">
+                    <div class="template-header">
+                        <div class="template-title">🔥 Streak Flex</div>
+                        <div class="template-use-case">Perfect for milestone celebrations</div>
+                    </div>
+                    <div class="template-body">
+                        <div class="template-caption">Just hit [NUMBER] days on my fitness streak! 🔥
+
+Tracking my aura with @AuraBoost has changed my life. The daily challenges keep me motivated and the community is incredible.
+
+Join me and start your streak today:
+[YOUR_LINK]
+
+#AuraBoost #StreakLife #FitnessCommunity</div>
+                        <div class="template-stats">
+                            <div class="stat-badge">📊 Avg Engagement: 8%</div>
+                            <div class="stat-badge">👥 Best Time: 7-9am</div>
+                        </div>
+                        <div class="template-actions">
+                            <button class="btn btn-copy" onclick="copyTemplate(this)">📋 Copy</button>
+                            <button class="btn btn-use" onclick="openModal(this)">✏️ Customize</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="template-card" data-platform="twitter" data-category="conversion">
+                    <div class="template-header">
+                        <div class="template-title">💰 Earn & Share</div>
+                        <div class="template-use-case">Drive referrals with earnings mention</div>
+                    </div>
+                    <div class="template-body">
+                        <div class="template-caption">Making money sharing my fitness journey 💸
+
+Every time someone signs up through my link, I earn 30% commission. It's literally that easy.
+
+Download @AuraBoost and join:
+[YOUR_LINK]
+
+Get $[AMOUNT] in your bank account every Monday ⏰
+
+#SideHustle #PassiveIncome #Creator</div>
+                        <div class="template-stats">
+                            <div class="stat-badge">📊 Avg Engagement: 12%</div>
+                            <div class="stat-badge">👥 Best Time: 12-2pm</div>
+                        </div>
+                        <div class="template-actions">
+                            <button class="btn btn-copy" onclick="copyTemplate(this)">📋 Copy</button>
+                            <button class="btn btn-use" onclick="openModal(this)">✏️ Customize</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="template-card" data-platform="twitter" data-category="viral">
+                    <div class="template-header">
+                        <div class="template-title">🎮 Gamification Hook</div>
+                        <div class="template-use-case">Tap into the competition angle</div>
+                    </div>
+                    <div class="template-body">
+                        <div class="template-caption">The gym community needs this 🎯
+
+@AuraBoost turns your workouts into a competitive game. Leaderboards. Streaks. Badges. Everything.
+
+Legit changed how I think about fitness 💪
+
+Try it free: [YOUR_LINK]
+
+#FitnessApp #Competition #Motivation</div>
+                        <div class="template-stats">
+                            <div class="stat-badge">📊 Avg Engagement: 15%</div>
+                            <div class="stat-badge">👥 Best Time: 5-8pm</div>
+                        </div>
+                        <div class="template-actions">
+                            <button class="btn btn-copy" onclick="copyTemplate(this)">📋 Copy</button>
+                            <button class="btn btn-use" onclick="openModal(this)">✏️ Customize</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- INSTAGRAM TEMPLATES -->
+                <div class="template-card" data-platform="instagram" data-category="motivational">
+                    <div class="template-header">
+                        <div class="template-title">✨ Bio Link</div>
+                        <div class="template-use-case">Drive traffic from Instagram bio</div>
+                    </div>
+                    <div class="template-body">
+                        <div class="template-caption">47 days strong 🔥💪
+
+Track your gym journey with me on @AuraBoost ✨
+
+Click the link in bio to join and get your referral link!
+
+Your aura. Tracked. Monetized. 💎
+
+#AuraBoost #FitnessGoals #AuraScore #GymLife #FitnessCommunity #DailyMotivation</div>
+                        <div class="template-stats">
+                            <div class="stat-badge">📊 Avg Engagement: 9%</div>
+                            <div class="stat-badge">👥 Best Time: 11am-1pm</div>
+                        </div>
+                        <div class="template-actions">
+                            <button class="btn btn-copy" onclick="copyTemplate(this)">📋 Copy</button>
+                            <button class="btn btn-use" onclick="openModal(this)">✏️ Customize</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="template-card" data-platform="instagram" data-category="testimonial">
+                    <div class="template-header">
+                        <div class="template-title">⭐ Creator Testimonial</div>
+                        <div class="template-use-case">Share your experience & earnings</div>
+                    </div>
+                    <div class="template-body">
+                        <div class="template-caption">Making real money as a creator 💰
+
+@AuraBoost lets me turn my fitness passion into $[MONTHLY_AMOUNT]/month 🤯
+
+All from sharing with my followers. The commission structure is insane 🚀
+
+Join the creator program: [YOUR_LINK]
+
+#CreatorEconomy #FitnessBusiness #PassiveIncome #MonetizedContent</div>
+                        <div class="template-stats">
+                            <div class="stat-badge">📊 Avg Engagement: 11%</div>
+                            <div class="stat-badge">👥 Best Time: 6-8pm</div>
+                        </div>
+                        <div class="template-actions">
+                            <button class="btn btn-copy" onclick="copyTemplate(this)">📋 Copy</button>
+                            <button class="btn btn-use" onclick="openModal(this)">✏️ Customize</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TIKTOK TEMPLATES -->
+                <div class="template-card" data-platform="tiktok" data-category="viral">
+                    <div class="template-header">
+                        <div class="template-title">🎬 Script: "POV You Track Your Aura"</div>
+                        <div class="template-use-case">Viral trending format</div>
+                    </div>
+                    <div class="template-body">
+                        <div class="template-caption">[ON TEXT]: POV: You decided to track your gym aura
+
+[SCENE 1]: Show gym photo → Show aura score increasing
+
+[SCENE 2]: Show leaderboard → Show your rank climbing
+
+[SCENE 3]: Show earnings dashboard (if creator)
+
+[FINAL TEXT]: Download @AuraBoost
+Link in bio 🔗
+
+[CAPTION]: Just started tracking my aura and I'm obsessed 🔥 Join me! [YOUR_LINK] #FitTok #GymLife #NewApp</div>
+                        <div class="template-stats">
+                            <div class="stat-badge">📊 Avg Engagement: 18%</div>
+                            <div class="stat-badge">👥 Best Time: 7-10pm</div>
+                        </div>
+                        <div class="template-actions">
+                            <button class="btn btn-copy" onclick="copyTemplate(this)">📋 Copy</button>
+                            <button class="btn btn-use" onclick="openModal(this)">✏️ Customize</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DISCORD TEMPLATES -->
+                <div class="template-card" data-platform="discord" data-category="conversion">
+                    <div class="template-header">
+                        <div class="template-title">💬 Server Announcement</div>
+                        <div class="template-use-case">Post in announcements channel</div>
+                    </div>
+                    <div class="template-body">
+                        <div class="template-caption">🚀 **New Creator Partnership: AuraBoost**
+
+Hey everyone! I'm partnering with @AuraBoost 💪
+
+They've built an amazing app that gamifies fitness tracking with streaks, leaderboards, and earnings for creators 🎯
+
+**Here's the deal:**
+✅ Free to download
+✅ Track your gym aura
+✅ Compete with our Discord community
+✅ Get 30% commission if you refer friends
+
+**Join with my link:** [YOUR_LINK]
+
+Let's all climb the leaderboard together! 🔥</div>
+                        <div class="template-stats">
+                            <div class="stat-badge">📊 Avg Engagement: 14%</div>
+                            <div class="stat-badge">👥 Best Time: 8-11pm</div>
+                        </div>
+                        <div class="template-actions">
+                            <button class="btn btn-copy" onclick="copyTemplate(this)">📋 Copy</button>
+                            <button class="btn btn-use" onclick="openModal(this)">✏️ Customize</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TIPS SECTION -->
+            <div class="tips-section">
+                <div class="section-title">💡 Pro Tips for Maximum Engagement</div>
+
+                <div class="tip-item">
+                    <div class="tip-icon">⏰</div>
+                    <div class="tip-content">
+                        <div class="tip-title">Post at Peak Times</div>
+                        <div class="tip-text">Check the "Best Time" stat on each template. Posting when your audience is most active increases engagement by 40%+</div>
+                    </div>
+                </div>
+
+                <div class="tip-item">
+                    <div class="tip-icon">✍️</div>
+                    <div class="tip-content">
+                        <div class="tip-title">Customize Your Links</div>
+                        <div class="tip-text">Always replace [YOUR_LINK] with your actual referral link. Replace [NUMBER] with your real streak count for authenticity.</div>
+                    </div>
+                </div>
+
+                <div class="tip-item">
+                    <div class="tip-icon">🎨</div>
+                    <div class="tip-content">
+                        <div class="tip-title">Add Your Personal Touch</div>
+                        <div class="tip-text">Templates are starting points. Add emojis, personal stories, and context about YOUR journey to make them more authentic.</div>
+                    </div>
+                </div>
+
+                <div class="tip-item">
+                    <div class="tip-icon">🔄</div>
+                    <div class="tip-content">
+                        <div class="tip-title">Mix It Up</div>
+                        <div class="tip-text">Don't post the same template twice. Rotate between motivation, conversion, and viral content for best results.</div>
+                    </div>
+                </div>
+
+                <div class="tip-item">
+                    <div class="tip-icon">📊</div>
+                    <div class="tip-content">
+                        <div class="tip-title">Track What Works</div>
+                        <div class="tip-text">In your Creator Dashboard, you can see which platforms drive the most conversions. Double down on winners!</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL FOR EDITING -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <div class="modal-header">✏️ Customize Template</div>
+            
+            <!-- MEDIA UPLOAD SECTION -->
+            <div style="margin-bottom: 16px;">
+                <div style="font-size: 12px; font-weight: 600; color: #CBD5E1; margin-bottom: 8px; text-transform: uppercase;">📸 Attach Media</div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                    <button onclick="document.getElementById('imageInput').click()" style="padding: 10px; background-color: #1E293B; border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 6px; color: #F59E0B; cursor: pointer; font-weight: 600; font-size: 11px;">📷 Upload Image</button>
+                    <button onclick="document.getElementById('videoInput').click()" style="padding: 10px; background-color: #1E293B; border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 6px; color: #F59E0B; cursor: pointer; font-weight: 600; font-size: 11px;">🎥 Upload Video</button>
+                </div>
+                <input type="file" id="imageInput" accept="image/*" style="display: none;" onchange="handleMediaUpload(event, 'image')">
+                <input type="file" id="videoInput" accept="video/*" style="display: none;" onchange="handleMediaUpload(event, 'video')">
+            </div>
+
+            <!-- MEDIA PREVIEW -->
+            <div id="mediaPreview" style="display: none; margin-bottom: 16px; border-radius: 8px; overflow: hidden; border: 1px solid rgba(245, 158, 11, 0.3);">
+                <img id="previewImage" style="display: none; width: 100%; max-height: 200px; object-fit: cover;">
+                <video id="previewVideo" style="display: none; width: 100%; max-height: 200px; object-fit: cover;" controls></video>
+                <button onclick="removeMedia()" style="width: 100%; padding: 8px; background-color: #EF4444; border: none; color: #F1F5F9; font-weight: 600; font-size: 11px; cursor: pointer;">Remove Media</button>
+            </div>
+
+            <!-- CAPTION TEXT AREA -->
+            <div style="margin-bottom: 16px;">
+                <div style="font-size: 12px; font-weight: 600; color: #CBD5E1; margin-bottom: 8px; text-transform: uppercase;">📝 Caption</div>
+                <textarea id="templateText" class="modal-textarea" onkeyup="updateCharCount()"></textarea>
+            </div>
+
+            <!-- PLATFORM SELECTOR -->
+            <div style="margin-bottom: 16px;">
+                <div style="font-size: 12px; font-weight: 600; color: #CBD5E1; margin-bottom: 8px; text-transform: uppercase;">🌐 Posting To</div>
+                <select id="platformSelect" onchange="updateCharLimit()" style="width: 100%; padding: 8px; background-color: #0F172A; border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 6px; color: #F59E0B; font-weight: 600;">
+                    <option value="twitter">𝕏 Twitter/X</option>
+                    <option value="instagram">📷 Instagram</option>
+                    <option value="tiktok">🎵 TikTok</option>
+                    <option value="discord">💬 Discord</option>
+                    <option value="threads">📝 Threads</option>
+                </select>
+            </div>
+
+            <!-- CHARACTER COUNT & PLATFORM LIMITS -->
+            <div style="padding: 8px; background-color: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.2); border-radius: 6px; margin-bottom: 16px;">
+                <div style="font-size: 11px; color: #CBD5E1;">
+                    <span id="charCount">0</span> / <span id="charLimit">280</span> characters
+                    <span id="charWarning" style="display: none; color: #EF4444; margin-left: 8px;">⚠️ Over limit</span>
+                </div>
+            </div>
+
+            <!-- BUTTONS -->
+            <button class="modal-button" onclick="schedulePost()">📤 Schedule Post</button>
+            <button class="modal-button" onclick="copyFromModal()">📋 Copy Caption Only</button>
+            <button class="modal-button secondary" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        let currentTemplate = null;
+        let uploadedMedia = null;
+        let mediaType = null;
+
+        const charLimits = {
+            twitter: 280,
+            instagram: 2200,
+            tiktok: 2200,
+            discord: 2000,
+            threads: 500
+        };
+
+        function switchPlatform(element, platform) {
+            document.querySelectorAll('.platform-tab').forEach(tab => tab.classList.remove('active'));
+            element.classList.add('active');
+            
+            // Show/hide templates based on platform
+            document.querySelectorAll('.template-card').forEach(card => {
+                if (card.dataset.platform === platform || card.dataset.platform === 'all') {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function filterCategory(element, category) {
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+            
+            // Show/hide templates based on category
+            document.querySelectorAll('.template-card').forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function copyTemplate(button) {
+            const template = button.closest('.template-card');
+            const caption = template.querySelector('.template-caption').textContent;
+            
+            navigator.clipboard.writeText(caption).then(() => {
+                const original = button.textContent;
+                button.textContent = '✓ Copied!';
+                setTimeout(() => {
+                    button.textContent = original;
+                }, 2000);
+            });
+        }
+
+        function openModal(button) {
+            const template = button.closest('.template-card');
+            const caption = template.querySelector('.template-caption').textContent;
+            document.getElementById('templateText').value = caption;
+            document.getElementById('editModal').classList.add('active');
+            
+            // Reset media
+            uploadedMedia = null;
+            mediaType = null;
+            document.getElementById('mediaPreview').style.display = 'none';
+            
+            // Set platform based on template
+            const platform = template.dataset.platform;
+            document.getElementById('platformSelect').value = platform;
+            updateCharLimit();
+            updateCharCount();
+        }
+
+        function handleMediaUpload(event, type) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    uploadedMedia = e.target.result;
+                    mediaType = type;
+                    
+                    // Show preview
+                    document.getElementById('mediaPreview').style.display = 'block';
+                    
+                    if (type === 'image') {
+                        document.getElementById('previewImage').src = uploadedMedia;
+                        document.getElementById('previewImage').style.display = 'block';
+                        document.getElementById('previewVideo').style.display = 'none';
+                    } else {
+                        document.getElementById('previewVideo').src = uploadedMedia;
+                        document.getElementById('previewVideo').style.display = 'block';
+                        document.getElementById('previewImage').style.display = 'none';
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function removeMedia() {
+            uploadedMedia = null;
+            mediaType = null;
+            document.getElementById('mediaPreview').style.display = 'none';
+            document.getElementById('imageInput').value = '';
+            document.getElementById('videoInput').value = '';
+        }
+
+        function updateCharCount() {
+            const text = document.getElementById('templateText').value;
+            const count = text.length;
+            const limit = charLimits[document.getElementById('platformSelect').value];
+            
+            document.getElementById('charCount').textContent = count;
+            document.getElementById('charLimit').textContent = limit;
+            
+            if (count > limit) {
+                document.getElementById('charWarning').style.display = 'inline';
+            } else {
+                document.getElementById('charWarning').style.display = 'none';
+            }
+        }
+
+        function updateCharLimit() {
+            updateCharCount();
+        }
+
+        function closeModal() {
+            document.getElementById('editModal').classList.remove('active');
+        }
+
+        function schedulePost() {
+            const platform = document.getElementById('platformSelect').value;
+            const caption = document.getElementById('templateText').value;
+            const mediaInfo = uploadedMedia ? `\n\n📎 Media attached: ${mediaType === 'image' ? 'Image' : 'Video'}` : '';
+            
+            alert(`✅ Post scheduled for ${platform}!\n\nCaption:\n${caption}${mediaInfo}\n\nIn real app, this would:\n1. Upload to your ${platform} account\n2. Auto-add your referral link\n3. Schedule posting at optimal time`);
+            closeModal();
+        }
+
+        function copyFromModal() {
+            const text = document.getElementById('templateText').value;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('✓ Caption copied to clipboard!');
+            });
+        }
+
+        function goBack() {
+            alert('Going back to Creator Dashboard...');
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('editModal');
+            if (event.target === modal) {
+                modal.classList.remove('active');
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraBoost - Creator Analytics</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #0F172A;
+            color: #F1F5F9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background-color: #1E293B;
+            border-bottom: 1px solid #F59E0B;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-small {
+            width: 32px;
+            height: 32px;
+        }
+
+        .header-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #F59E0B;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .back-btn {
+            background-color: #F59E0B;
+            color: #0F172A;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .main-content {
+            padding: 24px 20px;
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .page-subtitle {
+            color: #CBD5E1;
+            margin-bottom: 24px;
+        }
+
+        /* TIME PERIOD SELECTOR */
+        .time-selector {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .time-btn {
+            padding: 8px 16px;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            background-color: #1E293B;
+            color: #CBD5E1;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+
+        .time-btn.active {
+            background-color: #F59E0B;
+            color: #0F172A;
+            border-color: #F59E0B;
+        }
+
+        .time-btn:hover {
+            border-color: #F59E0B;
+        }
+
+        /* METRIC CARDS */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .metric-card {
+            background-color: #1E293B;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .metric-card.highlight {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, #1E293B 100%);
+            border: 1px solid #F59E0B;
+        }
+
+        .metric-label {
+            font-size: 12px;
+            color: #CBD5E1;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .metric-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #F59E0B;
+            margin-bottom: 8px;
+        }
+
+        .metric-change {
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .metric-change.positive {
+            color: #10B981;
+        }
+
+        .metric-change.negative {
+            color: #EF4444;
+        }
+
+        .metric-subtext {
+            font-size: 11px;
+            color: #64748B;
+            margin-top: 4px;
+        }
+
+        /* CHARTS */
+        .chart-container {
+            background-color: #1E293B;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .chart-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 16px;
+            color: #F1F5F9;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 300px;
+            margin-bottom: 16px;
+        }
+
+        /* CONVERSION FUNNEL */
+        .funnel-container {
+            background-color: #1E293B;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .funnel-stage {
+            background: linear-gradient(90deg, #F59E0B, #FCD34D);
+            border-radius: 4px;
+            padding: 12px 16px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .funnel-stage:last-child {
+            margin-bottom: 0;
+        }
+
+        .funnel-label {
+            font-weight: 600;
+            color: #0F172A;
+        }
+
+        .funnel-stats {
+            display: flex;
+            gap: 16px;
+        }
+
+        .funnel-stat {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .funnel-value {
+            font-weight: bold;
+            color: #0F172A;
+        }
+
+        .funnel-percent {
+            font-size: 11px;
+            color: rgba(0, 0, 0, 0.7);
+        }
+
+        /* TOP PLATFORMS */
+        .platform-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .platform-card {
+            background-color: #1E293B;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .platform-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .platform-name {
+            font-weight: 600;
+            font-size: 12px;
+            color: #F1F5F9;
+            margin-bottom: 8px;
+        }
+
+        .platform-clicks {
+            font-size: 18px;
+            font-weight: bold;
+            color: #F59E0B;
+            margin-bottom: 4px;
+        }
+
+        .platform-conversion {
+            font-size: 11px;
+            color: #CBD5E1;
+        }
+
+        /* TOP REFERRERS */
+        .referrers-table {
+            background-color: #1E293B;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        .table-header {
+            display: grid;
+            grid-template-columns: 1fr 100px 100px 100px;
+            gap: 12px;
+            padding: 12px 16px;
+            background-color: #0F172A;
+            border-bottom: 1px solid rgba(245, 158, 11, 0.2);
+            font-size: 11px;
+            font-weight: 600;
+            color: #CBD5E1;
+            text-transform: uppercase;
+        }
+
+        .table-row {
+            display: grid;
+            grid-template-columns: 1fr 100px 100px 100px;
+            gap: 12px;
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(245, 158, 11, 0.1);
+            align-items: center;
+        }
+
+        .table-row:hover {
+            background-color: rgba(245, 158, 11, 0.05);
+        }
+
+        .table-row:last-child {
+            border-bottom: none;
+        }
+
+        .user-cell {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .avatar-small {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #F59E0B, #FCD34D);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 12px;
+            color: #0F172A;
+            flex-shrink: 0;
+        }
+
+        .username {
+            font-weight: 600;
+            color: #F1F5F9;
+            font-size: 12px;
+        }
+
+        .date-joined {
+            font-size: 10px;
+            color: #CBD5E1;
+        }
+
+        .table-value {
+            text-align: center;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .table-value.primary {
+            color: #F59E0B;
+        }
+
+        .table-value.secondary {
+            color: #10B981;
+        }
+
+        /* INFO BOX */
+        .info-box {
+            background-color: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #CBD5E1;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 16px;
+            color: #F1F5F9;
+        }
+
+        /* EXPORT BUTTON */
+        .export-btn {
+            background-color: #1E293B;
+            color: #F1F5F9;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 24px;
+        }
+
+        .export-btn:hover {
+            background-color: rgba(245, 158, 11, 0.1);
+            border-color: #F59E0B;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-left">
+            <svg class="logo-small" viewBox="0 0 400 400" fill="none">
+                <circle cx="200" cy="200" r="160" stroke="#F59E0B" stroke-width="28" />
+                <circle cx="200" cy="200" r="110" stroke="#FCD34D" stroke-width="24" />
+                <circle cx="200" cy="200" r="60" stroke="#F59E0B" stroke-width="20" />
+                <circle cx="200" cy="200" r="25" fill="#F59E0B" />
+            </svg>
+            <h1 class="header-title">AuraBoost</h1>
+        </div>
+        <div class="header-right">
+            <button class="back-btn" onclick="window.history.back()">← Back</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="main-content">
+            <div class="page-title">📈 Creator Analytics</div>
+            <p class="page-subtitle">Deep dive into your referral performance and earnings trends</p>
+
+            <!-- TIME PERIOD SELECTOR -->
+            <div class="time-selector">
+                <button class="time-btn active" onclick="changePeriod(this, '7d')">Last 7 Days</button>
+                <button class="time-btn" onclick="changePeriod(this, '30d')">Last 30 Days</button>
+                <button class="time-btn" onclick="changePeriod(this, '90d')">Last 90 Days</button>
+                <button class="time-btn" onclick="changePeriod(this, 'all')">All Time</button>
+            </div>
+
+            <!-- KEY METRICS -->
+            <div class="metrics-grid">
+                <div class="metric-card highlight">
+                    <div class="metric-label">Total Revenue</div>
+                    <div class="metric-value">$2,450</div>
+                    <div class="metric-change positive">
+                        <span>↑ 12% vs last period</span>
+                    </div>
+                    <div class="metric-subtext">30% commission on $8,167 sales</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-label">New Referrals</div>
+                    <div class="metric-value">156</div>
+                    <div class="metric-change positive">
+                        <span>↑ 8 new this week</span>
+                    </div>
+                    <div class="metric-subtext">Active paying users</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-label">Conversion Rate</div>
+                    <div class="metric-value">54%</div>
+                    <div class="metric-change positive">
+                        <span>↑ 3% vs last period</span>
+                    </div>
+                    <div class="metric-subtext">Signups to customers</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-label">Avg User LTV</div>
+                    <div class="metric-value">$8.33</div>
+                    <div class="metric-change">
+                        <span style="color: #CBD5E1;">→ Stable</span>
+                    </div>
+                    <div class="metric-subtext">Lifetime value per user</div>
+                </div>
+            </div>
+
+            <!-- EARNINGS TREND CHART -->
+            <div class="chart-container">
+                <div class="chart-title">💰 Earnings Over Time</div>
+                <div class="chart-wrapper">
+                    <canvas id="earningsChart"></canvas>
+                </div>
+                <p style="font-size: 12px; color: #CBD5E1;">Your earnings have grown 34% this month. Keep sharing to boost referrals!</p>
+            </div>
+
+            <!-- REFERRAL TREND CHART -->
+            <div class="chart-container">
+                <div class="chart-title">📊 Referrals by Source</div>
+                <div class="chart-wrapper">
+                    <canvas id="referralsChart"></canvas>
+                </div>
+            </div>
+
+            <!-- CONVERSION FUNNEL -->
+            <div class="funnel-container">
+                <div class="section-title">🎯 Conversion Funnel</div>
+                <div class="info-box">
+                    Track how many people complete each step from seeing your link to becoming a paying customer.
+                </div>
+
+                <div class="funnel-stage" style="width: 100%;">
+                    <span class="funnel-label">1. Clicked Link</span>
+                    <div class="funnel-stats">
+                        <div class="funnel-stat">
+                            <div class="funnel-value">3,250</div>
+                            <div class="funnel-percent">100%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="funnel-stage" style="width: 97%;">
+                    <span class="funnel-label">2. Visited App</span>
+                    <div class="funnel-stats">
+                        <div class="funnel-stat">
+                            <div class="funnel-value">3,155</div>
+                            <div class="funnel-percent">97%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="funnel-stage" style="width: 85%;">
+                    <span class="funnel-label">3. Created Account</span>
+                    <div class="funnel-stats">
+                        <div class="funnel-stat">
+                            <div class="funnel-value">2,763</div>
+                            <div class="funnel-percent">85%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="funnel-stage" style="width: 54%;">
+                    <span class="funnel-label">4. Signed Up</span>
+                    <div class="funnel-stats">
+                        <div class="funnel-stat">
+                            <div class="funnel-value">1,491</div>
+                            <div class="funnel-percent">54%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="funnel-stage" style="width: 28%;">
+                    <span class="funnel-label">5. Purchased (You Earn!)</span>
+                    <div class="funnel-stats">
+                        <div class="funnel-stat">
+                            <div class="funnel-value">804</div>
+                            <div class="funnel-percent">28%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TOP PLATFORMS -->
+            <div>
+                <div class="section-title">🌐 Performance by Platform</div>
+                <div class="platform-grid">
+                    <div class="platform-card">
+                        <div class="platform-icon">𝕏</div>
+                        <div class="platform-name">Twitter/X</div>
+                        <div class="platform-clicks">1,240</div>
+                        <div class="platform-conversion">38% → Purchase</div>
+                    </div>
+
+                    <div class="platform-card">
+                        <div class="platform-icon">📱</div>
+                        <div class="platform-name">Instagram</div>
+                        <div class="platform-clicks">980</div>
+                        <div class="platform-conversion">42% → Purchase</div>
+                    </div>
+
+                    <div class="platform-card">
+                        <div class="platform-icon">🎵</div>
+                        <div class="platform-name">TikTok</div>
+                        <div class="platform-clicks">650</div>
+                        <div class="platform-conversion">25% → Purchase</div>
+                    </div>
+
+                    <div class="platform-card">
+                        <div class="platform-icon">💬</div>
+                        <div class="platform-name">Discord</div>
+                        <div class="platform-clicks">380</div>
+                        <div class="platform-conversion">58% → Purchase</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TOP REFERRERS -->
+            <div>
+                <div class="section-title">⭐ Your Top Referrals</div>
+                <div class="info-box">
+                    These are your highest-value customers. Consider reaching out to them with exclusive content!
+                </div>
+
+                <div class="referrers-table">
+                    <div class="table-header">
+                        <div>User</div>
+                        <div>Lifetime Value</div>
+                        <div>Days Active</div>
+                        <div>Your Commission</div>
+                    </div>
+
+                    <div class="table-row">
+                        <div class="user-cell">
+                            <div class="avatar-small">J</div>
+                            <div>
+                                <div class="username">@john_premium</div>
+                                <div class="date-joined">Joined 45 days ago</div>
+                            </div>
+                        </div>
+                        <div class="table-value primary">$149.97</div>
+                        <div class="table-value secondary">45</div>
+                        <div class="table-value primary">$44.99</div>
+                    </div>
+
+                    <div class="table-row">
+                        <div class="user-cell">
+                            <div class="avatar-small">S</div>
+                            <div>
+                                <div class="username">@sarah_elite</div>
+                                <div class="date-joined">Joined 38 days ago</div>
+                            </div>
+                        </div>
+                        <div class="table-value primary">$119.97</div>
+                        <div class="table-value secondary">38</div>
+                        <div class="table-value primary">$35.99</div>
+                    </div>
+
+                    <div class="table-row">
+                        <div class="user-cell">
+                            <div class="avatar-small">M</div>
+                            <div>
+                                <div class="username">@mike_pro</div>
+                                <div class="date-joined">Joined 32 days ago</div>
+                            </div>
+                        </div>
+                        <div class="table-value primary">$119.97</div>
+                        <div class="table-value secondary">32</div>
+                        <div class="table-value primary">$35.99</div>
+                    </div>
+
+                    <div class="table-row">
+                        <div class="user-cell">
+                            <div class="avatar-small">E</div>
+                            <div>
+                                <div class="username">@emma_active</div>
+                                <div class="date-joined">Joined 28 days ago</div>
+                            </div>
+                        </div>
+                        <div class="table-value primary">$99.98</div>
+                        <div class="table-value secondary">28</div>
+                        <div class="table-value primary">$29.99</div>
+                    </div>
+
+                    <div class="table-row">
+                        <div class="user-cell">
+                            <div class="avatar-small">A</div>
+                            <div>
+                                <div class="username">@alex_loyal</div>
+                                <div class="date-joined">Joined 22 days ago</div>
+                            </div>
+                        </div>
+                        <div class="table-value primary">$89.97</div>
+                        <div class="table-value secondary">22</div>
+                        <div class="table-value primary">$26.99</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- INSIGHTS & RECOMMENDATIONS -->
+            <div class="chart-container" style="margin-bottom: 24px;">
+                <div class="chart-title">💡 Insights & Recommendations</div>
+                <div style="display: grid; gap: 12px;">
+                    <div style="padding: 12px; background-color: #0F172A; border-radius: 6px; border-left: 3px solid #10B981;">
+                        <div style="font-weight: 600; color: #10B981; margin-bottom: 4px;">✓ Best Performing Platform</div>
+                        <div style="font-size: 13px; color: #CBD5E1;">Discord has your highest conversion rate (58%). Consider creating more Discord-focused content.</div>
+                    </div>
+
+                    <div style="padding: 12px; background-color: #0F172A; border-radius: 6px; border-left: 3px solid #F59E0B;">
+                        <div style="font-weight: 600; color: #F59E0B; margin-bottom: 4px;">⚡ Growth Opportunity</div>
+                        <div style="font-size: 13px; color: #CBD5E1;">TikTok has good traffic (650 clicks) but lower conversion (25%). Test new video formats to improve.</div>
+                    </div>
+
+                    <div style="padding: 12px; background-color: #0F172A; border-radius: 6px; border-left: 3px solid #10B981;">
+                        <div style="font-weight: 600; color: #10B981; margin-bottom: 4px;">📈 Revenue Trend</div>
+                        <div style="font-size: 13px; color: #CBD5E1;">Your earnings are up 34% this month. At this rate, you'll earn $612 next month!</div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="export-btn" onclick="exportAnalytics()">📊 Export Analytics Report</button>
+        </div>
+    </div>
+
+    <script>
+        // EARNINGS CHART
+        const earningsCtx = document.getElementById('earningsChart').getContext('2d');
+        new Chart(earningsCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan 1', 'Jan 5', 'Jan 10', 'Jan 15', 'Jan 20', 'Jan 25', 'Today'],
+                datasets: [{
+                    label: 'Daily Earnings ($)',
+                    data: [45, 78, 92, 125, 160, 210, 340],
+                    borderColor: '#F59E0B',
+                    backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: '#F59E0B',
+                    pointBorderColor: '#FCD34D',
+                    pointBorderWidth: 2,
+                    pointRadius: 5,
+                    pointHoverRadius: 7
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        labels: {
+                            color: '#CBD5E1',
+                            font: { size: 12 }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: 'rgba(245, 158, 11, 0.1)' },
+                        ticks: { color: '#CBD5E1' }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#CBD5E1' }
+                    }
+                }
+            }
+        });
+
+        // REFERRALS BY SOURCE CHART
+        const referralsCtx = document.getElementById('referralsChart').getContext('2d');
+        new Chart(referralsCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Twitter/X', 'Instagram', 'TikTok', 'Discord', 'Other'],
+                datasets: [{
+                    data: [1240, 980, 650, 380, 240],
+                    backgroundColor: [
+                        '#F59E0B',
+                        '#FCD34D',
+                        '#10B981',
+                        '#3B82F6',
+                        '#8B5CF6'
+                    ],
+                    borderColor: '#0F172A',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            color: '#CBD5E1',
+                            font: { size: 12 },
+                            padding: 16
+                        }
+                    }
+                }
+            }
+        });
+
+        function changePeriod(element, period) {
+            document.querySelectorAll('.time-btn').forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+            alert(`📊 Analytics updated for: ${period === '7d' ? 'Last 7 Days' : period === '30d' ? 'Last 30 Days' : period === '90d' ? 'Last 90 Days' : 'All Time'}`);
+        }
+
+        function exportAnalytics() {
+            alert('📥 Exporting analytics report...\n\nIn real app, this downloads a PDF/CSV with all your analytics data.');
+        }
+
+        function goBack() {
+            alert('Going back to Creator Dashboard...');
+        }
+    </script>
+</body>
+</html>

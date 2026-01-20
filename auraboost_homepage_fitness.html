@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraBoost Fitness - Log. Rank. Earn.</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #0F172A;
+            color: #F1F5F9;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        /* HEADER */
+        .header {
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(16, 185, 129, 0.1);
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: #10B981;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .header-link {
+            font-size: 12px;
+            color: #CBD5E1;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .header-link:hover {
+            color: #10B981;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.05) 100%);
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .hero-video-container {
+            max-width: 400px;
+            margin: 0 auto 32px;
+            position: relative;
+            aspect-ratio: 9 / 16;
+            background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 2px solid rgba(16, 185, 129, 0.3);
+            box-shadow: 0 8px 32px rgba(16, 185, 129, 0.2);
+        }
+
+        .hero-video-mock {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 16px;
+            position: relative;
+        }
+
+        .video-content {
+            font-size: 64px;
+            animation: fadeInOut 4s infinite;
+        }
+
+        .play-btn {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background-color: rgba(16, 185, 129, 0.9);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            z-index: 10;
+        }
+
+        .play-btn:hover {
+            background-color: rgba(16, 185, 129, 1);
+            transform: scale(1.1);
+        }
+
+        .video-timestamp {
+            position: absolute;
+            bottom: 16px;
+            right: 16px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+
+        .hero-title {
+            font-size: 36px;
+            font-weight: bold;
+            color: #F1F5F9;
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 14px;
+            color: #CBD5E1;
+            margin-bottom: 24px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: inline-block;
+            margin-bottom: 12px;
+        }
+
+        .cta-button:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
+        }
+
+        .cta-subtext {
+            font-size: 12px;
+            color: #7DD3C0;
+            font-weight: 600;
+        }
+
+        /* BENEFITS SECTION */
+        .benefits {
+            padding: 60px 20px;
+            background-color: #0F172A;
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 40px;
+            color: #F1F5F9;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .benefit-card {
+            background-color: #1E293B;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 12px;
+            padding: 32px 24px;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .benefit-card:hover {
+            border-color: rgba(16, 185, 129, 0.5);
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.15);
+            transform: translateY(-4px);
+        }
+
+        .benefit-icon {
+            font-size: 40px;
+            margin-bottom: 16px;
+        }
+
+        .benefit-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #10B981;
+            margin-bottom: 10px;
+        }
+
+        .benefit-desc {
+            font-size: 13px;
+            color: #CBD5E1;
+            line-height: 1.6;
+        }
+
+        /* HOW IT WORKS */
+        .how-it-works {
+            padding: 60px 20px;
+            background-color: #1E293B;
+        }
+
+        .how-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .how-text h3 {
+            font-size: 14px;
+            color: #10B981;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .how-text h2 {
+            font-size: 28px;
+            font-weight: bold;
+            color: #F1F5F9;
+            margin-bottom: 20px;
+        }
+
+        .how-step {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .step-number {
+            background-color: rgba(16, 185, 129, 0.2);
+            color: #10B981;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .step-text {
+            flex: 1;
+        }
+
+        .step-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #F1F5F9;
+            margin-bottom: 4px;
+        }
+
+        .step-desc {
+            font-size: 12px;
+            color: #CBD5E1;
+        }
+
+        .how-video {
+            background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+            border-radius: 12px;
+            aspect-ratio: 9 / 16;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            font-size: 48px;
+        }
+
+        /* TESTIMONIALS */
+        .testimonials {
+            padding: 60px 20px;
+            background-color: #0F172A;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .testimonial-card {
+            background-color: #1E293B;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .testimonial-quote {
+            font-size: 13px;
+            color: #CBD5E1;
+            margin-bottom: 16px;
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .author-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #10B981, #059669);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .author-info {
+            flex: 1;
+        }
+
+        .author-name {
+            font-size: 12px;
+            font-weight: 700;
+            color: #F1F5F9;
+        }
+
+        .author-stat {
+            font-size: 11px;
+            color: #10B981;
+            font-weight: 600;
+        }
+
+        /* EARNING SECTION */
+        .earning-section {
+            padding: 60px 20px;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.05) 100%);
+        }
+
+        .earning-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .earning-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .stat-box {
+            background-color: #1E293B;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #10B981;
+            margin-bottom: 6px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #CBD5E1;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        /* CTA FINAL */
+        .final-cta {
+            padding: 60px 20px;
+            text-align: center;
+            background-color: #1E293B;
+        }
+
+        .final-title {
+            font-size: 32px;
+            font-weight: bold;
+            color: #F1F5F9;
+            margin-bottom: 16px;
+        }
+
+        .final-subtitle {
+            font-size: 14px;
+            color: #CBD5E1;
+            margin-bottom: 32px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .final-cta-btn {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            color: white;
+            border: none;
+            padding: 18px 48px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: inline-block;
+        }
+
+        .final-cta-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(16, 185, 129, 0.3);
+        }
+
+        /* FOOTER */
+        .footer {
+            padding: 32px 20px;
+            background-color: #0F172A;
+            border-top: 1px solid rgba(16, 185, 129, 0.1);
+            text-align: center;
+            font-size: 11px;
+            color: #7DD3C0;
+        }
+
+        @media (max-width: 768px) {
+            .benefits-grid,
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .how-content,
+            .earning-content {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-title {
+                font-size: 28px;
+            }
+
+            .section-title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <div class="header">
+        <div class="logo">💪 AuraBoost</div>
+        <div class="header-nav">
+            <a href="auraboost_homepage_beauty.html" class="header-link">Beauty</a>
+            <a href="#" class="header-link">Fitness</a>
+            <a href="auraboost_homepage_gaming.html" class="header-link">Gaming</a>
+            <a href="#" class="header-link">Sign In</a>
+        </div>
+    </div>
+
+    <!-- HERO SECTION WITH VIDEO -->
+    <div class="hero">
+        <div class="hero-video-container">
+            <div class="hero-video-mock">
+                <div class="video-content" id="videoContent">💪</div>
+                <button class="play-btn" onclick="playVideo()">▶</button>
+                <div class="video-timestamp">0:30</div>
+            </div>
+        </div>
+        <h1 class="hero-title">Log. Rank. Earn.</h1>
+        <p class="hero-subtitle">Track your fitness with AI-powered aura scoring, compete on leaderboards, and earn 30% commission from referrals.</p>
+        <button class="cta-button" onclick="signup()">🚀 Start Earning Now</button>
+        <div class="cta-subtext">Free for 7 days • No credit card needed • 18+ only</div>
+    </div>
+
+    <!-- BENEFITS SECTION -->
+    <div class="benefits">
+        <h2 class="section-title">Why Fitness Creators Love AuraBoost</h2>
+        <div class="benefits-grid">
+            <div class="benefit-card">
+                <div class="benefit-icon">🏆</div>
+                <div class="benefit-title">Get Ranked</div>
+                <div class="benefit-desc">AI scores your fitness daily. Higher rank = more visibility = more followers. Compete globally on leaderboards.</div>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">🔥</div>
+                <div class="benefit-title">Build Streaks</div>
+                <div class="benefit-desc">Log workouts consistently. Streaks unlock bonuses. 30-day streaks earn 5x aura. Motivation built-in.</div>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">💰</div>
+                <div class="benefit-title">Earn Money</div>
+                <div class="benefit-desc">Get 30% commission on every referral. Typical earnings: $500-5K/month. Top creators earn $20K+/month.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HOW IT WORKS -->
+    <div class="how-it-works">
+        <div class="how-content">
+            <div class="how-text">
+                <h3>How It Works</h3>
+                <h2>3 Steps to Start Earning</h2>
+                <div class="how-step">
+                    <div class="step-number">1</div>
+                    <div class="step-text">
+                        <div class="step-title">Log Your Workout</div>
+                        <div class="step-desc">30 min run? 45 min gym? Log it in seconds. AI calculates your aura earned.</div>
+                    </div>
+                </div>
+                <div class="how-step">
+                    <div class="step-number">2</div>
+                    <div class="step-text">
+                        <div class="step-title">Share with Filters</div>
+                        <div class="step-desc">Add Snapchat-style video filter. Share to 4 platforms at once. Reach thousands.</div>
+                    </div>
+                </div>
+                <div class="how-step">
+                    <div class="step-number">3</div>
+                    <div class="step-text">
+                        <div class="step-title">Get Paid from Referrals</div>
+                        <div class="step-desc">Your followers subscribe. You earn 30%. Passive income built-in.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="how-video">🏃</div>
+        </div>
+    </div>
+
+    <!-- TESTIMONIALS -->
+    <div class="testimonials">
+        <h2 class="section-title">Real Creators, Real Earnings</h2>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="testimonial-quote">"I went from zero followers to 3K in 2 months. The leaderboard competition keeps me grinding. Love it."</div>
+                <div class="testimonial-author">
+                    <div class="author-avatar">🏋️</div>
+                    <div class="author-info">
+                        <div class="author-name">Mike T.</div>
+                        <div class="author-stat">3K followers • $2.1K/mo</div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-quote">"My transformation journey went viral on AuraBoost. Made $5K in first month. This is game-changing for fitness creators."</div>
+                <div class="testimonial-author">
+                    <div class="author-avatar">💪</div>
+                    <div class="author-info">
+                        <div class="author-name">Sarah B.</div>
+                        <div class="author-stat">8.5K followers • $5.2K/mo</div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-quote">"The streak system is genius. I'm more consistent than ever. My followers love the daily accountability."</div>
+                <div class="testimonial-author">
+                    <div class="author-avatar">🔥</div>
+                    <div class="author-info">
+                        <div class="author-name">Alex K.</div>
+                        <div class="author-stat">6.2K followers • $3.8K/mo</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- EARNING SECTION -->
+    <div class="earning-section">
+        <div class="earning-content">
+            <div>
+                <h3 style="font-size: 14px; color: #10B981; text-transform: uppercase; font-weight: 700; margin-bottom: 12px; letter-spacing: 0.5px;">Your Potential Earnings</h3>
+                <h2 style="font-size: 28px; font-weight: bold; color: #F1F5F9; margin-bottom: 24px;">See How Much You Could Earn</h2>
+                <p style="font-size: 13px; color: #CBD5E1; line-height: 1.6; margin-bottom: 24px;">Based on 10% conversion rate of your followers:</p>
+            </div>
+            <div class="earning-stats">
+                <div class="stat-box">
+                    <div class="stat-value">$300</div>
+                    <div class="stat-label">With 1K followers</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">$3K</div>
+                    <div class="stat-label">With 10K followers</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">$30K</div>
+                    <div class="stat-label">With 100K followers</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">$300K+</div>
+                    <div class="stat-label">With 1M followers</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FINAL CTA -->
+    <div class="final-cta">
+        <h2 class="final-title">Ready to Get Ranked?</h2>
+        <p class="final-subtitle">Join 500+ fitness creators already earning on AuraBoost. Start logging workouts today.</p>
+        <button class="final-cta-btn" onclick="signup()">💪 Sign Up Now</button>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        © 2025 AuraBoost • 18+ Only • Privacy Policy • Terms of Service • Content Policy
+    </div>
+
+    <script>
+        function playVideo() {
+            alert('🎬 Product Video Playing...\n\n"Fitness Creator Journey"\n\n0:00 - Log 30 min run\n0:05 - AI calculates +85 aura\n0:10 - Filter applied (fire 🔥)\n0:15 - Posted to 4 platforms\n0:20 - Engagement coming in\n0:25 - Rank jumped to #47\n0:30 - "Log. Rank. Earn."\n\nIn production: Actual video would play here.');
+        }
+
+        function signup() {
+            alert('💪 Starting signup...\n\nYou would be redirected to:\nauraboost_signup.html\n\nWith pre-selected category: Fitness');
+        }
+    </script>
+</body>
+</html>

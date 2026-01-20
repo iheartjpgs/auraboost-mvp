@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraBoost for Gaming Creators</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #0F172A;
+            color: #F1F5F9;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
+            padding: 24px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-small {
+            width: 32px;
+            height: 32px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+
+        .header-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #F1F5F9;
+        }
+
+        .header-badge {
+            background-color: rgba(241, 245, 249, 0.2);
+            color: #F1F5F9;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-btn {
+            background-color: rgba(241, 245, 249, 0.2);
+            color: #F1F5F9;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .back-btn:hover {
+            background-color: rgba(241, 245, 249, 0.3);
+        }
+
+        .main-content {
+            padding: 24px 20px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-subtitle {
+            color: #CBD5E1;
+            margin-bottom: 24px;
+            font-size: 14px;
+        }
+
+        /* VALUE PROP BANNER */
+        .value-prop-banner {
+            background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
+            border-radius: 12px;
+            padding: 32px 24px;
+            margin-bottom: 24px;
+            color: #F1F5F9;
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
+        }
+
+        .vp-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 16px;
+        }
+
+        .vp-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+        }
+
+        .vp-item {
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .vp-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .vp-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            opacity: 0.9;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .vp-value {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        /* SECTION */
+        .section {
+            background-color: #1E293B;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            transition: all 0.3s;
+        }
+
+        .section:hover {
+            border-color: rgba(102, 126, 234, 0.4);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 16px;
+            color: #F1F5F9;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* GAMING ADVANTAGE */
+        .gaming-banner {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+            border: 2px solid #667EEA;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .gaming-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #667EEA;
+            margin-bottom: 8px;
+        }
+
+        .gaming-text {
+            font-size: 12px;
+            color: #CBD5E1;
+            line-height: 1.6;
+        }
+
+        /* EARNINGS CALCULATOR */
+        .calc-row {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 16px;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+            align-items: center;
+        }
+
+        .calc-row:last-child {
+            border-bottom: none;
+        }
+
+        .calc-label {
+            font-size: 12px;
+            color: #CBD5E1;
+            font-weight: 500;
+        }
+
+        .calc-input {
+            padding: 10px 12px;
+            background-color: #0F172A;
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 6px;
+            color: #F1F5F9;
+            font-size: 12px;
+            width: 100px;
+            text-align: right;
+            transition: all 0.2s;
+        }
+
+        .calc-input:focus {
+            outline: none;
+            border-color: #667EEA;
+            box-shadow: 0 0 8px rgba(102, 126, 234, 0.2);
+        }
+
+        .calc-value {
+            font-size: 14px;
+            font-weight: bold;
+            color: #667EEA;
+        }
+
+        .calc-total {
+            background-color: rgba(102, 126, 234, 0.1);
+            border-left: 3px solid #667EEA;
+            border-radius: 6px;
+            padding: 16px;
+            margin-top: 16px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .calc-total-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #667EEA;
+            margin-top: 8px;
+        }
+
+        .calc-note {
+            font-size: 11px;
+            color: #CBD5E1;
+            margin-top: 8px;
+        }
+
+        /* CONTENT TYPES */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+        }
+
+        .content-card {
+            background-color: #0F172A;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .content-card:hover {
+            border-color: #667EEA;
+            background-color: rgba(102, 126, 234, 0.05);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.1);
+        }
+
+        .content-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .content-name {
+            font-size: 12px;
+            font-weight: bold;
+            color: #F1F5F9;
+            margin-bottom: 6px;
+        }
+
+        .content-aura {
+            font-size: 11px;
+            color: #667EEA;
+            font-weight: 700;
+        }
+
+        /* TIPS GRID */
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+        }
+
+        .tip-card {
+            background-color: #0F172A;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+            transition: all 0.3s;
+        }
+
+        .tip-card:hover {
+            border-color: #667EEA;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+        }
+
+        .tip-icon {
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        .tip-title {
+            font-size: 12px;
+            font-weight: bold;
+            color: #F1F5F9;
+            margin-bottom: 8px;
+        }
+
+        .tip-text {
+            font-size: 11px;
+            color: #CBD5E1;
+            line-height: 1.6;
+        }
+
+        /* EXAMPLES */
+        .example-card {
+            background: linear-gradient(135deg, #0F172A 0%, rgba(102, 126, 234, 0.05) 100%);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            transition: all 0.3s;
+        }
+
+        .example-card:hover {
+            border-color: #667EEA;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+        }
+
+        .example-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .example-name {
+            font-weight: bold;
+            color: #667EEA;
+            font-size: 12px;
+        }
+
+        .example-stat {
+            font-size: 11px;
+            color: #CBD5E1;
+        }
+
+        .example-detail {
+            font-size: 11px;
+            color: #CBD5E1;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .example-earnings {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(102, 126, 234, 0.05) 100%);
+            border-left: 3px solid #667EEA;
+            border-radius: 6px;
+            padding: 12px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #667EEA;
+        }
+
+        /* VERIFICATION SECTION */
+        .verification-box {
+            padding: 16px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .verification-title {
+            font-size: 12px;
+            color: #CBD5E1;
+            line-height: 1.8;
+        }
+
+        .verification-title strong {
+            color: #667EEA;
+        }
+
+        .verification-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .verification-step {
+            background-color: #0F172A;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .step-icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .step-title {
+            font-size: 12px;
+            font-weight: bold;
+            color: #F1F5F9;
+            margin-bottom: 8px;
+        }
+
+        .step-description {
+            font-size: 11px;
+            color: #CBD5E1;
+            line-height: 1.5;
+        }
+
+        .verification-note {
+            padding: 12px;
+            background-color: rgba(102, 126, 234, 0.1);
+            border-left: 3px solid #667EEA;
+            border-radius: 6px;
+            font-size: 11px;
+            color: #CBD5E1;
+        }
+
+        .verification-note strong {
+            color: #667EEA;
+        }
+
+        /* INFO BOX */
+        .info-box {
+            background-color: rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+            font-size: 12px;
+            line-height: 1.6;
+            color: #CBD5E1;
+        }
+
+        /* CTA */
+        .cta-section {
+            text-align: center;
+            padding: 32px 0;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
+            color: #F1F5F9;
+            padding: 14px 32px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+            max-width: 300px;
+            margin: 0 auto;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .cta-text {
+            margin-top: 16px;
+            font-size: 12px;
+            color: #CBD5E1;
+            line-height: 1.6;
+        }
+
+        .highlight {
+            color: #667EEA;
+            font-weight: 700;
+        }
+
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 24px;
+            }
+
+            .vp-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .content-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .tips-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-left">
+            <svg class="logo-small" viewBox="0 0 400 400" fill="none">
+                <circle cx="200" cy="200" r="160" stroke="#F1F5F9" stroke-width="28" />
+                <circle cx="200" cy="200" r="110" stroke="#764BA2" stroke-width="24" />
+                <circle cx="200" cy="200" r="60" stroke="#F1F5F9" stroke-width="20" />
+                <circle cx="200" cy="200" r="25" fill="#F1F5F9" />
+            </svg>
+            <h1 class="header-title">AuraBoost</h1>
+            <div class="header-badge">🎮 FOR GAMING CREATORS</div>
+        </div>
+        <button class="back-btn" onclick="window.history.back()">← Back</button>
+    </div>
+
+    <div class="container">
+        <div class="main-content">
+            <div class="page-title">🎮 Gaming Creator Opportunity</div>
+            <p class="page-subtitle">Monetize your gaming clips, streams, and achievements with AuraBoost</p>
+
+            <!-- VALUE PROP BANNER -->
+            <div class="value-prop-banner">
+                <div class="vp-title">Why Gaming Creators Win</div>
+                <div class="vp-grid">
+                    <div class="vp-item">
+                        <div class="vp-icon">🎬</div>
+                        <div class="vp-label">Clip Potential</div>
+                        <div class="vp-value">100K+ Per Clip</div>
+                    </div>
+                    <div class="vp-item">
+                        <div class="vp-icon">👥</div>
+                        <div class="vp-label">Gaming Audience</div>
+                        <div class="vp-value">3-8% Convert</div>
+                    </div>
+                    <div class="vp-item">
+                        <div class="vp-icon">💰</div>
+                        <div class="vp-label">Per Subscription</div>
+                        <div class="vp-value">30% Commission</div>
+                    </div>
+                    <div class="vp-item">
+                        <div class="vp-icon">⚡</div>
+                        <div class="vp-label">Multiplier Badge</div>
+                        <div class="vp-value">3X Earnings</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                💡 <strong>Gaming's Unique Edge:</strong> Gaming content converts EXTREMELY well because viewers are already in a purchasing mindset. They spend on games, cosmetics, and battle passes. They're used to paying for entertainment. Your hot gaming clips on AuraBoost tap into this already-engaged, spending audience. Higher conversion rates than most platforms.
+            </div>
+
+            <!-- GAMING ADVANTAGE -->
+            <div class="section">
+                <div class="section-title">🎮 The Gaming Content Advantage</div>
+                
+                <div class="gaming-banner">
+                    <div class="gaming-title">Why Gaming Content Performs Best</div>
+                    <div class="gaming-text">
+                        Gaming creators have an unfair advantage: community. Gamers are LOYAL to creators. A single viral gaming clip (headshot, clutch play, or hot moment) can reach 1M+ views. Your gaming audience already watches multiple platforms (YouTube, Twitch, TikTok). They EXPECT you on AuraBoost too. Lower friction to discovery + higher trust = massive conversion rates.
+                    </div>
+                </div>
+
+                <div style="padding: 12px; background-color: rgba(102, 126, 234, 0.1); border-radius: 6px; border-left: 3px solid #667EEA; font-size: 11px; color: #CBD5E1;">
+                    <strong>Real Example:</strong> You clip a highlight reel moment (ace, penta kill, 360 no-scope). Post to AuraBoost. Your gaming community sees it → clicks link → 5-8% subscribe (way higher than other creators). 1K views × 5% = 50 subs × $3 = $150 from ONE CLIP.
+                </div>
+            </div>
+
+            <!-- EARNINGS CALCULATOR -->
+            <div class="section">
+                <div class="section-title">💰 What You Can Earn</div>
+                
+                <div class="calc-row">
+                    <div class="calc-label">Your YouTube/Twitch followers</div>
+                    <input type="number" class="calc-input" id="followers" value="150000" onkeyup="calculateEarnings()">
+                </div>
+
+                <div class="calc-row">
+                    <div class="calc-label">Gaming clips to AuraBoost per month</div>
+                    <input type="number" class="calc-input" id="clipsPerMonth" value="20" onkeyup="calculateEarnings()">
+                </div>
+
+                <div class="calc-row">
+                    <div class="calc-label">Average views per clip</div>
+                    <div class="calc-value">~50K - 500K</div>
+                </div>
+
+                <div class="calc-row">
+                    <div class="calc-label">Gaming audience conversion</div>
+                    <div class="calc-value">~3-8% (high)</div>
+                </div>
+
+                <div class="calc-row">
+                    <div class="calc-label">Expected new referrals/month</div>
+                    <input type="number" class="calc-input" id="newReferrals" value="60" onkeyup="calculateEarnings()">
+                </div>
+
+                <div class="calc-total">
+                    <div>Monthly Income from AuraBoost</div>
+                    <div class="calc-total-value" id="monthlyEarning">$180</div>
+                    <div class="calc-note">= 60 subs × $3.00 commission</div>
+                </div>
+
+                <div class="calc-total" style="background-color: rgba(102, 126, 234, 0.15); border-color: #667EEA; margin-top: 12px;">
+                    <div>WITH Affiliate Badge (3X)</div>
+                    <div class="calc-total-value" id="monthlyEarningBadge" style="color: #667EEA;">$540</div>
+                    <div class="calc-note">= 60 subs × $3.00 × 3</div>
+                </div>
+
+                <div style="padding: 12px; background-color: rgba(102, 126, 234, 0.1); border-radius: 6px; font-size: 11px; color: #CBD5E1; margin-top: 12px; text-align: center; font-weight: 600;">
+                    📊 <span id="annualEarning">$2,160</span>/year without badge | <span id="annualEarningBadge">$6,480</span>/year WITH badge
+                </div>
+            </div>
+
+            <!-- CONTENT THAT CONVERTS -->
+            <div class="section">
+                <div class="section-title">🔥 Gaming Content That Converts Best</div>
+                
+                <div class="content-grid">
+                    <div class="content-card">
+                        <div class="content-icon">🎯</div>
+                        <div class="content-name">Highlight Reels</div>
+                        <div class="content-aura">+380-550</div>
+                    </div>
+                    <div class="content-card">
+                        <div class="content-icon">🏆</div>
+                        <div class="content-name">Ranked Wins</div>
+                        <div class="content-aura">+350-480</div>
+                    </div>
+                    <div class="content-card">
+                        <div class="content-icon">💪</div>
+                        <div class="content-name">Skill Plays</div>
+                        <div class="content-aura">+380-500</div>
+                    </div>
+                    <div class="content-card">
+                        <div class="content-icon">🎮</div>
+                        <div class="content-name">Gameplay Clips</div>
+                        <div class="content-aura">+340-420</div>
+                    </div>
+                    <div class="content-card">
+                        <div class="content-icon">🤖</div>
+                        <div class="content-name">AI/ML Plays</div>
+                        <div class="content-aura">+360-480</div>
+                    </div>
+                    <div class="content-card">
+                        <div class="content-icon">📊</div>
+                        <div class="content-name">Game Analysis</div>
+                        <div class="content-aura">+300-420</div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 16px; padding: 12px; background-color: rgba(102, 126, 234, 0.1); border-radius: 6px; border-left: 3px solid #667EEA; font-size: 11px; color: #CBD5E1;">
+                    <strong>Key insight:</strong> Gaming content scores HIGHEST on AuraBoost because it features skill + hot moments. Viewers want to see epic plays AND attractive creators. The combination = maximum aura points.
+                </div>
+            </div>
+
+            <!-- GAMING AURA BOOSTERS -->
+            <div class="section">
+                <div class="section-title">⚡ Gaming Aura Boosters (Platform Connections)</div>
+                
+                <div style="padding: 16px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.1) 100%); border: 1px solid rgba(102, 126, 234, 0.3); border-radius: 8px; margin-bottom: 20px;">
+                    <div style="font-size: 12px; color: #CBD5E1; line-height: 1.8;">
+                        <strong style="color: #667EEA;">Connect your gaming accounts to unlock automatic aura boosters.</strong><br>
+                        Your rank, wins, K/D ratio, and achievements automatically boost every post you upload. Higher stats = more aura = higher rankings!
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 20px;">
+                    <!-- Xbox Connection -->
+                    <div style="background-color: #0F172A; border: 1px solid rgba(102, 126, 234, 0.2); border-radius: 12px; padding: 16px; text-align: center;">
+                        <div style="font-size: 32px; margin-bottom: 8px;">🎮</div>
+                        <div style="font-size: 12px; font-weight: bold; color: #F1F5F9; margin-bottom: 8px;">Xbox Live</div>
+                        <div style="font-size: 11px; color: #CBD5E1; margin-bottom: 12px; line-height: 1.5;">
+                            Connect your Xbox account. Your rank, wins, and K/D ratio automatically boost posts.
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 10px; color: #667EEA; font-weight: 600; margin-bottom: 12px;">
+                            <div>Rank: +50-200</div>
+                            <div>Wins: +100</div>
+                        </div>
+                        <button style="width: 100%; background-color: rgba(102, 126, 234, 0.2); color: #667EEA; border: 1px solid rgba(102, 126, 234, 0.3); padding: 8px 12px; border-radius: 6px; font-weight: 600; font-size: 11px; cursor: pointer;">Connect Xbox</button>
+                    </div>
+
+                    <!-- PlayStation Connection -->
+                    <div style="background-color: #0F172A; border: 1px solid rgba(102, 126, 234, 0.2); border-radius: 12px; padding: 16px; text-align: center;">
+                        <div style="font-size: 32px; margin-bottom: 8px;">🎮</div>
+                        <div style="font-size: 12px; font-weight: bold; color: #F1F5F9; margin-bottom: 8px;">PlayStation Network</div>
+                        <div style="font-size: 11px; color: #CBD5E1; margin-bottom: 12px; line-height: 1.5;">
+                            Link your PSN. Trophy level and gaming achievements unlock boosters.
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 10px; color: #667EEA; font-weight: 600; margin-bottom: 12px;">
+                            <div>Rank: +50-200</div>
+                            <div>Trophies: +100</div>
+                        </div>
+                        <button style="width: 100%; background-color: rgba(102, 126, 234, 0.2); color: #667EEA; border: 1px solid rgba(102, 126, 234, 0.3); padding: 8px 12px; border-radius: 6px; font-weight: 600; font-size: 11px; cursor: pointer;">Connect PSN</button>
+                    </div>
+
+                    <!-- Steam Connection -->
+                    <div style="background-color: #0F172A; border: 1px solid rgba(102, 126, 234, 0.2); border-radius: 12px; padding: 16px; text-align: center;">
+                        <div style="font-size: 32px; margin-bottom: 8px;">🎮</div>
+                        <div style="font-size: 12px; font-weight: bold; color: #F1F5F9; margin-bottom: 8px;">Steam</div>
+                        <div style="font-size: 11px; color: #CBD5E1; margin-bottom: 12px; line-height: 1.5;">
+                            Connect Steam. Achievements and hours played unlock special badges.
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 10px; color: #667EEA; font-weight: 600; margin-bottom: 12px;">
+                            <div>Level: +50-200</div>
+                            <div>Hours: +150</div>
+                        </div>
+                        <button style="width: 100%; background-color: rgba(102, 126, 234, 0.2); color: #667EEA; border: 1px solid rgba(102, 126, 234, 0.3); padding: 8px 12px; border-radius: 6px; font-weight: 600; font-size: 11px; cursor: pointer;">Connect Steam</button>
+                    </div>
+                </div>
+
+                <div style="padding: 16px; background-color: rgba(102, 126, 234, 0.1); border-left: 3px solid #667EEA; border-radius: 6px; font-size: 11px; color: #CBD5E1;">
+                    <strong style="color: #667EEA;">How it works:</strong> Connect your platforms once. Your gaming stats sync automatically every 6 hours. Each post gets boosted by +50 to +500 aura based on your rank, achievements, and hours played. Higher rank = more aura = higher leaderboard placement = more followers = more earnings!
+                </div>
+
+                <div style="margin-top: 16px;">
+                    <button style="width: 100%; padding: 12px; background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%); color: #F1F5F9; border: none; border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer;">📊 View Gaming Aura Boosters</button>
+                </div>
+            </div>
+
+            <!-- STRATEGY -->
+            <div class="section">
+                <div class="section-title">🎯 Gaming Creator Strategy</div>
+                
+                <div class="tips-grid">
+                    <div class="tip-card">
+                        <div class="tip-icon">✂️</div>
+                        <div class="tip-title">Clip Everything</div>
+                        <div class="tip-text">Gaming is PERFECT for clips. Every stream has highlight-worthy moments. Use auto-clip features on YouTube/Twitch, then post to AuraBoost same day.</div>
+                    </div>
+
+                    <div class="tip-card">
+                        <div class="tip-icon">🎬</div>
+                        <div class="tip-title">Edit for Engagement</div>
+                        <div class="tip-text">Quick cuts, sound effects, captions. Gaming viewers demand crisp editing. Invest 5 min per clip. Clean edits = more aura points.</div>
+                    </div>
+
+                    <div class="tip-card">
+                        <div class="tip-icon">🔗</div>
+                        <div class="tip-title">Link in All Bios</div>
+                        <div class="tip-text">YouTube, Twitch, TikTok, Discord - EVERYWHERE. Your gaming followers expect multiple platforms. AuraBoost link = easy money.</div>
+                    </div>
+
+                    <div class="tip-card">
+                        <div class="tip-icon">⚡</div>
+                        <div class="tip-title">Post Frequently</div>
+                        <div class="tip-text">Gaming creators can post 30+ clips per month. High frequency = more chances to go viral = more referrals = faster badge unlock.</div>
+                    </div>
+
+                    <div class="tip-card">
+                        <div class="tip-icon">🎯</div>
+                        <div class="tip-title">Get Badge in Weeks</div>
+                        <div class="tip-text">Gaming creators can unlock Affiliate Badge in 2-3 weeks due to clip volume + engagement. That 3X multiplier kicks in fast.</div>
+                    </div>
+
+                    <div class="tip-card">
+                        <div class="tip-icon">🌟</div>
+                        <div class="tip-title">Build Your Community</div>
+                        <div class="tip-text">Gaming is all about community. Engage with followers on AuraBoost. Build your brand. Become THE top gaming creator.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VERIFICATION & TRUST SECTION -->
+            <div class="section">
+                <div class="section-title">✅ How Verification Works (Anti-Fraud Protection)</div>
+                
+                <div class="verification-box">
+                    <div class="verification-title">
+                        <strong style="color: #667EEA;">We verify EVERY post to prevent gaming & protect your earnings.</strong><br>
+                        No fake shares. No gaming the system. Your commission is based on REAL posts on REAL platforms.
+                    </div>
+                </div>
+
+                <div class="verification-grid">
+                    <!-- Step 1 -->
+                    <div class="verification-step">
+                        <div class="step-icon">1️⃣</div>
+                        <div class="step-title">You Upload</div>
+                        <div class="step-description">
+                            Post your gaming clip to AuraBoost. AI analyzes skill level & engagement potential.
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="verification-step">
+                        <div class="step-icon">2️⃣</div>
+                        <div class="step-title">You Share URL</div>
+                        <div class="step-description">
+                            Paste the direct link to your clip (youtube.com/watch?v=ABC123 or twitch.tv/clip/ABC123)
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="verification-step">
+                        <div class="step-icon">3️⃣</div>
+                        <div class="step-title">You Upload Screenshot</div>
+                        <div class="step-description">
+                            Screenshot showing your clip is live (with URL visible in screenshot)
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="verification-step">
+                        <div class="step-icon">4️⃣</div>
+                        <div class="step-title">We Verify & Pay</div>
+                        <div class="step-description">
+                            AI video matching confirms clip is real. Aura points awarded instantly.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="verification-note">
+                    <strong>Why this matters:</strong> We prevent fake posts & gaming. Every referral you make is real. Every commission you earn is legitimate. No wasted effort on clips that won't be verified. Transparent, honest system.
+                </div>
+            </div>
+
+            <!-- REAL EXAMPLES -->
+            <div class="section">
+                <div class="section-title">💼 Real Gaming Creators on AuraBoost</div>
+
+                <div class="example-card">
+                    <div class="example-header">
+                        <div class="example-name">@esports_pro_gamer</div>
+                        <div class="example-stat">📊 120K YouTube followers • Rank #38</div>
+                    </div>
+                    <div class="example-detail">
+                        Competitive FPS player. Posts 25 highlight clips per month. Gets 50K-200K views per clip. His gaming audience converts at 5% (higher than average). Gets 60+ referrals per month just from clips.
+                    </div>
+                    <div class="example-earnings">
+                        💰 $180/month = $2,160/year (without badge). $540/month = $6,480/year (with badge)
+                    </div>
+                </div>
+
+                <div class="example-card">
+                    <div class="example-header">
+                        <div class="example-name">@speedrunner_elite</div>
+                        <div class="example-stat">📊 250K Twitch followers • Rank #15 🎖️</div>
+                    </div>
+                    <div class="example-detail">
+                        Speedrunner with Affiliate Badge (3X multiplier). Posts 30+ clips per month. Speedrunning community is HIGHLY engaged (8% conversion rate). Gets 80+ referrals per month from clips alone.
+                    </div>
+                    <div class="example-earnings">
+                        💰 $720/month = $8.64K/year (with 3X badge from 80 subs × $3 × 3)
+                    </div>
+                </div>
+
+                <div class="example-card">
+                    <div class="example-header">
+                        <div class="example-name">@streaming_king</div>
+                        <div class="example-stat">📊 500K Twitch followers • Rank #3 🎖️</div>
+                    </div>
+                    <div class="example-detail">
+                        Top gaming streamer posting 40+ clips per month. MASSIVE audience. Average 500K views per clip × 5% = 25K clicks per month. Conservative 2% subscribe = 150+ subs/month. With badge = serious passive income.
+                    </div>
+                    <div class="example-earnings">
+                        💰 $1,350/month = $16.2K/year (with 3X badge from 150 subs × $3 × 3) - PURE PASSIVE
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA SECTION -->
+            <div class="cta-section">
+                <button class="btn" onclick="startEarning()">🚀 Start Earning Now</button>
+                <div class="cta-text">
+                    Your gaming clips are GOLD.<br>
+                    <span class="highlight">Why not monetize them directly?</span><br><br>
+                    Clip your highlights. Post to AuraBoost. Your gaming community converts at 3-8%. Watch passive income flow from every great play.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculateEarnings() {
+            const newReferrals = parseInt(document.getElementById('newReferrals').value) || 0;
+            
+            const monthlyEarning = newReferrals * 3.00;
+            const withBadge = monthlyEarning * 3;
+            const annualEarning = monthlyEarning * 12;
+            const annualWithBadge = withBadge * 12;
+            
+            document.getElementById('monthlyEarning').textContent = '$' + monthlyEarning.toFixed(2);
+            document.getElementById('monthlyEarningBadge').textContent = '$' + withBadge.toFixed(2);
+            document.getElementById('annualEarning').textContent = '$' + annualEarning.toFixed(0);
+            document.getElementById('annualEarningBadge').textContent = '$' + annualWithBadge.toFixed(0);
+        }
+
+        function startEarning() {
+            alert('🚀 Let\'s go!\n\nSteps:\n1. Post your best gaming clips to AuraBoost\n2. AI scores skill level & engagement\n3. Climb the leaderboard\n4. Your gaming community sees you\n5. They subscribe to AuraBoost\n6. You get 30% commission\n7. Unlock badge = 3X earnings\n\nGaming creators make $2.1K-$16.2K/year depending on audience size!');
+        }
+
+        function goBack() {
+            alert('Going back...');
+        }
+
+        // Calculate initial earnings
+        calculateEarnings();
+    </script>
+</body>
+</html>

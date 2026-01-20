@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraBoost for Twitter/X Creators</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #0F172A;
+            color: #F1F5F9;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #000000 0%, #1DA1F2 100%);
+            padding: 24px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(29, 161, 242, 0.2);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-small {
+            width: 32px;
+            height: 32px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+
+        .header-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #F1F5F9;
+        }
+
+        .header-badge {
+            background-color: rgba(241, 245, 249, 0.2);
+            color: #F1F5F9;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-btn {
+            background-color: rgba(241, 245, 249, 0.2);
+            color: #F1F5F9;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .back-btn:hover {
+            background-color: rgba(241, 245, 249, 0.3);
+        }
+
+        .main-content {
+            padding: 24px 20px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #1DA1F2 0%, #0EA5E9 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-subtitle {
+            color: #CBD5E1;
+            margin-bottom: 24px;
+            font-size: 14px;
+        }
+
+        /* VALUE PROP BANNER */
+        .value-prop-banner {
+            background: linear-gradient(135deg, #1DA1F2 0%, #0EA5E9 100%);
+            border-radius: 12px;
+            padding: 32px 24px;
+            margin-bottom: 24px;
+            color: #F1F5F9;
+            box-shadow: 0 8px 24px rgba(29, 161, 242, 0.15);
+        }
+
+        .vp-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 16px;
+        }
+
+        .vp-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+        }
+
+        .vp-item {
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .vp-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .vp-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            opacity: 0.9;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .vp-value {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        /* SECTION */
+        .section {
+            background-color: #1E293B;
+            border: 1px solid rgba(29, 161, 242, 0.2);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            transition: all 0.3s;
+        }
+
+        .section:hover {
+            border-color: rgba(29, 161, 242, 0.4);
+            box-shadow: 0 4px 12px rgba(29, 161, 242, 0.1);
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 16px;
+            color: #F1F5F9;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* VIRAL ADVANTAGE */
+        .viral-banner {
+            background: linear-gradient(135deg, rgba(29, 161, 242, 0.2) 0%, rgba(14, 165, 233, 0.2) 100%);
+            border: 2px solid #1DA1F2;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .viral-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #1DA1F2;
+            margin-bottom: 8px;
+        }
+
+        .viral-text {
+            font-size: 12px;
+            color: #CBD5E1;
+            line-height: 1.6;
+        }
+
+        /* EARNINGS CALCULATOR */
+        .calc-row {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 16px;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(29, 161, 242, 0.1);
+            align-items: center;
+        }
+
+        .calc-row:last-child {
+            border-bottom: none;
+        }
+
+        .calc-label {
+            font-size: 12px;
+            color: #CBD5E1;
+            font-weight: 500;
+        }
+
+        .calc-input {
+            padding: 10px 12px;
+            background-color: #0F172A;
+            border: 1px solid rgba(29, 161, 242, 0.3);
+            border-radius: 6px;
+            color: #F1F5F9;
+            font-size: 12px;
+            width: 100px;
+            text-align: right;
+            transition: all 0.2s;
+        }
+
+        .calc-input:focus {
+            outline: none;
+            border-color: #1DA1F2;
+            box-shadow: 0 0 8px rgba(29, 161, 242, 0.2);
+        }
+
+        .calc-value {
+            font-size: 14px;
+            font-weight: bold;
+            color: #1DA1F2;
+        }
+
+        .calc-total {
+            background-color: rgba(29, 161, 242, 0.1);
+            border-left: 3px solid #1DA1F2;
+            border-radius: 6px;
+            padding: 16px;
+            margin-top: 16px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .calc-total-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1DA1F2;
+            margin-top: 8px;
+        }
+
+        .calc-note {
+            font-size: 11px;
+            color: #CBD5E1;
+            margin-top: 8px;
+        }
+
+        /* CONTENT TYPES */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+        }
+
+        .content-card {
+            background-color: #0F172A;
+            border: 1px solid rgba(29, 161, 242, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .content-card:hover {
+            border-color: #1DA1F2;
+            background-color: rgba(29, 161, 242, 0.05);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(29, 161, 242, 0.1);
+        }
+
+        .content-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .content-name {
+            font-size: 12px;
+            font-weight: bold;
+            color: #F1F5F9;
+            margin-bottom: 6px;
+        }
+
+        .content-aura {
+            font-size: 11px;
+            color: #1DA1F2;
+            font-weight: 700;
+        }
+
+        /* TIPS GRID */
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+        }
+
+        .tip-card {
+            background-color: #0F172A;
+            border: 1px solid rgba(29, 161, 242, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+            transition: all 0.3s;
+        }
+
+        .tip-card:hover {
+            border-color: #1DA1F2;
+            box-shadow: 0 4px 12px rgba(29, 161, 242, 0.1);
+        }
+
+        .tip-icon {
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        .tip-title {
+            font-size: 12px;
+            font-weight: bold;
+            color: #F1F5F9;
+            margin-bottom: 8px;
+        }
+
+        .tip-text {
+            font-size: 11px;
+            color: #CBD5E1;
+            line-height: 1.6;
+        }
+
+        /* EXAMPLES */
+        .example-card {
+            background: linear-gradient(135deg, #0F172A 0%, rgba(29, 161, 242, 0.05) 100%);
+            border: 1px solid rgba(29, 161, 242, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            transition: all 0.3s;
+        }
+
+        .example-card:hover {
+            border-color: #1DA1F2;
+            box-shadow: 0 4px 12px rgba(29, 161, 242, 0.1);
+        }
+
+        .example-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .example-name {
+            font-weight: bold;
+            color: #1DA1F2;
+            font-size: 12px;
+        }
+
+        .example-stat {
+            font-size: 11px;
+            color: #CBD5E1;
+        }
+
+        .example-detail {
+            font-size: 11px;
+            color: #CBD5E1;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .example-earnings {
+            background: linear-gradient(135deg, rgba(29, 161, 242, 0.2) 0%, rgba(29, 161, 242, 0.05) 100%);
+            border-left: 3px solid #1DA1F2;
+            border-radius: 6px;
+            padding: 12px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #1DA1F2;
+        }
+
+        /* INFO BOX */
+        .info-box {
+            background-color: rgba(29, 161, 242, 0.1);
+            border: 1px solid rgba(29, 161, 242, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+            font-size: 12px;
+            line-height: 1.6;
+            color: #CBD5E1;
+        }
+
+        /* CTA */
+        .cta-section {
+            text-align: center;
+            padding: 32px 0;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #1DA1F2 0%, #0EA5E9 100%);
+            color: #F1F5F9;
+            padding: 14px 32px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(29, 161, 242, 0.2);
+            max-width: 300px;
+            margin: 0 auto;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(29, 161, 242, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .cta-text {
+            margin-top: 16px;
+            font-size: 12px;
+            color: #CBD5E1;
+            line-height: 1.6;
+        }
+
+        .highlight {
+            color: #1DA1F2;
+            font-weight: 700;
+        }
+
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 24px;
+            }
+
+            .vp-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .content-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .tips-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-left">
+            <svg class="logo-small" viewBox="0 0 400 400" fill="none">
+                <circle cx="200" cy="200" r="160" stroke="#F1F5F9" stroke-width="28" />
+                <circle cx="200" cy="200" r="110" stroke="#0EA5E9" stroke-width="24" />
+                <circle cx="200" cy="200" r="60" stroke="#F1F5F9" stroke-width="20" />
+                <circle cx="200" cy="200" r="25" fill="#F1F5F9" />
+            </svg>
+            <h1 class="header-title">AuraBoost</h1>
+            <div class="header-badge">𝕏 FOR TWITTER/X</div>
+        </div>
+        <button class="back-btn" onclick="window.history.back()">← Back</button>
+    </div>
+
+    <div class="container">
+        <div class="main-content">
+            <div class="page-title">𝕏 Twitter/X Creator Opportunity</div>
+            <p class="page-subtitle">Monetize your viral tweets with AuraBoost's beauty & engagement scoring</p>
+
+            <!-- VALUE PROP BANNER -->
+            <div class="value-prop-banner">
+                <div class="vp-title">Why Twitter/X Creators Win</div>
+                <div class="vp-grid">
+                    <div class="vp-item">
+                        <div class="vp-icon">🚀</div>
+                        <div class="vp-label">Instant Virality</div>
+                        <div class="vp-value">100K+ Reach</div>
+                    </div>
+                    <div class="vp-item">
+                        <div class="vp-icon">👥</div>
+                        <div class="vp-label">Engaged Audience</div>
+                        <div class="vp-value">3-7% Convert</div>
+                    </div>
+                    <div class="vp-item">
+                        <div class="vp-icon">💰</div>
+                        <div class="vp-label">Per Subscription</div>
+                        <div class="vp-value">30% Commission</div>
+                    </div>
+                    <div class="vp-item">
+                        <div class="vp-icon">⚡</div>
+                        <div class="vp-label">Multiplier Badge</div>
+                        <div class="vp-value">3X Earnings</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                💡 <strong>Twitter/X's Unique Advantage:</strong> X is where trends happen FIRST. A single viral tweet reaches millions instantly. Unlike Instagram (curated) or TikTok (algorithm-dependent), X is pure reach. Your sexy/hot tweets get massive impressions. Post those tweets to AuraBoost for massive follower/earnings potential.
+            </div>
+
+            <!-- VERIFICATION & TRUST SECTION -->
+            <div class="section">
+                <div class="section-title">✅ How Verification Works (Anti-Fraud Protection)</div>
+                
+                <div style="padding: 16px; background: linear-gradient(135deg, rgba(29, 161, 242, 0.15) 0%, rgba(14, 165, 233, 0.1) 100%); border: 1px solid rgba(29, 161, 242, 0.3); border-radius: 8px; margin-bottom: 20px;">
+                    <div style="font-size: 12px; color: #CBD5E1; line-height: 1.8;">
+                        <strong style="color: #1DA1F2;">We verify EVERY post to prevent gaming & protect your earnings.</strong><br>
+                        No fake shares. No gaming the system. Your commission is based on REAL posts on REAL platforms.
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 16px;">
+                    <!-- Step 1 -->
+                    <div style="background-color: #0F172A; border: 1px solid rgba(29, 161, 242, 0.2); border-radius: 12px; padding: 16px; text-align: center;">
+                        <div style="font-size: 28px; margin-bottom: 8px;">1️⃣</div>
+                        <div style="font-size: 12px; font-weight: bold; color: #F1F5F9; margin-bottom: 8px;">You Upload</div>
+                        <div style="font-size: 11px; color: #CBD5E1; line-height: 1.5;">
+                            Post your content to X. AI analyzes attractiveness & engagement potential.
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div style="background-color: #0F172A; border: 1px solid rgba(29, 161, 242, 0.2); border-radius: 12px; padding: 16px; text-align: center;">
+                        <div style="font-size: 28px; margin-bottom: 8px;">2️⃣</div>
+                        <div style="font-size: 12px; font-weight: bold; color: #F1F5F9; margin-bottom: 8px;">You Share URL</div>
+                        <div style="font-size: 11px; color: #CBD5E1; line-height: 1.5;">
+                            Paste the direct link to your X post (twitter.com/yourname/status/123...)
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div style="background-color: #0F172A; border: 1px solid rgba(29, 161, 242, 0.2); border-radius: 12px; padding: 16px; text-align: center;">
+                        <div style="font-size: 28px; margin-bottom: 8px;">3️⃣</div>
+                        <div style="font-size: 12px; font-weight: bold; color: #F1F5F9; margin-bottom: 8px;">You Upload Screenshot</div>
+                        <div style="font-size: 11px; color: #CBD5E1; line-height: 1.5;">
+                            Screenshot showing your post is live on X (with URL visible in screenshot)
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div style="background-color: #0F172A; border: 1px solid rgba(29, 161, 242, 0.2); border-radius: 12px; padding: 16px; text-align: center;">
+                        <div style="font-size: 28px; margin-bottom: 8px;">4️⃣</div>
+                        <div style="font-size: 12px; font-weight: bold; color: #F1F5F9; margin-bottom: 8px;">We Verify & Pay</div>
+                        <div style="font-size: 11px; color: #CBD5E1; line-height: 1.5;">
+                            AI image matching confirms post is real. Aura points awarded instantly.
+                        </div>
+                    </div>
+                </div>
+
+                <div style="padding: 16px; background-color: rgba(29, 161, 242, 0.1); border-left: 3px solid #1DA1F2; border-radius: 6px; font-size: 11px; color: #CBD5E1;">
+                    <strong style="color: #1DA1F2;">Why this matters:</strong> We prevent fake posts & gaming. Every referral you make is real. Every commission you earn is legitimate. No wasted effort on posts that won't be verified. Transparent, honest system.
+                </div>
+            </div>
+
+            <!-- VIRAL ADVANTAGE -->
+            <div class="section">
+                <div class="section-title">🔥 The X Viral Advantage</div>
+                
+                <div class="viral-banner">
+                    <div class="viral-title">Why X Content Converts Fastest</div>
+                    <div class="viral-text">
+                        X tweets go viral instantly. A single tweet can get 100K-1M impressions in hours. Your followers see your tweet on X → click your AuraBoost link in bio → subscribe. The speed of X means you can monetize viral moments in REAL-TIME, unlike TikTok or Instagram where there's a 24-48hr lag.
+                    </div>
+                </div>
+
+                <div style="padding: 12px; background-color: rgba(29, 161, 242, 0.1); border-radius: 6px; border-left: 3px solid #1DA1F2; font-size: 11px; color: #CBD5E1;">
+                    <strong>Real Example:</strong> You post a hot selfie tweet at 8 AM. Gets 500K views by noon. 0.5% click your link = 2.5K clicks. 2% subscribe = 50 subs × $3 = $150 from ONE TWEET in 4 hours.
+                </div>
+            </div>
+
+            <!-- EARNINGS CALCULATOR -->
+            <div class="section">
+                <div class="section-title">💰 What You Can Earn</div>
+                
+                <div class="calc-row">
+                    <div class="calc-label">Your X followers</div>
+                    <input type="number" class="calc-input" id="xFollowers" value="100000" onkeyup="calculateEarnings()">
+                </div>
+
+                <div class="calc-row">
+                    <div class="calc-label">Tweets to AuraBoost per month</div>
+                    <input type="number" class="calc-input" id="tweetsPerMonth" value="30" onkeyup="calculateEarnings()">
+                </div>
+
+                <div class="calc-row">
+                    <div class="calc-label">Average tweet impressions</div>
+                    <div class="calc-value">~50K - 500K</div>
+                </div>
+
+                <div class="calc-row">
+                    <div class="calc-label">AuraBoost signup rate (high engagement)</div>
+                    <div class="calc-value">~1-2%</div>
+                </div>
+
+                <div class="calc-row">
+                    <div class="calc-label">Expected new referrals/month</div>
+                    <input type="number" class="calc-input" id="newReferrals" value="50" onkeyup="calculateEarnings()">
+                </div>
+
+                <div class="calc-total">
+                    <div>Monthly Income from AuraBoost</div>
+                    <div class="calc-total-value" id="monthlyEarning">$150</div>
+                    <div class="calc-note">= 50 subs × $3.00 commission</div>
+                </div>
+
+                <div class="calc-total" style="background-color: rgba(29, 161, 242, 0.15); border-color: #1DA1F2; margin-top: 12px;">
+                    <div>WITH Affiliate Badge (3X)</div>
+                    <div class="calc-total-value" id="monthlyEarningBadge" style="color: #1DA1F2;">$450</div>
+                    <div class="calc-note">= 50 subs × $3.00 × 3</div>
+                </div>
+
+                <div style="padding: 12px; background-color: rgba(29, 161, 242, 0.1); border-radius: 6px; font-size: 11px; color: #CBD5E1; margin-top: 12px; text-align: center; font-weight: 600;">
+                    📊 <span id="annualEarning">$1,800</span>/year without badge | <span id="annualEarningBadge">$5,400</span>/year WITH badge
+                </div>
+            </div>
+
+            <!-- CONTENT THAT CONVERTS -->
+            <div class="section">
+                <div class="section-title">🔥 X Content That Goes Viral (& Converts)</div>
+                
+                <div class="content-grid">
+                    <div class="content-card">
+                        <div class="content-icon">🔥</div>
+                        <div class="content-name">Hot Selfies</div>
+                        <div class="content-aura">+450-600</div>
+                    </div>
+                    <div class="content-card">
+                        <div class="content-icon">😂</div>
+                        <div class="content-name">Viral Tweets</div>
+                        <div class="content-aura">+380-480</div>
+                    </div>
+                    <div class="content-card">
+                        <div class="content-icon">💪</div>
+                        <div class="content-name">Gym Progress</div>
+                        <div class="content-aura">+380-500</div>
+                    </div>
+                    <div class="content-card">
+                        <div class="content-icon">🧠</div>
+                        <div class="content-name">Hot Takes</div>
+                        <div class="content-aura">+340-420</div>
+                    </div>
+                    <div class="content-card">
+                        <div class="content-icon">🎬</div>
+                        <div class="content-name">Video Clips</div>
+                        <div class="content-aura">+400-550</div>
+                    </div>
+                    <div class="content-card">
+                        <div class="content-icon">🌟</div>
+                        <div class="content-name">Lifestyle</div>
+                        <div class="content-aura">+300-460</div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 16px; padding: 12px; background-color: rgba(29, 161, 242, 0.1); border-radius: 6px; border-left: 3px solid #1DA1F2; font-size: 11px; color: #CBD5E1;">
+                    <strong>Key insight:</strong> X rewards engagement over follower count. A tweet from someone with 10K followers can outperform a 1M follower account if it's hotter/more engaging. You DON'T need massive followers to make money.
+                </div>
+            </div>
+
+            <!-- STRATEGY -->
+            <div class="section">
+                <div class="section-title">🎯 X-to-AuraBoost Strategy</div>
+                
+                <div class="tips-grid">
+                    <div class="tip-card">
+                        <div class="tip-icon">⚡</div>
+                        <div class="tip-title">Post CONSTANTLY</div>
+                        <div class="tip-text">X rewards frequency. Post 3-5 times per day. The more tweets, the more chances to go viral, the more AuraBoost referrals.</div>
+                    </div>
+
+                    <div class="tip-card">
+                        <div class="tip-icon">🔗</div>
+                        <div class="tip-title">Bio Link Is KEY</div>
+                        <div class="tip-text">Your X bio link is EVERYTHING. Add AuraBoost referral. "Get paid for your aura 🔥" - drives direct traffic from your viral tweets.</div>
+                    </div>
+
+                    <div class="tip-card">
+                        <div class="tip-icon">🔥</div>
+                        <div class="tip-title">Post Your HOTTEST Pics</div>
+                        <div class="tip-text">X's audience is speed + spice. Post your most viral-worthy content (hot selfies, gym pics, trending moments). Tag it with #AuraBoost for discovery.</div>
+                    </div>
+
+                    <div class="tip-card">
+                        <div class="tip-icon">📊</div>
+                        <div class="tip-title">Real-Time Tracking</div>
+                        <div class="tip-text">X shows impressions in real-time. Track which tweets get most viral. When a tweet hits 100K+ impressions, expect 50-100 AuraBoost clicks.</div>
+                    </div>
+
+                    <div class="tip-card">
+                        <div class="tip-icon">🎯</div>
+                        <div class="tip-title">Get Badge in WEEKS</div>
+                        <div class="tip-text">X creators with viral momentum unlock Affiliate Badge in 2-3 weeks. That 3X multiplier is GAME-CHANGING at that speed.</div>
+                    </div>
+
+                    <div class="tip-card">
+                        <div class="tip-icon">💎</div>
+                        <div class="tip-title">Become #1 FAST</div>
+                        <div class="tip-text">X creators can hit AuraBoost top 10 within weeks due to viral potential. Real path to #1 rank = $30K+/month potential.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- REAL EXAMPLES -->
+            <div class="section">
+                <div class="section-title">💼 Real X Creators on AuraBoost</div>
+
+                <div class="example-card">
+                    <div class="example-header">
+                        <div class="example-name">@hottakes_sam</div>
+                        <div class="example-stat">📊 85K followers • Rank #45</div>
+                    </div>
+                    <div class="example-detail">
+                        Posts hot selfies + hot takes 4x per day. Gets 100K-500K impressions per tweet. His X followers are HIGHLY engaged (used to clicking links). Converts at 3% to AuraBoost. Gets 50+ referrals per month consistently.
+                    </div>
+                    <div class="example-earnings">
+                        💰 $150/month = $1,800/year (without badge). $450/month = $5,400/year (with badge)
+                    </div>
+                </div>
+
+                <div class="example-card">
+                    <div class="example-header">
+                        <div class="example-name">@viral_influencer</div>
+                        <div class="example-stat">📊 250K followers • Rank #12 🎖️</div>
+                    </div>
+                    <div class="example-detail">
+                        Viral content creator with Affiliate Badge (3X multiplier). Posts 30+ times per month. Average 50K impressions per tweet × 1% signup = 150 subs/month. With 3X badge multiplier = 450 subs worth of commission.
+                    </div>
+                    <div class="example-earnings">
+                        💰 $1,350/month = $16.2K/year (with 3X badge from 150 subs × $3 × 3)
+                    </div>
+                </div>
+
+                <div class="example-card">
+                    <div class="example-header">
+                        <div class="example-name">@trending_daily</div>
+                        <div class="example-stat">📊 500K followers • Rank #2 🎖️</div>
+                    </div>
+                    <div class="example-detail">
+                        Top X creator who posts 40+ times per month. Viral tweet average: 1M impressions. His tweets go SO viral (0.3% conversion on impressions alone) that he gets 300+ AuraBoost referrals every month. With badge = massive income.
+                    </div>
+                    <div class="example-earnings">
+                        💰 $27,000/month = $324K/year (with 3X badge from 300 subs × $3 × 3) - PURE PASSIVE
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA SECTION -->
+            <div class="cta-section">
+                <button class="btn" onclick="startEarning()">🚀 Start Earning Now</button>
+                <div class="cta-text">
+                    Your viral tweets already have power.<br>
+                    <span class="highlight">Why not monetize them directly?</span><br><br>
+                    Post to X like normal. Add AuraBoost referral link to bio. Watch passive income flow in from your viral moments.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculateEarnings() {
+            const newReferrals = parseInt(document.getElementById('newReferrals').value) || 0;
+            
+            const monthlyEarning = newReferrals * 3.00;
+            const withBadge = monthlyEarning * 3;
+            const annualEarning = monthlyEarning * 12;
+            const annualWithBadge = withBadge * 12;
+            
+            document.getElementById('monthlyEarning').textContent = '$' + monthlyEarning.toFixed(2);
+            document.getElementById('monthlyEarningBadge').textContent = '$' + withBadge.toFixed(2);
+            document.getElementById('annualEarning').textContent = '$' + annualEarning.toFixed(0);
+            document.getElementById('annualEarningBadge').textContent = '$' + annualWithBadge.toFixed(0);
+        }
+
+        function startEarning() {
+            alert('🚀 Let\'s go!\n\nSteps:\n1. Post your hot content to X\n2. Add AuraBoost referral link to bio\n3. Your viral tweets drive clicks\n4. People subscribe to AuraBoost\n5. You get 30% commission\n6. Unlock badge = 3X earnings\n\nX creators make $1.8K-$324K/year depending on viral reach!');
+        }
+
+        function goBack() {
+            alert('Going back...');
+        }
+
+        // Calculate initial earnings
+        calculateEarnings();
+    </script>
+</body>
+</html>

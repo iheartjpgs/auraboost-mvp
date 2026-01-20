@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraBoost - Aura Points & Earnings Potential</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #0F172A;
+            color: #F1F5F9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background-color: #1E293B;
+            border-bottom: 1px solid #F59E0B;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-small {
+            width: 32px;
+            height: 32px;
+        }
+
+        .header-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #F59E0B;
+        }
+
+        .back-btn {
+            background-color: #F59E0B;
+            color: #0F172A;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .main-content {
+            padding: 24px 20px;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .page-subtitle {
+            color: #CBD5E1;
+            margin-bottom: 24px;
+            font-size: 14px;
+        }
+
+        /* EARNINGS CTA */
+        .earnings-banner {
+            background: linear-gradient(135deg, #10B981 0%, #14F195 100%);
+            border-radius: 12px;
+            padding: 32px 24px;
+            margin-bottom: 24px;
+            text-align: center;
+            color: #0F172A;
+        }
+
+        .earnings-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .earnings-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .earnings-subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 16px;
+        }
+
+        .earnings-highlight {
+            font-size: 18px;
+            font-weight: bold;
+            background-color: rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+
+        .earnings-btn {
+            background-color: #0F172A;
+            color: #14F195;
+            padding: 12px 28px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .earnings-btn:hover {
+            opacity: 0.9;
+            transform: scale(1.05);
+        }
+
+        /* CURRENT STATS */
+        .stats-section {
+            background: linear-gradient(135deg, #F59E0B 0%, #FCD34D 100%);
+            border-radius: 12px;
+            padding: 32px 24px;
+            margin-bottom: 24px;
+            text-align: center;
+            color: #0F172A;
+        }
+
+        .current-aura {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .aura-label {
+            font-size: 13px;
+            text-transform: uppercase;
+            opacity: 0.8;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .stat-item {
+            background-color: rgba(15, 23, 42, 0.2);
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .stat-name {
+            font-size: 11px;
+            opacity: 0.8;
+        }
+
+        /* AFFILIATE BADGE PROGRESS */
+        .badge-progress-section {
+            background-color: #1E293B;
+            border: 2px solid #F59E0B;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 16px;
+            color: #F1F5F9;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .progress-container {
+            margin-bottom: 24px;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            background-color: #0F172A;
+            border-radius: 8px;
+            height: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #F59E0B, #EC4899);
+            height: 100%;
+            border-radius: 8px;
+            transition: width 0.5s ease;
+        }
+
+        /* BOOSTER WEIGHTING */
+        .weighting-section {
+            background-color: #1E293B;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .booster-card {
+            background-color: #0F172A;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .booster-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .booster-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .booster-name {
+            font-size: 14px;
+            font-weight: bold;
+            color: #F1F5F9;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .booster-emoji {
+            font-size: 18px;
+        }
+
+        .booster-range {
+            font-size: 12px;
+            color: #F59E0B;
+            font-weight: 600;
+        }
+
+        .booster-description {
+            font-size: 11px;
+            color: #CBD5E1;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .booster-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            font-size: 11px;
+        }
+
+        .booster-stat {
+            background-color: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 4px;
+            padding: 6px;
+            text-align: center;
+        }
+
+        .booster-stat-label {
+            color: #CBD5E1;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .booster-stat-value {
+            color: #F59E0B;
+            font-weight: bold;
+        }
+
+        /* SEXY CONTENT SPECIAL */
+        .sexy-special {
+            background: linear-gradient(135deg, rgba(236, 72, 153, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
+            border: 2px solid #EC4899;
+        }
+
+        .sexy-warning {
+            background-color: rgba(236, 72, 153, 0.1);
+            border-left: 3px solid #EC4899;
+            border-radius: 6px;
+            padding: 12px;
+            font-size: 11px;
+            color: #F1F5F9;
+            margin-top: 12px;
+        }
+
+        /* EARNINGS MATH */
+        .earnings-math {
+            background-color: #1E293B;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .math-title {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 16px;
+            color: #F1F5F9;
+        }
+
+        .math-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background-color: #0F172A;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            font-size: 12px;
+        }
+
+        .math-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .math-label {
+            color: #CBD5E1;
+        }
+
+        .math-value {
+            color: #10B981;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        /* CHART */
+        .chart-section {
+            background-color: #1E293B;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .chart-title {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 16px;
+            color: #F1F5F9;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 300px;
+        }
+
+        /* INFO BOX */
+        .info-box {
+            background-color: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+            font-size: 12px;
+            line-height: 1.6;
+            color: #CBD5E1;
+        }
+
+        .btn {
+            background-color: #F59E0B;
+            color: #0F172A;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .booster-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-left">
+            <svg class="logo-small" viewBox="0 0 400 400" fill="none">
+                <circle cx="200" cy="200" r="160" stroke="#F59E0B" stroke-width="28" />
+                <circle cx="200" cy="200" r="110" stroke="#FCD34D" stroke-width="24" />
+                <circle cx="200" cy="200" r="60" stroke="#F59E0B" stroke-width="20" />
+                <circle cx="200" cy="200" r="25" fill="#F59E0B" />
+            </svg>
+            <h1 class="header-title">AuraBoost</h1>
+        </div>
+        <button class="back-btn" onclick="window.history.back()">← Back</button>
+    </div>
+
+    <div class="container">
+        <div class="main-content">
+            <div class="page-title">💰 Aura Points & Real Earnings</div>
+            <p class="page-subtitle">Your aura score directly impacts your referral reach and earning potential</p>
+
+            <!-- EARNINGS CTA BANNER -->
+            <div class="earnings-banner">
+                <div class="earnings-icon">💸</div>
+                <div class="earnings-title">Build Aura → Get Visibility → Earn Money</div>
+                <div class="earnings-subtitle">Higher aura = more followers = more referrals = more cash</div>
+                <div class="earnings-highlight">
+                    You already earned $2,450 this year from 156 referrals 🎯
+                </div>
+                <button class="earnings-btn" onclick="viewEarnings()">📊 View Your Earnings</button>
+            </div>
+
+            <div class="info-box">
+                💡 <strong>Here's the real deal:</strong> Your aura score determines your position on the leaderboard. More followers see you = more people click your referral link = more subscriptions = 30% commission on EVERY ONE. This is passive income. The better your aura, the more you earn. Simple math.
+            </div>
+
+            <!-- CURRENT STATS -->
+            <div class="stats-section">
+                <div class="current-aura">1,450</div>
+                <div class="aura-label">Your Aura Score</div>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value">#247</div>
+                        <div class="stat-name">Global Rank</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">156</div>
+                        <div class="stat-name">Referrals This Year</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">$2,450</div>
+                        <div class="stat-name">Lifetime Earnings</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AFFILIATE BADGE PROGRESS -->
+            <div class="badge-progress-section">
+                <div class="section-title">
+                    <span>💎 AuraBoost X Affiliate Badge</span>
+                </div>
+
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span>Badge Completion</span>
+                        <span>3 / 6 Boosters</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 50%; background: linear-gradient(90deg, #F59E0B, #EC4899);"></div>
+                    </div>
+                </div>
+
+                <div class="info-box" style="margin-top: 16px; margin-bottom: 0;">
+                    🎯 <strong>Badge = 3X Earnings:</strong> When you unlock the Affiliate Badge, every referral commission is tripled. Your $2,450 would be $7,350. Get the badge, triple your income.
+                </div>
+            </div>
+
+            <!-- BOOSTER WEIGHTING -->
+            <div class="weighting-section">
+                <div class="section-title">⚖️ Booster Weighting System</div>
+
+                <!-- GYM -->
+                <div class="booster-card">
+                    <div class="booster-header">
+                        <div class="booster-name">
+                            <span class="booster-emoji">💪</span>
+                            <span>Gym / Fitness</span>
+                        </div>
+                        <div class="booster-range">+380 to +500</div>
+                    </div>
+                    <div class="booster-description">
+                        Gym equipment detected, muscle definition scored, physique attractiveness analyzed.
+                    </div>
+                    <div class="booster-stats">
+                        <div class="booster-stat">
+                            <span class="booster-stat-label">Base Aura</span>
+                            <span class="booster-stat-value">380</span>
+                        </div>
+                        <div class="booster-stat">
+                            <span class="booster-stat-label">Quality Score</span>
+                            <span class="booster-stat-value">0-120</span>
+                        </div>
+                        <div class="booster-stat">
+                            <span class="booster-stat-label">Engagement +</span>
+                            <span class="booster-stat-value">0-50%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FOOD -->
+                <div class="booster-card">
+                    <div class="booster-header">
+                        <div class="booster-name">
+                            <span class="booster-emoji">🍗</span>
+                            <span>Food / Nutrition</span>
+                        </div>
+                        <div class="booster-range">+320 to +420</div>
+                    </div>
+                    <div class="booster-description">
+                        Protein analysis, nutritional value detected, presentation quality scored.
+                    </div>
+                    <div class="booster-stats">
+                        <div class="booster-stat">
+                            <span class="booster-stat-label">Base Aura</span>
+                            <span class="booster-stat-value">320</span>
+                        </div>
+                        <div class="booster-stat">
+                            <span class="booster-stat-label">Quality Score</span>
+                            <span class="booster-stat-value">0-100</span>
+                        </div>
+                        <div class="booster-stat">
+                            <span class="booster-stat-label">Engagement +</span>
+                            <span class="booster-stat-value">0-40%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CAR -->
+                <div class="booster-card">
+                    <div class="booster-header">
+                        <div class="booster-name">
+                            <span class="booster-emoji">🏎️</span>
+                            <span>Car / Lifestyle</span>
+                        </div>
+                        <div class="booster-range">+300 to +480</div>
+                    </div>
+                    <div class="booster-description">
+                        Vehicle quality detected, aesthetic appeal scored, status indicator analyzed.
+                    </div>
+                    <div class="booster-stats">
+                        <div class="booster-stat">
+                            <span class="booster-stat-label">Base Aura</span>
+                            <span class="booster-stat-value">300</span>
+                        </div>
+                        <div class="booster-stat">
+                            <span class="booster-stat-label">Quality Score</span>
+                            <span class="booster-stat-value">0-180</span>
+                        </div>
+                        <div class="booster-stat">
+                            <span class="booster-stat-label">Engagement +</span>
+                            <span class="booster-stat-value">0-45%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GAMING -->
+                <div class="booster-card">
+                    <div class="booster-header">
+                        <div class="booster-name">
+                            <span class="booster-emoji">🎮</span>
+                            <span>Gaming / Esports</span>
+                        </div>
+                        <div class="booster-range">+350 to +480</div>
+                    </div>
+                    <div class="booster-description">
+                        Gaming achievement detected, skill level analyzed, content quality checked.
+                    </div>
+                    <div class="booster-stats">
+                        <div class="booster-stat">
+                            <span class="booster-stat-label">Base Aura</span>
+                            <span class="booster-stat-value">350</span>
+                        </div>
+                        <div class="booster-stat">
+                            <span class="booster-stat-label">Quality Score</span>
+                            <span class="booster-stat-value">0-130</span>
+                        </div>
+                        <div class="booster-stat">
+                            <span class="booster-stat-label">Engagement +</span>
+                            <span class="booster-stat-value">0-50%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- OUTDOORS -->
+                <div class="booster-card">
+                    <div class="booster-header">
+                        <div class="booster-name">
+                            <span class="booster-emoji">🏕️</span>
+                            <span>Outdoors / Travel</span>
+                        </div>
+                        <div class="booster-range">+340 to +460</div>
+                    </div>
+                    <div class="booster-description">
+                        Location aesthetics detected, adventure level analyzed, inspiration scored.
+                    </div>
+                    <div class="booster-stats">
+                        <div class="booster-stat">
+                            <span class="booster-stat-label">Base Aura</span>
+                            <span class="booster-stat-value">340</span>
+                        </div>
+                        <div class="booster-stat">
+                            <span class="booster-stat-label">Quality Score</span>
+                            <span class="booster-stat-value">0-120</span>
+                        </div>
+                        <div class="booster-stat">
+                            <span class="booster-stat-label">Engagement +</span>
+                            <span class="booster-stat-value">0-42%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SEXY CONTENT - SPECIAL -->
+                <div class="booster-card sexy-special">
+                    <div class="booster-header">
+                        <div class="booster-name">
+                            <span class="booster-emoji">🔥</span>
+                            <span>Sexy / OnlyFans Content</span>
+                        </div>
+                        <div class="booster-range">+400 to +600</div>
+                    </div>
+                    <div class="booster-description">
+                        <strong>Facial Recognition Sex Appeal Scoring:</strong> AI analyzes facial symmetry, skin quality, jawline definition, eye appeal, body composition, and confidence level.
+                    </div>
+                    <div class="booster-stats">
+                        <div class="booster-stat">
+                            <span class="booster-stat-label">Base Aura</span>
+                            <span class="booster-stat-value">400</span>
+                        </div>
+                        <div class="booster-stat">
+                            <span class="booster-stat-label">Sex Appeal Score</span>
+                            <span class="booster-stat-value">0-200</span>
+                        </div>
+                        <div class="booster-stat">
+                            <span class="booster-stat-label">Engagement +</span>
+                            <span class="booster-stat-value">0-60%</span>
+                        </div>
+                    </div>
+                    <div class="sexy-warning">
+                        🔍 <strong>How it works:</strong> Upload your sexy content. Our AI uses facial recognition to score sex appeal factors: facial attractiveness, confidence radiating from eyes, smile appeal, symmetry, and overall visual magnetism. Higher sex appeal = more engagement = more referrals = more money.
+                    </div>
+                </div>
+
+                <!-- NFT -->
+                <div class="booster-card">
+                    <div class="booster-header">
+                        <div class="booster-name">
+                            <span class="booster-emoji">🎨</span>
+                            <span>NFT / Market</span>
+                        </div>
+                        <div class="booster-range">+450 to +800</div>
+                    </div>
+                    <div class="booster-description">
+                        Floor price multiplier, rarity score, prestige level, X sentiment analyzed.
+                    </div>
+                    <div class="booster-stats">
+                        <div class="booster-stat">
+                            <span class="booster-stat-label">Base Aura</span>
+                            <span class="booster-stat-value">400</span>
+                        </div>
+                        <div class="booster-stat">
+                            <span class="booster-stat-label">Market Score</span>
+                            <span class="booster-stat-value">0-400</span>
+                        </div>
+                        <div class="booster-stat">
+                            <span class="booster-stat-label">Engagement +</span>
+                            <span class="booster-stat-value">0-80%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EARNINGS MATH -->
+            <div class="earnings-math">
+                <div class="math-title">📊 How You Earn (The Real Math)</div>
+                
+                <div class="math-row">
+                    <div class="math-label">Average subscription price</div>
+                    <div class="math-value">$9.99/month</div>
+                </div>
+
+                <div class="math-row">
+                    <div class="math-label">Your commission (30%)</div>
+                    <div class="math-value">$3.00</div>
+                </div>
+
+                <div class="math-row">
+                    <div class="math-label">Referrals last month</div>
+                    <div class="math-value">13</div>
+                </div>
+
+                <div class="math-row">
+                    <div class="math-label">Monthly earnings</div>
+                    <div class="math-value">$39</div>
+                </div>
+
+                <div class="math-row" style="background: rgba(16, 185, 129, 0.2); border: 1px solid #10B981; margin-top: 12px;">
+                    <div class="math-label" style="font-weight: bold;">WITH Affiliate Badge (3X)</div>
+                    <div class="math-value" style="color: #10B981; font-size: 18px;">$117</div>
+                </div>
+
+                <div class="math-row" style="background: rgba(236, 72, 153, 0.1); border: 1px solid #EC4899;">
+                    <div class="math-label" style="font-weight: bold;">Annual earnings at current rate</div>
+                    <div class="math-value" style="color: #EC4899;">$1,404 → $4,212 with badge</div>
+                </div>
+            </div>
+
+            <!-- EARNINGS CHART -->
+            <div class="chart-section">
+                <div class="chart-title">📈 Your Earnings Potential by Aura Score</div>
+                <div class="chart-wrapper">
+                    <canvas id="earningsChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // EARNINGS POTENTIAL CHART
+        const earningsCtx = document.getElementById('earningsChart').getContext('2d');
+        new Chart(earningsCtx, {
+            type: 'line',
+            data: {
+                labels: ['500 Aura', '1000 Aura', '1500 Aura', '2000 Aura', '2500 Aura', '3000+ Aura'],
+                datasets: [
+                    {
+                        label: 'Without Badge',
+                        data: [80, 180, 320, 520, 780, 1200],
+                        borderColor: '#F59E0B',
+                        backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: true,
+                        pointRadius: 6
+                    },
+                    {
+                        label: 'WITH Affiliate Badge (3X)',
+                        data: [240, 540, 960, 1560, 2340, 3600],
+                        borderColor: '#10B981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.4,
+                        fill: true,
+                        pointRadius: 6
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: { color: '#CBD5E1', font: { size: 12 } }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { 
+                            color: '#CBD5E1',
+                            callback: (value) => '$' + value
+                        },
+                        grid: { color: 'rgba(245, 158, 11, 0.1)' }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#CBD5E1' }
+                    }
+                }
+            }
+        });
+
+        function viewEarnings() {
+            alert('📊 Your Earnings Dashboard:\n\nLifetime: $2,450\nThis month: $340\nNext payout: Jan 27, 2026\n\nWith Affiliate Badge, this could be 3X!');
+        }
+
+        function goBack() {
+            alert('Going back...');
+        }
+    </script>
+</body>
+</html>

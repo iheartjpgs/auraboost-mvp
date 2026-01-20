@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraBoost - Log Workout</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #0F172A;
+            color: #F1F5F9;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding-bottom: 100px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #F59E0B 0%, #EC4899 100%);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #F1F5F9;
+        }
+
+        .back-btn {
+            background-color: rgba(241, 245, 249, 0.2);
+            color: #F1F5F9;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .back-btn:hover {
+            background-color: rgba(241, 245, 249, 0.3);
+        }
+
+        .main-content {
+            padding: 24px 20px;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #F1F5F9;
+        }
+
+        .page-subtitle {
+            color: #CBD5E1;
+            margin-bottom: 24px;
+            font-size: 13px;
+        }
+
+        /* FORM SECTION */
+        .form-section {
+            background-color: #1E293B;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 12px;
+            color: #CBD5E1;
+            margin-bottom: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 14px 16px;
+            background-color: #0F172A;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 8px;
+            color: #F1F5F9;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23F59E0B' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 36px;
+        }
+
+        .form-select:hover {
+            border-color: rgba(245, 158, 11, 0.5);
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: #F59E0B;
+            box-shadow: 0 0 12px rgba(245, 158, 11, 0.2);
+        }
+
+        .form-select option {
+            background-color: #1E293B;
+            color: #F1F5F9;
+        }
+
+        /* SLIDER */
+        .slider-container {
+            margin-top: 12px;
+        }
+
+        .form-slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: linear-gradient(to right, #F59E0B, #EC4899);
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .form-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #F59E0B;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(245, 158, 11, 0.4);
+            transition: all 0.2s;
+            border: 2px solid #0F172A;
+        }
+
+        .form-slider::-webkit-slider-thumb:hover {
+            background: #FCD34D;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.5);
+        }
+
+        .form-slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #F59E0B;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(245, 158, 11, 0.4);
+            border: 2px solid #0F172A;
+            transition: all 0.2s;
+        }
+
+        .form-slider::-moz-range-thumb:hover {
+            background: #FCD34D;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.5);
+        }
+
+        .slider-value {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+            padding: 12px;
+            background-color: rgba(245, 158, 11, 0.1);
+            border-radius: 6px;
+            border-left: 3px solid #F59E0B;
+        }
+
+        .slider-value-label {
+            font-size: 11px;
+            color: #CBD5E1;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .slider-value-display {
+            font-size: 20px;
+            font-weight: bold;
+            color: #F59E0B;
+        }
+
+        /* INTENSITY BUTTONS */
+        .intensity-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .intensity-btn {
+            padding: 14px 16px;
+            border: 2px solid rgba(245, 158, 11, 0.3);
+            border-radius: 8px;
+            background-color: #0F172A;
+            color: #CBD5E1;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .intensity-btn:hover {
+            border-color: rgba(245, 158, 11, 0.5);
+            color: #F59E0B;
+        }
+
+        .intensity-btn.light {
+            border-left: 4px solid #10B981;
+        }
+
+        .intensity-btn.moderate {
+            border-left: 4px solid #F59E0B;
+        }
+
+        .intensity-btn.hard {
+            border-left: 4px solid #EF4444;
+        }
+
+        .intensity-btn.selected {
+            border-color: #F59E0B;
+            background-color: rgba(245, 158, 11, 0.1);
+            color: #F59E0B;
+            border-width: 2px;
+        }
+
+        /* DATE INPUT */
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            background-color: #0F172A;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 8px;
+            color: #F1F5F9;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #F59E0B;
+            box-shadow: 0 0 12px rgba(245, 158, 11, 0.2);
+        }
+
+        /* TEXTAREA */
+        .form-textarea {
+            width: 100%;
+            padding: 14px 16px;
+            background-color: #0F172A;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 8px;
+            color: #F1F5F9;
+            font-size: 14px;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 100px;
+            transition: all 0.2s;
+        }
+
+        .form-textarea:focus {
+            outline: none;
+            border-color: #F59E0B;
+            box-shadow: 0 0 12px rgba(245, 158, 11, 0.2);
+        }
+
+        /* PHOTO UPLOAD */
+        .photo-upload-area {
+            padding: 20px;
+            border: 2px dashed rgba(245, 158, 11, 0.3);
+            border-radius: 8px;
+            text-align: center;
+            background-color: rgba(245, 158, 11, 0.05);
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 12px;
+        }
+
+        .photo-upload-area:hover {
+            border-color: rgba(245, 158, 11, 0.5);
+            background-color: rgba(245, 158, 11, 0.1);
+        }
+
+        .photo-upload-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .photo-upload-text {
+            font-size: 12px;
+            color: #CBD5E1;
+            line-height: 1.5;
+        }
+
+        .photo-upload-text strong {
+            color: #F59E0B;
+        }
+
+        #photoInput {
+            display: none;
+        }
+
+        .photo-preview {
+            margin-top: 12px;
+            display: none;
+        }
+
+        .photo-preview.show {
+            display: block;
+        }
+
+        .photo-preview-img {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            max-height: 300px;
+            object-fit: cover;
+        }
+
+        .photo-preview-remove {
+            background-color: rgba(239, 68, 68, 0.2);
+            color: #FECACA;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .photo-preview-remove:hover {
+            background-color: rgba(239, 68, 68, 0.3);
+        }
+
+        /* AURA CALCULATION */
+        .aura-calculation {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(236, 72, 153, 0.1) 100%);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .aura-calc-title {
+            font-size: 12px;
+            color: #CBD5E1;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .aura-calc-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(245, 158, 11, 0.1);
+            font-size: 13px;
+        }
+
+        .aura-calc-row:last-child {
+            border-bottom: none;
+        }
+
+        .aura-calc-label {
+            color: #CBD5E1;
+        }
+
+        .aura-calc-value {
+            color: #F59E0B;
+            font-weight: 700;
+        }
+
+        .aura-calc-total {
+            padding: 16px 0;
+            border-top: 2px solid rgba(245, 158, 11, 0.3);
+            margin-top: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .aura-calc-total-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #F1F5F9;
+        }
+
+        .aura-calc-total-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #F59E0B;
+        }
+
+        /* PRESET BUTTONS */
+        .preset-section {
+            margin-bottom: 20px;
+        }
+
+        .preset-title {
+            font-size: 12px;
+            color: #CBD5E1;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .preset-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+        }
+
+        .preset-btn {
+            padding: 12px 16px;
+            background-color: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 8px;
+            color: #F59E0B;
+            font-weight: 600;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        .preset-btn:hover {
+            background-color: rgba(245, 158, 11, 0.2);
+            border-color: rgba(245, 158, 11, 0.5);
+        }
+
+        .preset-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* BUTTONS */
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 14px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-secondary {
+            background-color: rgba(245, 158, 11, 0.2);
+            color: #F59E0B;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(245, 158, 11, 0.3);
+            border-color: rgba(245, 158, 11, 0.5);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #F59E0B 0%, #EC4899 100%);
+            color: #0F172A;
+            grid-column: 1 / -1;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
+        }
+
+        .btn-primary:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* SUCCESS MESSAGE */
+        .success-message {
+            display: none;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.05) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            animation: slideInDown 0.3s ease;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .success-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .success-text {
+            font-size: 14px;
+            color: #A7F3D0;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .success-aura {
+            font-size: 28px;
+            font-weight: bold;
+            color: #10B981;
+            margin-bottom: 8px;
+        }
+
+        .success-detail {
+            font-size: 11px;
+            color: #86EFAC;
+        }
+
+        .next-steps {
+            display: none;
+            margin-top: 20px;
+            animation: slideInUp 0.4s ease;
+        }
+
+        .next-steps.show {
+            display: grid;
+        }
+
+        .next-steps-title {
+            font-size: 12px;
+            color: #CBD5E1;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 16px;
+            grid-column: 1 / -1;
+        }
+
+        .next-steps-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .next-step-btn {
+            padding: 16px 20px;
+            background-color: #0F172A;
+            border: 2px solid rgba(245, 158, 11, 0.3);
+            border-radius: 10px;
+            color: #F1F5F9;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .next-step-btn:hover {
+            border-color: #F59E0B;
+            background-color: rgba(245, 158, 11, 0.1);
+            color: #F59E0B;
+        }
+
+        .next-step-btn:active {
+            transform: scale(0.98);
+        }
+
+        .next-step-icon {
+            font-size: 20px;
+            min-width: 24px;
+        }
+
+        .next-step-content {
+            flex: 1;
+        }
+
+        .next-step-label {
+            font-size: 13px;
+            font-weight: 700;
+            color: inherit;
+        }
+
+        .next-step-sublabel {
+            font-size: 11px;
+            color: #CBD5E1;
+            margin-top: 2px;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* INFO BOX */
+        .info-box {
+            background-color: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+            font-size: 12px;
+            line-height: 1.6;
+            color: #CBD5E1;
+        }
+
+        .info-box strong {
+            color: #F59E0B;
+        }
+
+        @media (max-width: 600px) {
+            .intensity-buttons {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .preset-buttons {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .button-group {
+                grid-template-columns: 1fr;
+            }
+
+            .page-title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-left">
+            <h1 class="header-title">💪 Log Workout</h1>
+        </div>
+        <button class="back-btn" onclick="window.history.back()">← Back</button>
+    </div>
+
+    <div class="container">
+        <div class="main-content">
+            <div class="page-title">Log Your Workout</div>
+            <p class="page-subtitle">Track your fitness and earn aura points</p>
+
+            <!-- SUCCESS MESSAGE -->
+            <div class="success-message" id="successMessage">
+                <div class="success-icon">✅</div>
+                <div class="success-text">Workout Logged!</div>
+                <div class="success-aura" id="successAura">+85 Aura</div>
+                <div class="success-detail">Great work! Check your rank on the leaderboard.</div>
+            </div>
+
+            <!-- NEXT STEPS -->
+            <div class="next-steps" id="nextSteps">
+                <div class="next-steps-title">What's Next?</div>
+                <div class="next-steps-grid">
+                    <button type="button" class="next-step-btn" onclick="goToShare()">
+                        <div class="next-step-icon">📤</div>
+                        <div class="next-step-content">
+                            <div class="next-step-label">Share Workout</div>
+                            <div class="next-step-sublabel">Post with filters & templates</div>
+                        </div>
+                    </button>
+                    <button type="button" class="next-step-btn" onclick="goToBoosters()">
+                        <div class="next-step-icon">⚡</div>
+                        <div class="next-step-content">
+                            <div class="next-step-label">View Boosters</div>
+                            <div class="next-step-sublabel">Level up with badges & streaks</div>
+                        </div>
+                    </button>
+                    <button type="button" class="next-step-btn" onclick="logAnother()">
+                        <div class="next-step-icon">💪</div>
+                        <div class="next-step-content">
+                            <div class="next-step-label">Log Another</div>
+                            <div class="next-step-sublabel">Keep your streak going!</div>
+                        </div>
+                    </button>
+                    <button type="button" class="next-step-btn" onclick="window.history.back()">
+                        <div class="next-step-icon">🏠</div>
+                        <div class="next-step-content">
+                            <div class="next-step-label">Back to Dashboard</div>
+                            <div class="next-step-sublabel">View your stats & leaderboard</div>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- INFO BOX -->
+            <div class="info-box">
+                💡 <strong>How Aura Works:</strong> Your aura score is based on workout type, duration, intensity, and your current streak. Log consistently to boost your rank!
+            </div>
+
+            <!-- PRESET WORKOUTS -->
+            <div class="preset-section">
+                <div class="preset-title">Quick Log (Presets)</div>
+                <div class="preset-buttons">
+                    <button class="preset-btn" onclick="applyPreset('running', 30, 'moderate')">
+                        🏃 30 Min Run
+                    </button>
+                    <button class="preset-btn" onclick="applyPreset('weights', 45, 'hard')">
+                        🏋️ 45 Min Gym
+                    </button>
+                    <button class="preset-btn" onclick="applyPreset('yoga', 60, 'light')">
+                        🧘 60 Min Yoga
+                    </button>
+                </div>
+            </div>
+
+            <!-- FORM -->
+            <form id="workoutForm" onsubmit="submitWorkout(event)">
+                <div class="form-section">
+                    <!-- EXERCISE TYPE -->
+                    <div class="form-group">
+                        <label class="form-label">Exercise Type</label>
+                        <select class="form-select" id="exerciseType" onchange="updateAuraCalculation()" required>
+                            <option value="">Select exercise type...</option>
+                            <option value="running">🏃 Running</option>
+                            <option value="weights">🏋️ Weight Training</option>
+                            <option value="cycling">🚴 Cycling</option>
+                            <option value="yoga">🧘 Yoga</option>
+                            <option value="swimming">🏊 Swimming</option>
+                            <option value="hiit">⚡ HIIT/Cardio</option>
+                            <option value="climbing">🧗 Climbing</option>
+                            <option value="sports">⚽ Sports/Combat</option>
+                            <option value="other">🏃‍♂️ Other</option>
+                        </select>
+                    </div>
+
+                    <!-- DURATION -->
+                    <div class="form-group">
+                        <label class="form-label">Duration</label>
+                        <div class="slider-container">
+                            <input type="range" class="form-slider" id="duration" min="5" max="180" value="30" step="5" oninput="updateDurationDisplay(); updateAuraCalculation()">
+                            <div class="slider-value">
+                                <span class="slider-value-label">Minutes</span>
+                                <span class="slider-value-display"><span id="durationValue">30</span> min</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- INTENSITY -->
+                    <div class="form-group">
+                        <label class="form-label">Intensity Level</label>
+                        <div class="intensity-buttons">
+                            <button type="button" class="intensity-btn light" onclick="selectIntensity('light')" id="intensityLight">
+                                🟢 Light
+                            </button>
+                            <button type="button" class="intensity-btn moderate selected" onclick="selectIntensity('moderate')" id="intensityModerate">
+                                🟡 Moderate
+                            </button>
+                            <button type="button" class="intensity-btn hard" onclick="selectIntensity('hard')" id="intensityHard">
+                                🔴 Hard
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- DATE -->
+                    <div class="form-group">
+                        <label class="form-label">Date</label>
+                        <input type="date" class="form-input" id="workoutDate" required>
+                    </div>
+
+                    <!-- NOTES -->
+                    <div class="form-group">
+                        <label class="form-label">Notes (Optional)</label>
+                        <textarea class="form-textarea" id="notes" placeholder="How did it feel? Any personal records? Add details..."></textarea>
+                    </div>
+
+                    <!-- PHOTO UPLOAD -->
+                    <div class="form-group">
+                        <label class="form-label">Workout Photo (Optional)</label>
+                        <div class="photo-upload-area" onclick="document.getElementById('photoInput').click()">
+                            <div class="photo-upload-icon">📸</div>
+                            <div class="photo-upload-text">
+                                <strong>Click to upload</strong> or drag and drop<br>
+                                PNG, JPG up to 10MB
+                            </div>
+                        </div>
+                        <input type="file" id="photoInput" accept="image/*" onchange="handlePhotoUpload()">
+                        <div class="photo-preview" id="photoPreview">
+                            <img class="photo-preview-img" id="photoPreviewImg" src="" alt="Preview">
+                            <button type="button" class="photo-preview-remove" onclick="removePhoto()">Remove Photo</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AURA CALCULATION -->
+                <div class="aura-calculation">
+                    <div class="aura-calc-title">Aura Calculation</div>
+                    
+                    <div class="aura-calc-row">
+                        <span class="aura-calc-label">Base Aura (Exercise × Duration)</span>
+                        <span class="aura-calc-value" id="baseAura">45</span>
+                    </div>
+
+                    <div class="aura-calc-row">
+                        <span class="aura-calc-label">Intensity Multiplier</span>
+                        <span class="aura-calc-value" id="intensityMultiplier">1.5x</span>
+                    </div>
+
+                    <div class="aura-calc-row">
+                        <span class="aura-calc-label">Streak Bonus</span>
+                        <span class="aura-calc-value" id="streakBonus">+0</span>
+                    </div>
+
+                    <div class="aura-calc-total">
+                        <span class="aura-calc-total-label">Total Aura Earned</span>
+                        <span class="aura-calc-total-value" id="totalAura">68</span>
+                    </div>
+                </div>
+
+                <!-- BUTTONS -->
+                <div class="button-group">
+                    <button type="button" class="btn btn-secondary" onclick="resetForm()">Clear</button>
+                    <button type="submit" class="btn btn-primary" id="submitBtn">Log Workout</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Set today's date as default
+        document.getElementById('workoutDate').valueAsDate = new Date();
+
+        // Exercise aura multipliers (base points per minute)
+        const exerciseMultipliers = {
+            running: 1.5,
+            weights: 1.2,
+            cycling: 1.3,
+            yoga: 0.8,
+            swimming: 1.4,
+            hiit: 1.6,
+            climbing: 1.5,
+            sports: 1.4,
+            other: 1.0
+        };
+
+        // Intensity multipliers
+        let currentIntensity = 'moderate';
+        const intensityMultipliers = {
+            light: 1.0,
+            moderate: 1.5,
+            hard: 2.0
+        };
+
+        function updateDurationDisplay() {
+            const duration = document.getElementById('duration').value;
+            document.getElementById('durationValue').textContent = duration;
+            updateAuraCalculation();
+        }
+
+        function selectIntensity(intensity) {
+            currentIntensity = intensity;
+            
+            // Update button states
+            document.getElementById('intensityLight').classList.remove('selected');
+            document.getElementById('intensityModerate').classList.remove('selected');
+            document.getElementById('intensityHard').classList.remove('selected');
+            
+            document.getElementById('intensity' + intensity.charAt(0).toUpperCase() + intensity.slice(1)).classList.add('selected');
+            
+            updateAuraCalculation();
+        }
+
+        function updateAuraCalculation() {
+            const exerciseType = document.getElementById('exerciseType').value || 'other';
+            const duration = parseInt(document.getElementById('duration').value) || 0;
+            
+            // Base aura = exercise multiplier × duration
+            const baseAura = Math.round(exerciseMultipliers[exerciseType] * duration);
+            
+            // Intensity multiplier
+            const intensityMult = intensityMultipliers[currentIntensity];
+            
+            // Streak bonus (simulated - in real app would be from database)
+            const streakBonus = 10; // Example: user has 3-day streak
+            
+            // Total aura
+            const totalAura = Math.round(baseAura * intensityMult) + streakBonus;
+            
+            // Update display
+            document.getElementById('baseAura').textContent = baseAura;
+            document.getElementById('intensityMultiplier').textContent = intensityMult + 'x';
+            document.getElementById('streakBonus').textContent = '+' + streakBonus;
+            document.getElementById('totalAura').textContent = totalAura;
+            
+            // Update success message with calculated aura
+            document.getElementById('successAura').textContent = '+' + totalAura + ' Aura';
+        }
+
+        function applyPreset(exercise, duration, intensity) {
+            document.getElementById('exerciseType').value = exercise;
+            document.getElementById('duration').value = duration;
+            selectIntensity(intensity);
+            updateDurationDisplay();
+            
+            // Scroll to form
+            document.querySelector('.form-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function handlePhotoUpload() {
+            const file = document.getElementById('photoInput').files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('photoPreviewImg').src = e.target.result;
+                    document.getElementById('photoPreview').classList.add('show');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function removePhoto() {
+            document.getElementById('photoInput').value = '';
+            document.getElementById('photoPreview').classList.remove('show');
+        }
+
+        function resetForm() {
+            document.getElementById('workoutForm').reset();
+            document.getElementById('workoutDate').valueAsDate = new Date();
+            removePhoto();
+            selectIntensity('moderate');
+            updateAuraCalculation();
+        }
+
+        function submitWorkout(event) {
+            event.preventDefault();
+            
+            const exerciseType = document.getElementById('exerciseType').value;
+            const duration = document.getElementById('duration').value;
+            const intensity = currentIntensity;
+            const date = document.getElementById('workoutDate').value;
+            const notes = document.getElementById('notes').value;
+            
+            // Log data (in real app, send to backend)
+            console.log({
+                exercise: exerciseType,
+                duration: duration,
+                intensity: intensity,
+                date: date,
+                notes: notes,
+                hasPhoto: document.getElementById('photoInput').files.length > 0
+            });
+            
+            // Show success message
+            document.getElementById('successMessage').classList.add('show');
+            document.getElementById('nextSteps').classList.add('show');
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // Store workout data for next steps
+            window.lastWorkoutData = {
+                exercise: exerciseType,
+                duration: duration,
+                intensity: intensity,
+                date: date,
+                notes: notes,
+                photo: document.getElementById('photoInput').files.length > 0 ? document.getElementById('photoInput').files[0] : null,
+                aura: parseInt(document.getElementById('totalAura').textContent)
+            };
+        }
+
+        function goToShare() {
+            // In real app, navigate to fitness_share_post.html
+            alert('📤 Share Modal Loading...\n\nYou would be taken to:\nfitness_share_post.html\n\nYour workout data:\n• Exercise: ' + window.lastWorkoutData.exercise + '\n• Duration: ' + window.lastWorkoutData.duration + ' min\n• Aura: +' + window.lastWorkoutData.aura);
+            // In production: window.location.href = '/auraboost-mvp/fitness_share_post.html';
+        }
+
+        function goToBoosters() {
+            // In real app, navigate to fitness_aura_boosters.html
+            alert('⚡ Aura Boosters Loading...\n\nYou would be taken to:\nfitness_aura_boosters.html\n\nView your:\n• Earned badges\n• Streak progress\n• Unlocked achievements\n• Available boosters');
+            // In production: window.location.href = '/auraboost-mvp/fitness_aura_boosters.html';
+        }
+
+        function logAnother() {
+            // Hide success and next steps
+            document.getElementById('successMessage').classList.remove('show');
+            document.getElementById('nextSteps').classList.remove('show');
+            
+            // Clear form but keep preset selected
+            document.getElementById('notes').value = '';
+            removePhoto();
+            document.getElementById('workoutDate').valueAsDate = new Date();
+            
+            // Keep exercise type, duration, intensity from last workout
+            // (so user can log another similar workout faster)
+            
+            // Scroll to form
+            document.querySelector('.form-section').scrollIntoView({ behavior: 'smooth' });
+            
+            // Focus on notes field
+            setTimeout(() => {
+                document.getElementById('notes').focus();
+            }, 500);
+        }
+
+        // Initialize
+        updateAuraCalculation();
+    </script>
+</body>
+</html>

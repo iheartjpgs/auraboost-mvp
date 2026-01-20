@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraBoost</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #F59E0B;
+            --secondary: #FCD34D;
+            --background: #0F172A;
+            --surface: #1E293B;
+            --text: #F1F5F9;
+            --text-secondary: #CBD5E1;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+        }
+
+        /* LOGIN SCREEN */
+        #loginScreen {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .logo-container {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 12px;
+        }
+
+        h1 {
+            font-size: 32px;
+            margin: 12px 0;
+            color: var(--primary);
+        }
+
+        .tagline {
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        label {
+            color: var(--text);
+            font-size: 14px;
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 14px;
+            background-color: var(--surface);
+            border: 1px solid var(--primary);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--secondary);
+        }
+
+        button {
+            background-color: var(--primary);
+            color: var(--background);
+            border: none;
+            border-radius: 8px;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 12px;
+            transition: opacity 0.2s;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        button:active {
+            opacity: 0.8;
+        }
+
+        .demo-info {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* DASHBOARD SCREEN */
+        #dashboardScreen {
+            min-height: 100vh;
+        }
+
+        .header {
+            background-color: var(--surface);
+            border-bottom: 1px solid var(--primary);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            position: sticky;
+            top: 0;
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .header-bottom {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .username {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .logout-btn {
+            background-color: var(--primary);
+            color: var(--background);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .main-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 24px 20px;
+        }
+
+        .aura-card {
+            background: linear-gradient(135deg, var(--surface) 0%, rgba(245, 158, 11, 0.1) 100%);
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .aura-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .aura-number {
+            font-size: 80px;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 0;
+            line-height: 1;
+        }
+
+        .aura-stars {
+            font-size: 32px;
+            margin: 16px 0 8px 0;
+        }
+
+        .aura-subtext {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin: 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background-color: var(--surface);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .stat-detail {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        .milestone-card {
+            background-color: var(--surface);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .milestone-title {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+
+        .milestone-target {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 16px;
+        }
+
+        .progress-bar-bg {
+            background-color: var(--background);
+            border-radius: 8px;
+            height: 8px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .progress-bar-fill {
+            background-color: var(--primary);
+            height: 100%;
+            width: 78%;
+        }
+
+        .progress-text {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .days-left {
+            font-size: 14px;
+            color: var(--secondary);
+            font-weight: 500;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .primary-btn {
+            background-color: var(--primary);
+            color: var(--background);
+            border: none;
+            border-radius: 8px;
+            padding: 16px 12px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .secondary-btn {
+            background-color: var(--surface);
+            color: var(--text);
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            padding: 16px 12px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .button-emoji {
+            font-size: 20px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--text);
+            margin: 0 0 16px 0;
+        }
+
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .achievement-item {
+            background-color: var(--surface);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .achievement-emoji {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .achievement-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .achievement-status {
+            font-size: 10px;
+            color: var(--text-secondary);
+        }
+
+        .stats-table {
+            background-color: var(--surface);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(245, 158, 11, 0.1);
+        }
+
+        .stat-row:last-child {
+            border-bottom: none;
+        }
+
+        .stat-key {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .stat-val {
+            color: var(--primary);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- LOGIN SCREEN -->
+    <div id="loginScreen">
+        <div class="login-container">
+            <div class="logo-container">
+                <svg class="logo" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="200" cy="200" r="160" stroke="#F59E0B" stroke-width="28" />
+                    <circle cx="200" cy="200" r="110" stroke="#FCD34D" stroke-width="24" />
+                    <circle cx="200" cy="200" r="60" stroke="#F59E0B" stroke-width="20" />
+                    <circle cx="200" cy="200" r="25" fill="#F59E0B" />
+                </svg>
+                <h1>AuraBoost</h1>
+                <p class="tagline">Track Your Aura • Compete • Earn</p>
+            </div>
+
+            <form onsubmit="handleLogin(event)">
+                <div>
+                    <label>Email</label>
+                    <input type="email" id="email" value="test@auraboost.com" required />
+                </div>
+
+                <div>
+                    <label>Password</label>
+                    <input type="password" id="password" value="password123" required />
+                </div>
+
+                <button type="submit">Sign In</button>
+            </form>
+
+            <div class="demo-info">
+                <p>Demo: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="91e5f4e2e5d1f0e4e3f0e2f2f0ffbff2fefc">[email&#160;protected]</a> / password123</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- DASHBOARD SCREEN -->
+    <div id="dashboardScreen" class="hidden">
+        <div class="header">
+            <div class="header-top">
+                <svg width="40" height="40" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="200" cy="200" r="160" stroke="#F59E0B" stroke-width="28" />
+                    <circle cx="200" cy="200" r="110" stroke="#FCD34D" stroke-width="24" />
+                    <circle cx="200" cy="200" r="60" stroke="#F59E0B" stroke-width="20" />
+                    <circle cx="200" cy="200" r="25" fill="#F59E0B" />
+                </svg>
+                <h1 style="margin: 0; font-size: 24px;">AuraBoost</h1>
+            </div>
+            <div class="header-bottom">
+                <span class="username">@testuser</span>
+                <button class="logout-btn" onclick="handleLogout()">Logout</button>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <!-- Aura Score -->
+            <div class="aura-card">
+                <p class="aura-label">Your Aura Score</p>
+                <h2 class="aura-number">187</h2>
+                <p class="aura-stars">✨✨✨✨✨</p>
+                <p class="aura-subtext">5 Star Rating</p>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <p class="stat-label">Global Rank</p>
+                    <p class="stat-value">#247</p>
+                    <p class="stat-detail">Out of millions</p>
+                </div>
+                <div class="stat-card">
+                    <p class="stat-label">Current Streak</p>
+                    <p class="stat-value">47d</p>
+                    <p class="stat-detail">🔥 Keep it going!</p>
+                </div>
+                <div class="stat-card">
+                    <p class="stat-label">Total Workouts</p>
+                    <p class="stat-value">89</p>
+                    <p class="stat-detail">All time</p>
+                </div>
+            </div>
+
+            <!-- Milestone -->
+            <div class="milestone-card">
+                <p class="milestone-title">Next Achievement</p>
+                <p class="milestone-target">Day 60 Badge ✨</p>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill"></div>
+                </div>
+                <p class="progress-text">47/60 days</p>
+                <p class="days-left">13 days until your next milestone! 💪</p>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="primary-btn" onclick="alert('📷 Camera/Upload coming in Step 3!')">
+                    <span class="button-emoji">💪</span>
+                    <span>Log Workout</span>
+                </button>
+                <button class="secondary-btn" onclick="alert('🏆 Leaderboard coming soon!')">
+                    <span class="button-emoji">🏆</span>
+                    <span>Leaderboard</span>
+                </button>
+                <button class="secondary-btn" onclick="alert('💰 Creator Dashboard coming soon!')">
+                    <span class="button-emoji">💰</span>
+                    <span>Earn</span>
+                </button>
+            </div>
+
+            <!-- Achievements -->
+            <div>
+                <h3 class="section-title">🏅 Achievements</h3>
+                <div class="achievements-grid">
+                    <div class="achievement-item" style="opacity: 1;">
+                        <div class="achievement-emoji">🏅</div>
+                        <p class="achievement-name">Day 7</p>
+                        <p class="achievement-status">✓ Earned</p>
+                    </div>
+                    <div class="achievement-item" style="opacity: 1;">
+                        <div class="achievement-emoji">🥈</div>
+                        <p class="achievement-name">Day 30</p>
+                        <p class="achievement-status">✓ Earned</p>
+                    </div>
+                    <div class="achievement-item" style="opacity: 0.4;">
+                        <div class="achievement-emoji">🥇</div>
+                        <p class="achievement-name">Day 60</p>
+                        <p class="achievement-status">🔒 Locked</p>
+                    </div>
+                    <div class="achievement-item" style="opacity: 1;">
+                        <div class="achievement-emoji">⚡</div>
+                        <p class="achievement-name">Streak Master</p>
+                        <p class="achievement-status">✓ Earned</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Stats -->
+            <div style="margin-top: 24px;">
+                <h3 class="section-title">📊 Quick Stats</h3>
+                <div class="stats-table">
+                    <div class="stat-row">
+                        <span class="stat-key">Member Since</span>
+                        <span class="stat-val">Nov 2024</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-key">Avg Per Week</span>
+                        <span class="stat-val">7.4 workouts</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-key">Best Streak</span>
+                        <span class="stat-val">47 days 🔥</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (email === 'test@auraboost.com' && password === 'password123') {
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('dashboardScreen').classList.remove('hidden');
+            } else {
+                alert('Invalid credentials');
+            }
+        }
+
+        function handleLogout() {
+            document.getElementById('dashboardScreen').classList.add('hidden');
+            document.getElementById(

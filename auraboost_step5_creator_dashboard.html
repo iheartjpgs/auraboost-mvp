@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraBoost - Creator Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #0F172A;
+            color: #F1F5F9;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background-color: #1E293B;
+            border-bottom: 1px solid #F59E0B;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: bold;
+            color: #F59E0B;
+        }
+
+        .header-bottom {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .username {
+            color: #CBD5E1;
+            font-size: 14px;
+        }
+
+        .back-btn {
+            background-color: #F59E0B;
+            color: #0F172A;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .main-content {
+            padding: 24px 20px;
+        }
+
+        .page-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #F1F5F9;
+            margin-bottom: 8px;
+        }
+
+        .page-subtitle {
+            color: #CBD5E1;
+            margin-bottom: 24px;
+        }
+
+        .creator-header {
+            background: linear-gradient(135deg, #1E293B 0%, rgba(245, 158, 11, 0.1) 100%);
+            border: 2px solid #F59E0B;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .creator-avatar-large {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #F59E0B, #FCD34D);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 48px;
+            color: #0F172A;
+            flex-shrink: 0;
+        }
+
+        .creator-header-info h2 {
+            font-size: 24px;
+            color: #F1F5F9;
+            margin-bottom: 8px;
+        }
+
+        .creator-badges {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+
+        .creator-badge {
+            display: inline-block;
+            background-color: rgba(245, 158, 11, 0.2);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            color: #FCD34D;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .creator-category {
+            display: inline-block;
+            background-color: rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #10B981;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .creator-status {
+            font-size: 14px;
+            color: #CBD5E1;
+        }
+
+        /* STATS GRID */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background-color: #1E293B;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #CBD5E1;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #F59E0B;
+            margin-bottom: 4px;
+        }
+
+        .stat-subtext {
+            font-size: 12px;
+            color: #CBD5E1;
+        }
+
+        .stat-card.highlight {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, #1E293B 100%);
+            border: 1px solid #F59E0B;
+        }
+
+        .stat-card.highlight .stat-value {
+            color: #FCD34D;
+        }
+
+        /* REFERRAL LINK */
+        .referral-section {
+            background-color: #1E293B;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #F1F5F9;
+            margin-bottom: 16px;
+        }
+
+        .referral-link-display {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .referral-link-text {
+            flex: 1;
+            background-color: #0F172A;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 6px;
+            padding: 10px 12px;
+            color: #F59E0B;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            word-break: break-all;
+            user-select: all;
+        }
+
+        .btn {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background-color: #F59E0B;
+            color: #0F172A;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+
+        .btn-secondary {
+            background-color: #1E293B;
+            color: #F1F5F9;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(245, 158, 11, 0.1);
+            border-color: #F59E0B;
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        /* PAYOUT STATUS */
+        .payout-section {
+            background: linear-gradient(135deg, #1E293B 0%, rgba(16, 185, 129, 0.1) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .payout-status {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .payout-info h3 {
+            font-size: 16px;
+            color: #F1F5F9;
+            margin-bottom: 8px;
+        }
+
+        .payout-details {
+            font-size: 14px;
+            color: #CBD5E1;
+            line-height: 1.6;
+        }
+
+        .payout-amount {
+            text-align: right;
+        }
+
+        .payout-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #10B981;
+            margin-bottom: 4px;
+        }
+
+        .payout-label {
+            font-size: 12px;
+            color: #CBD5E1;
+        }
+
+        /* RECENT REFERRALS */
+        .referrals-table {
+            background-color: #1E293B;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        .table-header {
+            display: grid;
+            grid-template-columns: 1fr 100px 100px 80px;
+            gap: 12px;
+            padding: 16px 20px;
+            background-color: #0F172A;
+            border-bottom: 1px solid rgba(245, 158, 11, 0.2);
+            font-size: 12px;
+            font-weight: 600;
+            color: #CBD5E1;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .table-row {
+            display: grid;
+            grid-template-columns: 1fr 100px 100px 80px;
+            gap: 12px;
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(245, 158, 11, 0.1);
+            align-items: center;
+        }
+
+        .table-row:last-child {
+            border-bottom: none;
+        }
+
+        .table-row:hover {
+            background-color: rgba(245, 158, 11, 0.05);
+        }
+
+        .referral-user {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .referral-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #F59E0B, #FCD34D);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #0F172A;
+            flex-shrink: 0;
+        }
+
+        .referral-username {
+            font-weight: 600;
+            color: #F1F5F9;
+        }
+
+        .referral-date {
+            color: #CBD5E1;
+            font-size: 12px;
+        }
+
+        .referral-status {
+            text-align: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: #10B981;
+        }
+
+        .referral-revenue {
+            text-align: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: #F59E0B;
+        }
+
+        .referral-days {
+            text-align: center;
+            font-size: 12px;
+            color: #CBD5E1;
+        }
+
+        /* CONVERSION STATS */
+        .conversion-section {
+            background-color: #1E293B;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .conversion-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+        }
+
+        .conversion-item {
+            text-align: center;
+        }
+
+        .conversion-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #F59E0B;
+            margin-bottom: 4px;
+        }
+
+        .conversion-label {
+            font-size: 12px;
+            color: #CBD5E1;
+        }
+
+        /* BOOST BUTTONS */
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .action-btn {
+            padding: 16px;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            background-color: #1E293B;
+            color: #F1F5F9;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .action-btn:hover {
+            background-color: rgba(245, 158, 11, 0.1);
+            border-color: #F59E0B;
+        }
+
+        .action-btn-emoji {
+            font-size: 24px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid rgba(245, 158, 11, 0.2);
+            padding-bottom: 16px;
+        }
+
+        .tab {
+            padding: 8px 16px;
+            border: none;
+            background-color: transparent;
+            color: #CBD5E1;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            position: relative;
+            transition: all 0.2s;
+        }
+
+        .tab.active {
+            color: #F59E0B;
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -16px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: #F59E0B;
+        }
+
+        .info-banner {
+            background-color: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #CBD5E1;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-top">
+            <svg width="40" height="40" viewBox="0 0 400 400" fill="none">
+                <circle cx="200" cy="200" r="160" stroke="#F59E0B" stroke-width="28" />
+                <circle cx="200" cy="200" r="110" stroke="#FCD34D" stroke-width="24" />
+                <circle cx="200" cy="200" r="60" stroke="#F59E0B" stroke-width="20" />
+                <circle cx="200" cy="200" r="25" fill="#F59E0B" />
+            </svg>
+            <h1>AuraBoost</h1>
+        </div>
+        <div class="header-bottom">
+            <span class="username">@testuser</span>
+            <button class="back-btn" onclick="goToDashboard()">← Back</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="main-content">
+            <div class="page-title">💰 Creator Dashboard</div>
+            <p class="page-subtitle">Manage your referrals, earnings, and grow your network</p>
+
+            <!-- CREATOR PROFILE HEADER -->
+            <div class="creator-header">
+                <div class="creator-avatar-large">X</div>
+                <div class="creator-header-info">
+                    <h2>@xo_fitness</h2>
+                    <div class="creator-badges">
+                        <div class="creator-badge">💎 Verified Creator</div>
+                        <div class="creator-category">💪 Fitness Influencer</div>
+                    </div>
+                    <div class="creator-status">📍 Los Angeles, CA • 50K followers on Instagram</div>
+                </div>
+            </div>
+
+            <!-- EARNINGS STATS -->
+            <div class="stats-grid">
+                <div class="stat-card highlight">
+                    <div class="stat-label">Total Earnings</div>
+                    <div class="stat-value">$2,450</div>
+                    <div class="stat-subtext">all time</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label">This Month</div>
+                    <div class="stat-value">$340</div>
+                    <div class="stat-subtext">Jan 2026</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label">Active Referrals</div>
+                    <div class="stat-value">156</div>
+                    <div class="stat-subtext">paying users</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label">Avg User LTV</div>
+                    <div class="stat-value">$8.33</div>
+                    <div class="stat-subtext">lifetime value</div>
+                </div>
+            </div>
+
+            <!-- REFERRAL LINK -->
+            <div class="referral-section">
+                <div class="section-title">📲 Your Referral Link</div>
+                <p style="color: #CBD5E1; margin-bottom: 12px;">Share this link with your followers. You'll earn 30% commission on every subscription they purchase!</p>
+                
+                <div class="referral-link-display">
+                    <div class="referral-link-text">auraboost.app/ref/xo_fitness</div>
+                    <button class="btn btn-primary" onclick="copyToClipboard()">📋 Copy</button>
+                    <button class="btn btn-secondary" onclick="alert('Share dialog would open')">📤 Share</button>
+                </div>
+
+                <div class="info-banner">
+                    💡 <strong>Pro tip:</strong> Share your link in your Instagram bio, TikTok, Twitter, and Discord. The more places you share it, the more referrals you'll get!
+                </div>
+            </div>
+
+            <!-- PAYOUT STATUS -->
+            <div class="payout-section">
+                <div class="payout-status">
+                    <div class="payout-info">
+                        <h3>Next Payout</h3>
+                        <div class="payout-details">
+                            📅 Monday, January 27, 2026<br>
+                            💳 Stripe → Your Bank Account<br>
+                            ✅ Bank details saved
+                        </div>
+                    </div>
+                    <div class="payout-amount">
+                        <div class="payout-value">$340</div>
+                        <div class="payout-label">processing</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONVERSION STATS -->
+            <div class="conversion-section">
+                <div class="section-title">📊 Your Conversion Stats</div>
+                <div class="conversion-grid">
+                    <div class="conversion-item">
+                        <div class="conversion-value">18.2%</div>
+                        <div class="conversion-label">Click-through rate</div>
+                    </div>
+                    <div class="conversion-item">
+                        <div class="conversion-value">54%</div>
+                        <div class="conversion-label">Conversion to signup</div>
+                    </div>
+                    <div class="conversion-item">
+                        <div class="conversion-value">28%</div>
+                        <div class="conversion-label">Upgrade to paid</div>
+                    </div>
+                    <div class="conversion-item">
+                        <div class="conversion-value">$12.50</div>
+                        <div class="conversion-label">Avg commission per ref</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ACTION BUTTONS -->
+            <div class="action-buttons">
+                <button class="action-btn" onclick="alert('Opening boost video generator...')">
+                    <span class="action-btn-emoji">🎥</span>
+                    <span>Create Boost Video</span>
+                </button>
+                <button class="action-btn" onclick="alert('Opening social media templates...')">
+                    <span class="action-btn-emoji">📱</span>
+                    <span>Social Media Templates</span>
+                </button>
+                <button class="action-btn" onclick="alert('Opening analytics dashboard...')">
+                    <span class="action-btn-emoji">📈</span>
+                    <span>Detailed Analytics</span>
+                </button>
+                <button class="action-btn" onclick="alert('Opening support chat...')">
+                    <span class="action-btn-emoji">💬</span>
+                    <span>Creator Support</span>
+                </button>
+            </div>
+
+            <!-- RECENT REFERRALS -->
+            <div style="margin-bottom: 24px;">
+                <div class="tabs">
+                    <button class="tab active" onclick="switchTab(this)">Recent Referrals</button>
+                    <button class="tab" onclick="switchTab(this)">Pending Payouts</button>
+                    <button class="tab" onclick="switchTab(this)">Top Performing Links</button>
+                </div>
+            </div>
+
+            <div class="referrals-table">
+                <div class="table-header">
+                    <div>User</div>
+                    <div>Status</div>
+                    <div>Revenue</div>
+                    <div>Days Active</div>
+                </div>
+
+                <!-- ROW 1 -->
+                <div class="table-row">
+                    <div class="referral-user">
+                        <div class="referral-avatar">J</div>
+                        <div>
+                            <div class="referral-username">@john_fitness</div>
+                            <div class="referral-date">Joined 2 days ago</div>
+                        </div>
+                    </div>
+                    <div class="referral-status">✓ Active</div>
+                    <div class="referral-revenue">$14.97</div>
+                    <div class="referral-days">2</div>
+                </div>
+
+                <!-- ROW 2 -->
+                <div class="table-row">
+                    <div class="referral-user">
+                        <div class="referral-avatar">S</div>
+                        <div>
+                            <div class="referral-username">@sarah_gym</div>
+                            <div class="referral-date">Joined 5 days ago</div>
+                        </div>
+                    </div>
+                    <div class="referral-status">✓ Active</div>
+                    <div class="referral-revenue">$35.99</div>
+                    <div class="referral-days">5</div>
+                </div>
+
+                <!-- ROW 3 -->
+                <div class="table-row">
+                    <div class="referral-user">
+                        <div class="referral-avatar">M</div>
+                        <div>
+                            <div class="referral-username">@mike_strength</div>
+                            <div class="referral-date">Joined 8 days ago</div>
+                        </div>
+                    </div>
+                    <div class="referral-status">✓ Active</div>
+                    <div class="referral-revenue">$35.99</div>
+                    <div class="referral-days">8</div>
+                </div>
+
+                <!-- ROW 4 -->
+                <div class="table-row">
+                    <div class="referral-user">
+                        <div class="referral-avatar">E</div>
+                        <div>
+                            <div class="referral-username">@emma_cardio</div>
+                            <div class="referral-date">Joined 12 days ago</div>
+                        </div>
+                    </div>
+                    <div class="referral-status">✓ Active</div>
+                    <div class="referral-revenue">$71.98</div>
+                    <div class="referral-days">12</div>
+                </div>
+
+                <!-- ROW 5 -->
+                <div class="table-row">
+                    <div class="referral-user">
+                        <div class="referral-avatar">A</div>
+                        <div>
+                            <div class="referral-username">@alex_gains</div>
+                            <div class="referral-date">Joined 15 days ago</div>
+                        </div>
+                    </div>
+                    <div class="referral-status">✓ Active</div>
+                    <div class="referral-revenue">$89.97</div>
+                    <div class="referral-days">15</div>
+                </div>
+            </div>
+
+            <!-- PAGINATION -->
+            <div class="info-banner" style="text-align: center;">
+                Showing referrals 1-5 of 287 | See all →
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function copyToClipboard() {
+            const link = 'auraboost.app/ref/xo_fitness';
+            navigator.clipboard.writeText(link).then(() => {
+                alert('✓ Link copied to clipboard!');
+            }).catch(() => {
+                alert('Copy failed. Link: ' + link);
+            });
+        }
+
+        function switchTab(element) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            element.classList.add('active');
+            alert('Switching to: ' + element.textContent);
+        }
+
+        function goToDashboard() {
+            alert('Going back to dashboard...\n\nIn real app, this navigates back.');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraBoost - AI Content Scanner</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #0F172A 0%, #1a1f3a 100%);
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(245, 158, 11, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-link {
+            display: inline-block;
+            text-decoration: none;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .logo-link:hover {
+            transform: scale(1.1);
+        }
+
+        .logo-link img {
+            height: 40px;
+            width: 40px;
+            object-fit: contain;
+        }
+
+        /* Scanner Container */
+        .scanner-container {
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 40px 20px;
+        }
+
+        .scanner-title {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .scanner-title h1 {
+            font-size: 32px;
+            background: linear-gradient(135deg, #F59E0B 0%, #EC4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .scanner-title p {
+            color: #aaa;
+            font-size: 16px;
+        }
+
+        /* Input Section */
+        .scanner-input {
+            display: flex;
+            gap: 12px;
+            margin: 40px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 12px;
+        }
+
+        .scanner-input input {
+            flex: 1;
+            padding: 14px 16px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .scanner-input input::placeholder {
+            color: #666;
+        }
+
+        .scanner-input input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.3);
+        }
+
+        .scanner-input button {
+            padding: 14px 40px;
+            background: linear-gradient(135deg, #F59E0B 0%, #EC4899 100%);
+            border: none;
+            border-radius: 8px;
+            color: #0F172A;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            font-size: 16px;
+        }
+
+        .scanner-input button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(245, 158, 11, 0.3);
+        }
+
+        .scanner-input button:active {
+            transform: translateY(-1px);
+        }
+
+        /* LIVE DETECTOR ANIMATION */
+        .detector-animation {
+            display: none;
+            text-align: center;
+            padding: 60px 40px;
+            background: linear-gradient(135deg, rgba(245,158,11,0.1) 0%, rgba(236,72,153,0.05) 100%);
+            border-radius: 16px;
+            margin: 40px 0;
+            border: 1px solid rgba(245,158,11,0.2);
+        }
+
+        .detector-animation.active {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Pulse Effect */
+        .scanner-pulse {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 30px;
+            background: radial-gradient(circle, #F59E0B 0%, #EC4899 50%, transparent 100%);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+            position: relative;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7),
+                            inset 0 0 0 0 rgba(245, 158, 11, 0.3);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 0 0 30px rgba(245, 158, 11, 0),
+                            inset 0 0 0 20px rgba(245, 158, 11, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(245, 158, 11, 0),
+                            inset 0 0 0 0 rgba(245, 158, 11, 0);
+                transform: scale(1);
+            }
+        }
+
+        .scanner-text {
+            font-size: 20px;
+            color: #F59E0B;
+            font-weight: 600;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        /* Animated Dots */
+        .scanner-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            background: linear-gradient(135deg, #F59E0B 0%, #EC4899 100%);
+            border-radius: 50%;
+            animation: dot-blink 1.4s infinite;
+        }
+
+        .dot:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes dot-blink {
+            0%, 60%, 100% {
+                opacity: 0.3;
+                transform: translateY(0);
+            }
+            30% {
+                opacity: 1;
+                transform: translateY(-8px);
+            }
+        }
+
+        /* Scanning Steps */
+        .scanning-steps {
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            font-size: 14px;
+            color: #bbb;
+        }
+
+        .step-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: rgba(245, 158, 11, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #F59E0B;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+
+        .step-item.active .step-icon {
+            background: linear-gradient(135deg, #F59E0B 0%, #EC4899 100%);
+            animation: pulse-icon 1s infinite;
+        }
+
+        @keyframes pulse-icon {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7);
+            }
+            50% {
+                box-shadow: 0 0 0 6px rgba(245, 158, 11, 0);
+            }
+        }
+
+        /* SCAN RESULTS */
+        .scan-results {
+            display: none;
+        }
+
+        .scan-results.active {
+            display: block;
+            animation: slideIn 0.4s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .results-container {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 16px;
+            padding: 40px;
+            margin: 40px 0;
+        }
+
+        .results-container h2 {
+            font-size: 28px;
+            margin-bottom: 30px;
+            text-align: center;
+            background: linear-gradient(135deg, #F59E0B 0%, #EC4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .result-item {
+            margin: 20px 0;
+            padding: 16px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: slideIn 0.4s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .result-item:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .result-item:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+
+        .result-item:nth-child(4) {
+            animation-delay: 0.3s;
+        }
+
+        .result-item:nth-child(5) {
+            animation-delay: 0.4s;
+        }
+
+        .result-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 16px;
+        }
+
+        .confidence-display {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .confidence-bar {
+            width: 200px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .confidence-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4CD137 0%, #F59E0B 100%);
+            transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            width: 0%;
+        }
+
+        .confidence-percentage {
+            min-width: 45px;
+            text-align: right;
+            font-weight: 600;
+            color: #F59E0B;
+        }
+
+        /* Points Awarded */
+        .points-awarded {
+            margin: 30px 0;
+            padding: 30px;
+            background: linear-gradient(135deg, #4CD137 0%, #F59E0B 100%);
+            border-radius: 12px;
+            text-align: center;
+            color: #0F172A;
+            animation: slideIn 0.5s ease-out 0.5s both;
+        }
+
+        .points-awarded h3 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .points-awarded p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        /* Revenue Display */
+        .revenue-display {
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            text-align: center;
+            animation: slideIn 0.5s ease-out 0.6s both;
+        }
+
+        .revenue-display h4 {
+            color: #aaa;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .revenue-amount {
+            font-size: 28px;
+            color: #4CD137;
+            font-weight: 600;
+        }
+
+        .revenue-split {
+            font-size: 12px;
+            color: #888;
+            margin-top: 8px;
+        }
+
+        /* Action Buttons */
+        .result-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 30px;
+            animation: slideIn 0.5s ease-out 0.7s both;
+        }
+
+        button {
+            padding: 14px 28px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #F59E0B 0%, #EC4899 100%);
+            color: #0F172A;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(245, 158, 11, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid #F59E0B;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(245, 158, 11, 0.1);
+        }
+
+        .error-message {
+            display: none;
+            padding: 16px;
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            border-radius: 8px;
+            color: #ff6b6b;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .scanner-container {
+                padding: 20px 15px;
+            }
+
+            .scanner-title h1 {
+                font-size: 24px;
+            }
+
+            .detector-animation {
+                padding: 40px 20px;
+            }
+
+            .scanner-pulse {
+                width: 100px;
+                height: 100px;
+            }
+
+            .results-container {
+                padding: 25px 15px;
+            }
+
+            .confidence-bar {
+                width: 100px;
+            }
+
+            .result-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <a href="auraboost_homepage.html" class="logo-link" title="Back to AuraBoost Home">
+                <img src="auraboost_logo_40x40.png" alt="AuraBoost Logo">
+            </a>
+            <h1 style="flex: 1; margin-left: 20px;">AuraBoost</h1>
+            <nav style="display: flex; gap: 20px;">
+                <a href="auraboost_homepage.html" style="color: #fff; text-decoration: none;">Home</a>
+                <a href="auraboost_creator_brand_marketplace.html" style="color: #fff; text-decoration: none;">Brands</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="scanner-container">
+        <div class="scanner-title">
+            <h1>🤖 AI Content Scanner</h1>
+            <p>Paste your social media URL and we'll detect brand mentions & calculate earnings</p>
+        </div>
+
+        <!-- Scanner Input -->
+        <div class="scanner-input">
+            <input 
+                type="url" 
+                id="urlInput" 
+                placeholder="https://instagram.com/p/... or https://tiktok.com/@.../video/..."
+                onkeypress="if(event.key==='Enter') startScan()"
+            >
+            <button onclick="startScan()">Scan</button>
+        </div>
+
+        <!-- Error Message -->
+        <div class="error-message" id="errorMessage"></div>
+
+        <!-- Live Detector Animation -->
+        <div class="detector-animation" id="detectorAnimation">
+            <div class="scanner-pulse"></div>
+            <div class="scanner-text">Analyzing Your Content</div>
+            
+            <div class="scanning-steps">
+                <div class="step-item active">
+                    <div class="step-icon">⚡</div>
+                    <span>Scanning for brand keywords...</span>
+                </div>
+                <div class="step-item">
+                    <div class="step-icon">🔍</div>
+                    <span>Detecting visual branding...</span>
+                </div>
+                <div class="step-item">
+                    <div class="step-icon">🎯</div>
+                    <span>Calculating content score...</span>
+                </div>
+            </div>
+
+            <div class="scanner-dots" style="margin-top: 30px;">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+        </div>
+
+        <!-- Scan Results -->
+        <div class="scan-results" id="scanResults">
+            <div class="results-container">
+                <h2>✨ Scan Complete!</h2>
+
+                <!-- Detection Results -->
+                <div class="result-item">
+                    <div class="result-label">
+                        <span>🎤</span>
+                        <span>Brand Keywords Detected</span>
+                    </div>
+                    <div class="confidence-display">
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" id="keywordBar" style="width: 0%;"></div>
+                        </div>
+                        <div class="confidence-percentage" id="keywordScore">0%</div>
+                    </div>
+                </div>
+
+                <div class="result-item">
+                    <div class="result-label">
+                        <span>🖼️</span>
+                        <span>Logo/Visual Detection</span>
+                    </div>
+                    <div class="confidence-display">
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" id="visualBar" style="width: 0%;"></div>
+                        </div>
+                        <div class="confidence-percentage" id="visualScore">0%</div>
+                    </div>
+                </div>
+
+                <div class="result-item">
+                    <div class="result-label">
+                        <span>🎨</span>
+                        <span>Filter Applied</span>
+                    </div>
+                    <div class="confidence-display">
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" id="filterBar" style="width: 0%;"></div>
+                        </div>
+                        <div class="confidence-percentage" id="filterScore">0%</div>
+                    </div>
+                </div>
+
+                <div class="result-item">
+                    <div class="result-label">
+                        <span>⭐</span>
+                        <span>Overall Content Score</span>
+                    </div>
+                    <div class="confidence-display">
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" id="overallBar" style="width: 0%;"></div>
+                        </div>
+                        <div class="confidence-percentage" id="overallScore">0%</div>
+                    </div>
+                </div>
+
+                <!-- Points Awarded -->
+                <div class="points-awarded" id="pointsAwarded">
+                    <h3>🏆 +500 Points Awarded!</h3>
+                    <p>Congratulations on your branded content</p>
+                </div>
+
+                <!-- Revenue Display -->
+                <div class="revenue-display" id="revenueDisplay">
+                    <h4>💰 Your Earnings This Post</h4>
+                    <div class="revenue-amount">$47.50</div>
+                    <div class="revenue-split">70% partnership fee (AuraBoost keeps 30%)</div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="result-actions">
+                    <button class="btn-secondary" onclick="scanAnother()">Scan Another Post</button>
+                    <button class="btn-primary" onclick="goToDashboard()">View Earnings Dashboard</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let isScanning = false;
+
+        function startScan() {
+            const url = document.getElementById('urlInput').value.trim();
+            const errorMsg = document.getElementById('errorMessage');
+
+            // Validate URL
+            if (!url) {
+                showError('Please enter a valid social media URL');
+                return;
+            }
+
+            if (!isValidSocialUrl(url)) {
+                showError('Please enter a valid Instagram, TikTok, or YouTube URL');
+                return;
+            }
+
+            errorMsg.classList.remove('show');
+            isScanning = true;
+
+            // Show detector animation
+            document.getElementById('detectorAnimation').classList.add('active');
+            document.getElementById('scanResults').classList.remove('active');
+
+            // Animate scanning steps
+            animateScanningSteps();
+
+            // Simulate AI scanning (2.5-3 seconds)
+            setTimeout(() => {
+                document.getElementById('detectorAnimation').classList.remove('active');
+                animateResults();
+            }, 2800);
+        }
+
+        function isValidSocialUrl(url) {
+            const validDomains = ['instagram.com', 'tiktok.com', 'youtube.com', 'youtu.be'];
+            return validDomains.some(domain => url.includes(domain));
+        }
+
+        function showError(message) {
+            const errorMsg = document.getElementById('errorMessage');
+            errorMsg.textContent = message;
+            errorMsg.classList.add('show');
+        }
+
+        function animateScanningSteps() {
+            const steps = document.querySelectorAll('.step-item');
+            steps.forEach((step, index) => {
+                setTimeout(() => {
+                    steps.forEach(s => s.classList.remove('active'));
+                    if (index < steps.length) {
+                        step.classList.add('active');
+                    }
+                }, index * 900);
+            });
+        }
+
+        function animateResults() {
+            document.getElementById('scanResults').classList.add('active');
+
+            // Animate confidence bars
+            animateBar('keywordBar', 'keywordScore', 85);
+            animateBar('visualBar', 'visualScore', 72);
+            animateBar('filterBar', 'filterScore', 100);
+            animateBar('overallBar', 'overallScore', 86, 300);
+        }
+
+        function animateBar(barId, scoreId, targetValue, delay = 0) {
+            setTimeout(() => {
+                const bar = document.getElementById(barId);
+                const score = document.getElementById(scoreId);
+                let current = 0;
+                const increment = targetValue / 50;
+
+                const interval = setInterval(() => {
+                    current += increment;
+                    if (current >= targetValue) {
+                        current = targetValue;
+                        clearInterval(interval);
+                    }
+                    bar.style.width = Math.round(current) + '%';
+                    score.textContent = Math.round(current) + '%';
+                }, 20);
+            }, delay);
+        }
+
+        function scanAnother() {
+            document.getElementById('urlInput').value = '';
+            document.getElementById('scanResults').classList.remove('active');
+            document.getElementById('urlInput').focus();
+        }
+
+        function goToDashboard() {
+            window.location.href = 'auraboost_mobile_homepage.html';
+        }
+
+        // Focus input on load
+        document.getElementById('urlInput').focus();
+    </script>
+</body>
+</html>

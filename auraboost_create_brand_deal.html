@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraBoost - Create Brand Deal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0F172A 0%, #1a1f3a 100%);
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(245, 158, 11, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-link img {
+            height: 40px;
+            width: 40px;
+            cursor: pointer;
+        }
+
+        /* Main Container */
+        .deal-creator {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .page-title {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .page-title h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #F59E0B 0%, #EC4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-title p {
+            color: #aaa;
+        }
+
+        /* Step Indicators */
+        .steps-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .steps-indicator::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.1);
+            z-index: -1;
+        }
+
+        .step-indicator {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(245, 158, 11, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .step-indicator.active .step-number {
+            background: linear-gradient(135deg, #F59E0B 0%, #EC4899 100%);
+            border-color: #F59E0B;
+            color: #0F172A;
+        }
+
+        .step-indicator.completed .step-number {
+            background: #4CD137;
+            border-color: #4CD137;
+        }
+
+        .step-label {
+            font-size: 12px;
+            color: #aaa;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .step-indicator.active .step-label {
+            color: #F59E0B;
+        }
+
+        /* Form Section */
+        .form-section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 16px;
+            padding: 40px;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .form-section.hidden {
+            display: none;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-section h2 {
+            font-size: 24px;
+            margin-bottom: 25px;
+            color: #fff;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #aaa;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="number"],
+        input[type="date"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 8px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #F59E0B;
+            background: rgba(245, 158, 11, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* Two Column Grid */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-grid.full {
+            grid-template-columns: 1fr;
+        }
+
+        /* Criteria Input */
+        .criteria-input {
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+            margin-bottom: 15px;
+        }
+
+        .criteria-input input {
+            flex: 1;
+        }
+
+        .criteria-input button {
+            padding: 10px 16px;
+            background: rgba(245, 158, 11, 0.2);
+            border: 1px solid #F59E0B;
+            color: #F59E0B;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s;
+        }
+
+        .criteria-input button:hover {
+            background: rgba(245, 158, 11, 0.3);
+        }
+
+        /* Tags */
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .tag {
+            background: linear-gradient(135deg, rgba(245,158,11,0.2) 0%, rgba(236,72,153,0.1) 100%);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tag-remove {
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .tag-remove:hover {
+            opacity: 1;
+        }
+
+        /* Preview Section */
+        .preview-section {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .preview-section h3 {
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: #aaa;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .preview-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 8px;
+            padding: 15px;
+            font-size: 13px;
+            color: #ccc;
+            line-height: 1.6;
+        }
+
+        /* Action Buttons */
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 30px;
+            justify-content: space-between;
+        }
+
+        button {
+            padding: 12px 30px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #F59E0B 0%, #EC4899 100%);
+            color: #0F172A;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(245, 158, 11, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid #F59E0B;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(245, 158, 11, 0.1);
+        }
+
+        /* Success Message */
+        .success-message {
+            background: linear-gradient(135deg, #4CD137 0%, #F59E0B 100%);
+            color: #0F172A;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .success-message h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .success-message p {
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .info-box {
+            background: rgba(245, 158, 11, 0.1);
+            border-left: 4px solid #F59E0B;
+            padding: 15px;
+            border-radius: 4px;
+            font-size: 13px;
+            margin-bottom: 20px;
+            color: #ddd;
+        }
+
+        @media (max-width: 768px) {
+            .deal-creator {
+                padding: 20px 15px;
+            }
+
+            .form-section {
+                padding: 25px 15px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-actions {
+                flex-direction: column-reverse;
+            }
+
+            .btn-primary,
+            .btn-secondary {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <a href="auraboost_homepage.html">
+                <img src="auraboost_logo_40x40.png" alt="AuraBoost Logo">
+            </a>
+            <h1 style="flex: 1; margin-left: 20px;">AuraBoost</h1>
+            <nav style="display: flex; gap: 20px;">
+                <a href="auraboost_homepage.html" style="color: #fff; text-decoration: none;">Dashboard</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="deal-creator">
+        <div class="page-title">
+            <h1>🎯 Create Brand Deal</h1>
+            <p>Set up your brand partnership campaign and start reaching creators</p>
+        </div>
+
+        <!-- Step Indicators -->
+        <div class="steps-indicator">
+            <div class="step-indicator active" id="step1Indicator">
+                <div class="step-number">1</div>
+                <div class="step-label">Brand Info</div>
+            </div>
+            <div class="step-indicator" id="step2Indicator">
+                <div class="step-number">2</div>
+                <div class="step-label">Campaign Setup</div>
+            </div>
+            <div class="step-indicator" id="step3Indicator">
+                <div class="step-number">3</div>
+                <div class="step-label">Creator Criteria</div>
+            </div>
+            <div class="step-indicator" id="step4Indicator">
+                <div class="step-number">4</div>
+                <div class="step-label">Review & Launch</div>
+            </div>
+        </div>
+
+        <!-- STEP 1: Brand Information -->
+        <div class="form-section" id="step1">
+            <h2>🏢 Brand Information</h2>
+            
+            <div class="info-box">
+                💡 These details help creators understand your brand and what you're looking for.
+            </div>
+
+            <form onsubmit="nextStep(1, event)">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Deal Name *</label>
+                        <input type="text" id="dealName" placeholder="e.g., Nike Air Max Challenge" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Brand Logo URL</label>
+                        <input type="text" id="logoUrl" placeholder="https://cdn.example.com/logo.png">
+                    </div>
+                </div>
+
+                <div class="form-group form-grid full">
+                    <div class="form-group">
+                        <label>Deal Description *</label>
+                        <textarea id="dealDescription" placeholder="Describe your brand deal, what you want creators to do, what they should mention, etc." required></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group form-grid">
+                    <div class="form-group">
+                        <label>Campaign Start Date *</label>
+                        <input type="date" id="startDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Campaign End Date *</label>
+                        <input type="date" id="endDate" required>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="goHome()">Cancel</button>
+                    <button type="submit" class="btn-primary">Next Step →</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- STEP 2: Campaign Setup -->
+        <div class="form-section hidden" id="step2">
+            <h2>💰 Campaign Setup</h2>
+
+            <div class="info-box">
+                ⚡ Set your budget and earnings structure for creators
+            </div>
+
+            <form onsubmit="nextStep(2, event)">
+                <div class="form-group form-grid">
+                    <div class="form-group">
+                        <label>Earnings Per Submission *</label>
+                        <input type="number" id="commissionAmount" placeholder="e.g., 500" min="0" required>
+                        <small style="color: #888; margin-top: 5px; display: block;">Creator gets 70% ($<span id="creatorEarning">0</span>), AuraBoost gets 30% ($<span id="auraboostEarning">0</span>)</small>
+                    </div>
+                    <div class="form-group">
+                        <label>Total Campaign Budget *</label>
+                        <input type="number" id="budget" placeholder="e.g., 25000" min="0" required>
+                    </div>
+                </div>
+
+                <div class="form-group form-grid">
+                    <div class="form-group">
+                        <label>Available Slots (Max Creators)</label>
+                        <input type="number" id="slots" placeholder="e.g., 50" min="1" value="50">
+                        <small style="color: #888; margin-top: 5px; display: block;">How many creators can earn from this deal</small>
+                    </div>
+                </div>
+
+                <div class="preview-section">
+                    <h3>Campaign Summary</h3>
+                    <div class="preview-card">
+                        <div>Total Budget: $<span id="previewBudget">0</span></div>
+                        <div>Per Creator Payout: $<span id="previewPayout">0</span></div>
+                        <div>Total Creator Slots: <span id="previewSlots">50</span></div>
+                        <div style="margin-top: 10px; color: #aaa;">Duration: <span id="previewDuration">Not set</span></div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="previousStep(1)">← Previous</button>
+                    <button type="submit" class="btn-primary">Next Step →</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- STEP 3: Creator Criteria -->
+        <div class="form-section hidden" id="step3">
+            <h2>🎯 Creator Matching Criteria</h2>
+
+            <div class="info-box">
+                🔍 These criteria help us automatically match the right creators to your campaign
+            </div>
+
+            <form onsubmit="nextStep(3, event)">
+                <div class="form-group form-grid">
+                    <div class="form-group">
+                        <label>Minimum Follower Count *</label>
+                        <input type="number" id="minFollowers" placeholder="e.g., 10000" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Minimum Engagement Rate (%)</label>
+                        <input type="number" id="minEngagement" placeholder="e.g., 2" min="0" max="100" step="0.1" value="2">
+                    </div>
+                </div>
+
+                <div class="form-group form-grid full">
+                    <div class="form-group">
+                        <label>Target Creator Categories (comma-separated)</label>
+                        <input type="text" id="categories" placeholder="e.g., fitness, lifestyle, fashion, sports">
+                        <small style="color: #888; margin-top: 5px; display: block;">Helps us find creators in your niche</small>
+                    </div>
+                </div>
+
+                <div class="form-group form-grid full">
+                    <div class="form-group">
+                        <label>Brand Keywords (Comma-Separated) *</label>
+                        <input type="text" id="keywords" placeholder="e.g., Nike, Air Max, Just Do It, Swoosh" required>
+                        <small style="color: #888; margin-top: 5px; display: block;">AI will detect these in creator submissions</small>
+                    </div>
+                </div>
+
+                <div class="form-group form-grid full">
+                    <div class="form-group">
+                        <label>Hashtags for Campaign (Optional)</label>
+                        <input type="text" id="hashtags" placeholder="e.g., #NikeAirMax, #JustDoIt">
+                    </div>
+                </div>
+
+                <div class="preview-section">
+                    <h3>Matching Criteria Summary</h3>
+                    <div class="preview-card">
+                        <div>Minimum Followers: <span id="previewMinFollowers">0</span></div>
+                        <div>Engagement Rate: <span id="previewEngagement">0</span>%+</div>
+                        <div>Categories: <span id="previewCategories">Not set</span></div>
+                        <div>Keywords Being Monitored: <span id="previewKeywords">0</span></div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="previousStep(2)">← Previous</button>
+                    <button type="submit" class="btn-primary">Review & Launch →</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- STEP 4: Review & Launch -->
+        <div class="form-section hidden" id="step4">
+            <h2>📊 Review Your Campaign</h2>
+
+            <div class="info-box">
+                ✅ Review everything looks correct before launching
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px;">
+                <div class="preview-section">
+                    <h3>Deal Details</h3>
+                    <div class="preview-card">
+                        <div><strong>Deal Name:</strong> <span id="reviewDealName">-</span></div>
+                        <div style="margin-top: 10px;"><strong>Duration:</strong> <span id="reviewDuration">-</span></div>
+                        <div style="margin-top: 10px;"><strong>Budget:</strong> $<span id="reviewBudget">0</span></div>
+                        <div style="margin-top: 10px;"><strong>Available Slots:</strong> <span id="reviewSlots">0</span></div>
+                    </div>
+                </div>
+
+                <div class="preview-section">
+                    <h3>Creator Payout</h3>
+                    <div class="preview-card">
+                        <div><strong>Per Submission:</strong> $<span id="reviewPayout">0</span></div>
+                        <div style="margin-top: 10px; color: #4CD137;"><strong>Creator Earnings:</strong> $<span id="reviewCreatorEarning">0</span> (70%)</div>
+                        <div style="margin-top: 10px; color: #F59E0B;"><strong>AuraBoost Fee:</strong> $<span id="reviewABEarning">0</span> (30%)</div>
+                    </div>
+                </div>
+
+                <div class="preview-section" style="grid-column: 1 / -1;">
+                    <h3>Matching Criteria</h3>
+                    <div class="preview-card">
+                        <div><strong>Target Followers:</strong> <span id="reviewMinFollowers">0</span>+</div>
+                        <div style="margin-top: 10px;"><strong>Engagement:</strong> <span id="reviewEngagement">0</span>%+</div>
+                        <div style="margin-top: 10px;"><strong>Keywords Being Monitored:</strong> <span id="reviewKeywordsList">-</span></div>
+                        <div style="margin-top: 10px;"><strong>Target Categories:</strong> <span id="reviewCategoriesList">-</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <form onsubmit="launchCampaign(event)">
+                <div class="info-box">
+                    🚀 Ready to launch? Your campaign will be visible to matching creators immediately
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="previousStep(3)">← Previous</button>
+                    <button type="submit" class="btn-primary">🚀 Launch Campaign</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Success State -->
+        <div class="form-section hidden" id="successState">
+            <div class="success-message">
+                <h2>🎉 Campaign Live!</h2>
+                <p>Your brand partnership campaign is now live and creators are being matched</p>
+                <div style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 8px; margin: 20px 0; text-align: left;">
+                    <strong>What happens next:</strong>
+                    <ul style="margin-top: 10px; margin-left: 20px; line-height: 1.8;">
+                        <li>Creators matching your criteria are automatically notified</li>
+                        <li>They see your deal in their "Matched Opportunities"</li>
+                        <li>When they submit, AI analyzes their content</li>
+                        <li>Qualifying submissions are auto-rewarded</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 12px; margin-top: 30px;">
+                <button class="btn-primary" onclick="goToDashboard()" style="flex: 1;">View Campaign Dashboard</button>
+                <button class="btn-secondary" onclick="createAnother()" style="flex: 1;">Create Another Deal</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let currentStep = 1;
+
+        function nextStep(step, event) {
+            event.preventDefault();
+            if (validateStep(step)) {
+                updatePreviews();
+                currentStep = step + 1;
+                showStep(currentStep);
+            }
+        }
+
+        function previousStep(step) {
+            currentStep = step;
+            showStep(currentStep);
+        }
+
+        function showStep(step) {
+            // Hide all steps
+            document.getElementById('step1').classList.add('hidden');
+            document.getElementById('step2').classList.add('hidden');
+            document.getElementById('step3').classList.add('hidden');
+            document.getElementById('step4').classList.add('hidden');
+            document.getElementById('successState').classList.add('hidden');
+
+            // Show current step
+            if (step <= 4) {
+                document.getElementById(`step${step}`).classList.remove('hidden');
+            }
+
+            // Update indicators
+            for (let i = 1; i <= 4; i++) {
+                const indicator = document.getElementById(`step${i}Indicator`);
+                indicator.classList.remove('active', 'completed');
+                if (i < step) {
+                    indicator.classList.add('completed');
+                } else if (i === step) {
+                    indicator.classList.add('active');
+                }
+            }
+        }
+
+        function validateStep(step) {
+            if (step === 1) {
+                const dealName = document.getElementById('dealName').value;
+                const description = document.getElementById('dealDescription').value;
+                const startDate = document.getElementById('startDate').value;
+                const endDate = document.getElementById('endDate').value;
+                
+                if (!dealName || !description || !startDate || !endDate) {
+                    alert('Please fill in all required fields');
+                    return false;
+                }
+            }
+            if (step === 2) {
+                const commission = document.getElementById('commissionAmount').value;
+                const budget = document.getElementById('budget').value;
+                
+                if (!commission || !budget) {
+                    alert('Please enter commission and budget');
+                    return false;
+                }
+            }
+            if (step === 3) {
+                const minFollowers = document.getElementById('minFollowers').value;
+                const keywords = document.getElementById('keywords').value;
+                
+                if (!minFollowers || !keywords) {
+                    alert('Please enter minimum followers and keywords');
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        function updatePreviews() {
+            // Step 2 preview
+            const commission = parseFloat(document.getElementById('commissionAmount').value) || 0;
+            const budget = parseFloat(document.getElementById('budget').value) || 0;
+            const slots = parseInt(document.getElementById('slots').value) || 50;
+            const creatorEarning = commission * 0.7;
+            const abEarning = commission * 0.3;
+
+            document.getElementById('creatorEarning').textContent = creatorEarning.toFixed(0);
+            document.getElementById('auraboostEarning').textContent = abEarning.toFixed(0);
+            document.getElementById('previewBudget').textContent = budget.toFixed(0);
+            document.getElementById('previewPayout').textContent = commission.toFixed(0);
+            document.getElementById('previewSlots').textContent = slots;
+
+            // Calculate duration
+            const start = new Date(document.getElementById('startDate').value);
+            const end = new Date(document.getElementById('endDate').value);
+            const days = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+            document.getElementById('previewDuration').textContent = `${days} days`;
+
+            // Step 3 preview
+            const minFollowers = document.getElementById('minFollowers').value;
+            const engagement = document.getElementById('minEngagement').value;
+            const keywords = document.getElementById('keywords').value;
+            const categories = document.getElementById('categories').value;
+
+            document.getElementById('previewMinFollowers').textContent = minFollowers || '0';
+            document.getElementById('previewEngagement').textContent = engagement || '0';
+            document.getElementById('previewKeywords').textContent = (keywords.split(',').length || '0');
+            document.getElementById('previewCategories').textContent = categories || 'All';
+
+            // Final review
+            document.getElementById('reviewDealName').textContent = document.getElementById('dealName').value || '-';
+            document.getElementById('reviewDuration').textContent = `${days} days`;
+            document.getElementById('reviewBudget').textContent = budget.toFixed(0);
+            document.getElementById('reviewSlots').textContent = slots;
+            document.getElementById('reviewPayout').textContent = commission.toFixed(0);
+            document.getElementById('reviewCreatorEarning').textContent = creatorEarning.toFixed(0);
+            document.getElementById('reviewABEarning').textContent = abEarning.toFixed(0);
+            document.getElementById('reviewMinFollowers').textContent = minFollowers;
+            document.getElementById('reviewEngagement').textContent = engagement;
+            document.getElementById('reviewKeywordsList').textContent = keywords;
+            document.getElementById('reviewCategoriesList').textContent = categories || 'All categories';
+        }
+
+        function launchCampaign(event) {
+            event.preventDefault();
+            
+            // Save campaign data
+            const campaignData = {
+                dealName: document.getElementById('dealName').value,
+                description: document.getElementById('dealDescription').value,
+                commission: document.getElementById('commissionAmount').value,
+                budget: document.getElementById('budget').value,
+                slots: document.getElementById('slots').value,
+                minFollowers: document.getElementById('minFollowers').value,
+                minEngagement: document.getElementById('minEngagement').value,
+                keywords: document.getElementById('keywords').value,
+                categories: document.getElementById('categories').value,
+                startDate: document.getElementById('startDate').value,
+                endDate: document.getElementById('endDate').value,
+            };
+            
+            localStorage.setItem('campaignData', JSON.stringify(campaignData));
+            
+            // Show success
+            document.getElementById('step4').classList.add('hidden');
+            document.getElementById('successState').classList.remove('hidden');
+        }
+
+        function goHome() {
+            window.location.href = 'auraboost_homepage.html';
+        }
+
+        function goToDashboard() {
+            window.location.href = 'auraboost_brand_dashboard.html';
+        }
+
+        function createAnother() {
+            // Reset form
+            location.reload();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!-- ====================================================================
+     AURABOOST BOTTOM NAVIGATION - FIXED
+     Copy this ENTIRE section to the bottom of all pages
+     ==================================================================== -->
+
+<div class="bottom-nav">
+    <a href="auraboost_homepage.html" class="nav-item active">
+        <div class="nav-icon">🏠</div>
+        <div>Home</div>
+    </a>
+    <a href="auraboost_ai_scanner.html" class="nav-item">
+        <div class="nav-icon">📝</div>
+        <div>Create</div>
+    </a>
+    <a href="#" class="nav-item">
+        <div class="nav-icon">🏆</div>
+        <div>Rank</div>
+    </a>
+    <a href="auraboost_creator_earnings_dashboard.html" class="nav-item">
+        <div class="nav-icon">💰</div>
+        <div>Earn</div>
+    </a>
+    <a href="auraboost_creator_settings.html" class="nav-item">
+        <div class="nav-icon">⚙️</div>
+        <div>Settings</div>
+    </a>
+</div>
+
+<!-- ====================================================================
+     BOTTOM NAV CSS - Add this to your <style> section
+     ==================================================================== -->
+
+<style>
+/* ========================================
+   AURABOOST BOTTOM NAVIGATION
+   ======================================== */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(15, 23, 42, 0.98);
+    border-top: 2px solid rgba(255, 152, 0, 0.3);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 8px 0;
+    z-index: 999;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    color: #888;
+    text-decoration: none;
+    font-size: 11px;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.nav-item:hover,
+.nav-item.active {
+    color: #FF9800;
+}
+
+.nav-icon {
+    font-size: 24px;
+}
+
+/* Add padding to body to account for fixed nav */
+body {
+    padding-bottom: 80px;
+}
+</style>
